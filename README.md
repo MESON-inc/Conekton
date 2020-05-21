@@ -55,7 +55,7 @@ Conektonをご使用頂く前にご確認ください。
 
 ### Code of Conductについて
 
-詳細については[こちら](./code_of_conduct.md)
+詳細については[こちら](./jp/code_of_conduct.md)
 
 ### 現時点の制約について（β版的立ち位置）
 
@@ -66,7 +66,7 @@ Conektonをご使用頂く前にご確認ください。
 
 ### パッケージのインポート
 
-[リリース](https://github.com/MESON-inc/Conekton_dev/releases/tag/Release_v0.0.1)タブから最新版の`.unitypackage`をダウンロードし、インポートします。
+[リリース](https://github.com/MESON-inc/Conekton/releases)タブから最新版の`.unitypackage`をダウンロードし、インポートします。
 
 
 
