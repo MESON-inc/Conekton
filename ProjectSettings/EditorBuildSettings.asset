@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Conekton/ARUtility/Demo/Scenes/ARUtilityDemo.unity
+    guid: e268f6d3ed927aa4c9490c33c1a31416
+  - enabled: 1
+    path: Assets/Conekton/Multiplayer/Demo/Scenes/NetworkDemo.unity
+    guid: 589fa55e4f14161428fd9b7022cd20a3
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 64ace818758a3f84fbcbda96878af1bf,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: f49954d7541865740ae98702e6cacddf,
+      type: 2}

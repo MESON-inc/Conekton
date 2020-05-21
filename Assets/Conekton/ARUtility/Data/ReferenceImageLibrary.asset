@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848409ee8ba454f42a5ddff137688a27, type: 3}
+  m_Name: ReferenceImageLibrary
+  m_EditorClassIdentifier: 
+  m_GuidLow: 5154666759848691016
+  m_GuidHigh: 12189460329097285529
+  m_Images:
+  - m_SerializedGuid:
+      m_GuidLow: 4973821996406150222
+      m_GuidHigh: 18247327217192049328
+    m_SerializedTextureGuid:
+      m_GuidLow: 8373511794030319331
+      m_GuidHigh: 4408676010471748857
+    m_Size: {x: 0.397, y: 0.397}
+    m_SpecifySize: 1
+    m_Name: nreal_city
+    m_Texture: {fileID: 2800000, guid: a5b896e3b09c7434f974f42d79c32e3d, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 5364049141967545723
+      m_GuidHigh: 966194755831527094
+    m_SerializedTextureGuid:
+      m_GuidLow: 1473499767201569853
+      m_GuidHigh: 11052387262502410267
+    m_Size: {x: 0.397, y: 0.397}
+    m_SpecifySize: 1
+    m_Name: nreal_snake
+    m_Texture: {fileID: 2800000, guid: 38ab9c3dec3b14721b18823da8f76199, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 5405593994275126111
+      m_GuidHigh: 3160830303291993770
+    m_SerializedTextureGuid:
+      m_GuidLow: 354035435687870227
+      m_GuidHigh: 10068591278645252106
+    m_Size: {x: 0.695, y: 0.695}
+    m_SpecifySize: 1
+    m_Name: nreal_trib
+    m_Texture: {fileID: 2800000, guid: 5e137f13c95a04e90a103f186cd2ba8b, type: 3}

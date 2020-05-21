@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <symbol name="PLATFORM_NREAL" comment="Nreal Platform" />
+    <symbol name="PLATFORM_OCULUS" comment="oculus Platform" />
+</root>
+
