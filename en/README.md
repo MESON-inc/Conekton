@@ -14,7 +14,7 @@ Conekton is built on Extenject, a fork of Zenject. Using Extenject as its framew
 
 ### Birth of Conekton
 
-Conekton is originally an internal library of MESON, Tokyo-based AR studio, which is used to develop AR apps efficiently. Since its beginning, MESON has developed various types of AR apps, not just for mobile phones but also for AR HMDs, such as Nreal Light and Magic Leap 1. 
+Conekton is originally an internal library of MESON, a Tokyo-based AR studio. Since its beginning, MESON has developed various types of AR apps, not just for mobile phones but also for AR HMDs, such as Nreal Light and Magic Leap 1. 
 
 While developing AR apps on various platforms, we noticed the importance of having a cross-platform system of AR development for both mobile AR apps and AR HMD apps. Likewise, we recognize the increasing demand for multiuser functionality as an essential component of AR experiences and the urgent necessity of an efficient and productive development environment for rapid prototyping.
 
@@ -194,13 +194,13 @@ private Ray GetRay()
 
 ### More Info
 
-Please [click here](./GettingStarted.md) to check more details about other functions and methods.
+[Click here](./GettingStarted.md) to check more details about other functions and methods.
 
 
 
 ## Help
 
-Please [join our Conekton slack community](https://join.slack.com/t/conekton/shared_invite/zt-eg7c7eur-OfjrkZ2zHHVUoOX_8HKzpg) to ask questions and have discussions.
+[Join our Conekton slack community](https://join.slack.com/t/conekton/shared_invite/zt-eg7c7eur-OfjrkZ2zHHVUoOX_8HKzpg) to ask questions and have discussions.
 
 
 
