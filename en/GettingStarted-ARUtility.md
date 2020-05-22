@@ -97,8 +97,9 @@ Because Conekton is built on Extenject, you have to set upSceneContext properly.
 By adding the prefab in the scene, Extenject embeds DI into your desired classes. 
 
 <div align="center">
-<img src="./images/ARUtility-SceneContext.png" title="ARUtility-SceneContext" /><br />
+<img src="../jp/images/ARUtility-SceneContext.png" title="ARUtility-SceneContext" /><br />
 </div>
+
 
 
 
@@ -108,9 +109,10 @@ You can visualize a controller. Conekton provides a functionality to visualize a
 Please make sure you successfully set up `SceneContext`.
 
 <div align="center">
-<img src="./images/InputControllerView-Prefab.png" title="InputControllerView" /><br /><br />
-<img src="./images/InputControllerView.png" title="InputControllerView demo" />
+<img src="../jp/images/InputControllerView-Prefab.png" title="InputControllerView" /><br /><br />
+<img src="../jp/images/InputControllerView.png" title="InputControllerView demo" />
 </div>
+
 
 
 ### EditorInputControllerを利用してデバッグする
@@ -121,14 +123,16 @@ Give a check on `Use Editor Controller` in `InputControllerInstaller` to install
 You don't need to turn `Use Editor Controller` on and off every time you build your app because Conekton properly chooses the Input Controller for the target platform.
 
 <div align="center">
-<img src="./images/InputControllerInstaller.png" title="InputControllerInstaller" /><br />
+<img src="../jp/images/InputControllerInstaller.png" title="InputControllerInstaller" /><br />
 Use Editor Controller
 </div>
+
 
 Please check the prefab to see more details.
 
 <div align="center">
-<img src="./images/EditorInputController.png" title="EditorInputController" /><br />
+<img src="../jp/images/EditorInputController.png" title="EditorInputController" /><br />
 You can change some key assigning.
 </div>
+
 
