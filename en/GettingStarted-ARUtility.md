@@ -103,7 +103,7 @@ By adding the prefab in the scene, Extenject embeds DI into your desired classes
 
 
 
-### Visualization of a Ray from the Controller
+### Visualizing of a Ray from the Controller
 
 You can visualize a controller. Conekton provides a functionality to visualize a controller just by adding `InputControllerView` to the scene, which can be found in at the default project. 
 Please make sure you successfully set up `SceneContext`.
