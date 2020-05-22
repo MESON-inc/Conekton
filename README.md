@@ -2,6 +2,9 @@
 <img src="./jp/images/Logo_White.png" title="Conekton" />
 </div>
 
+[English version here](./en/)
+
+
 
 ## Introduction
 
