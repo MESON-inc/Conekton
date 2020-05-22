@@ -91,7 +91,7 @@ Use `InputControllerInstaller` for the `IInputController` functionality.
 
 
 
-## SceneContextのセットアップ
+## Setting up SceneContext
 
 Because Conekton is built on Extenject, you have to set upSceneContext properly. Conekton offers a ready-to-use SceneContextPrefab, which can be integrated in your project easily. Check the provided demo scene at `Assets/Conekton/ARUtility/Prefabs/SceneContexts/SceneContext`.
 By adding the prefab in the scene, Extenject embeds DI into your desired classes. 
@@ -103,7 +103,7 @@ By adding the prefab in the scene, Extenject embeds DI into your desired classes
 
 
 
-### コントローラのレイを視覚化する
+### Visualization of a Ray from the Controller
 
 You can visualize a controller. Conekton provides a functionality to visualize a controller just by adding `InputControllerView` to the scene, which can be found in at the default project. 
 Please make sure you successfully set up `SceneContext`.
@@ -115,7 +115,7 @@ Please make sure you successfully set up `SceneContext`.
 
 
 
-### EditorInputControllerを利用してデバッグする
+### Debugging with EditorInputController
 
 To make it easy to debug your app, Conekton offers a functionality to edit `InputController` using the Unity Editor with keyboard.
 
