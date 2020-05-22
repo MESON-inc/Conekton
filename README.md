@@ -1,7 +1,8 @@
 <div align="center">
 <img src="./jp/images/Logo_White.png" title="Conekton" />
 </div>
-[English version here](./en/README.md)
+
+[English version here](./en/)
 
 
 
