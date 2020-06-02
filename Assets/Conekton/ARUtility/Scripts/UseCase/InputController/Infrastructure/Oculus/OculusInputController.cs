@@ -30,7 +30,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
         Quaternion IInputController.Rotation => _player.Root.rotation * OVRInput.GetLocalControllerRotation(OVRInput.Controller.RHand);
 
-        Vector2 IInputController.Touch => OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
+        Vector2 IInputController.Touch => OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.RTouch);
 
         void IInputController.TriggerHapticVibration(HapticData data)
         {
