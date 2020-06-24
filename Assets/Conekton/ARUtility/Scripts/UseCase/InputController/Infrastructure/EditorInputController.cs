@@ -66,13 +66,13 @@ namespace Conekton.ARUtility.Input.Infrastructure
                     return UnityEngine.Input.GetKeyDown(_inputSettings.One);
 
                 case ButtonType.Two:
-                    return UnityEngine.Input.GetKeyDown(_inputSettings.One);
+                    return UnityEngine.Input.GetKeyDown(_inputSettings.Two);
 
                 case ButtonType.Three:
-                    return UnityEngine.Input.GetKeyDown(_inputSettings.One);
+                    return UnityEngine.Input.GetKeyDown(_inputSettings.Three);
 
                 case ButtonType.Four:
-                    return UnityEngine.Input.GetKeyDown(_inputSettings.One);
+                    return UnityEngine.Input.GetKeyDown(_inputSettings.Four);
 
                 default:
                     return false;
@@ -87,13 +87,13 @@ namespace Conekton.ARUtility.Input.Infrastructure
                     return UnityEngine.Input.GetKeyUp(_inputSettings.One);
 
                 case ButtonType.Two:
-                    return UnityEngine.Input.GetKeyUp(_inputSettings.One);
+                    return UnityEngine.Input.GetKeyUp(_inputSettings.Two);
 
                 case ButtonType.Three:
-                    return UnityEngine.Input.GetKeyUp(_inputSettings.One);
+                    return UnityEngine.Input.GetKeyUp(_inputSettings.Three);
 
                 case ButtonType.Four:
-                    return UnityEngine.Input.GetKeyUp(_inputSettings.One);
+                    return UnityEngine.Input.GetKeyUp(_inputSettings.Four);
 
                 default:
                     return false;
