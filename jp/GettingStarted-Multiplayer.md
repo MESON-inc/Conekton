@@ -1,9 +1,9 @@
 # Getting Started for Multiplayer
 
-以下で説明する機能たちはExtenjectのインストーラを適切に設定することで利用可能になります。
-説明に記載されているインストーラを設定して利用ください。
+以下で説明する機能を利用するにはExtenjectのインストーラをSceneContextに設定してください。
+どのインストーラを利用すればいいかは各説明の箇所に記載されています。
 
-また、マルチプレイの機能は[ARUtilityの機能](./GettingStarted-ARUtility.md)も利用しているため、そちらの機能も適切にセットアップする必要があります。
+<u>※ マルチプレイの機能は[ARUtilityの機能](./GettingStarted-ARUtility.md)も利用しているためそちらの機能も適切にセットアップする必要があります。</u>
 
 
 
@@ -14,9 +14,12 @@ namespace: `Conekton.ARMultiplayer.Avatar.Domain`
 アバターシステムは、AR/VRデバイスの頭の位置や手、コントローラの位置を視覚化するための機能です。
 マルチプレイ時にはリモートプレイヤーとして、接続先の相手の頭や手の位置を視覚化する目的でも利用されます。（つまりオンライン限定の機能ではなく、オフラインでも利用可能です）
 
+
+### Avatar Prefab
+
 アバターシステムに利用されるオブジェクトは「`Assets/Conekton/Multiplayer/Prefabs/Avatar`」にあるPrefabを直接修正するか、`AvatarInstaller`に設定されているPrefabの参照を差し替えることで変更することができます。
 
-システムのインターフェースは以下の通りです。
+Avatar Systemのサービスのインターフェースは以下の通りです。
 
 ```
 public interface IAvatarService
@@ -38,12 +41,7 @@ public interface IAvatarService
 自身で生成した場合など、アバターIDから参照を得たい場合は`Find(AvatarID id)`で参照を得ることができます。
 
 
-### Installer
-
-`IAvatarSystem`の機能を利用するためには`AvatarInstaller`を利用ください。
-
-
-## IAvatar
+### IAvatar
 
 アバターシステムによって生成されたオブジェクトは`IAvatar`インターフェースを持つオブジェクトになります。`IAvatar`インターフェースは以下の通りです。
 
@@ -67,7 +65,7 @@ public interface IAvatar
 }
 ```
 
-## IAvatarController
+### IAvatarController
 
 `IAvatar`は`IAvatarController`インターフェースを持つオブジェクトによって操作されます。（後述するネットワーク同期ではリモートプレイヤーの位置同期に用いられます）
 
@@ -79,11 +77,11 @@ public interface IAvatarController
 }
 ```
 
-## IAvatarWearable
+### IAvatarWearable
 
 アバターシステムには、頭や手の位置にオブジェクトを配置する、ゲームの装備のようなシステムが用意されています。それが`IAvatarWearable`です。
 
-このインターフェースを持つオブジェクトをアバターに渡すことで、対象の位置にオブジェクトを配置することができます。
+このインターフェースを持つオブジェクトをアバターに渡すことで対象の位置にオブジェクトを配置することができます。
 
 ```
 public interface IAvatarWearable
@@ -106,7 +104,7 @@ public enum AvatarWearType
 }
 ```
 
-### IAvatarWearablePackによるセット
+#### IAvatarWearablePackによる複数オブジェクトの設定
 
 `IAvatarWearable`はひとつのオブジェクトを表します。
 これを、まとめてセットとして扱いたい場合のために`IAvatarWearablePack`があります。
@@ -120,12 +118,17 @@ public interface IAvatarWearablePack
 }
 ```
 
+### Installer
+
+`IAvatarSystem`の機能を利用するためには`AvatarInstaller`を利用ください。
+
+----------------------------------------
 
 ## Multiplayer Network System
 
 namespace: `Conekton.ARMultiplayer.NetworkMultiplayer.Domain`
 
-マルチプレイヤーネットワークシステムは、マルチプレイヤーのための機能を提供します。
+マルチプレイヤーネットワークシステムはマルチプレイヤーのための機能を提供します。
 
 システムのインターフェースは以下の通りです。
 
@@ -149,7 +152,8 @@ public interface IMultiplayerNetworkSystem
 }
 ```
 
-基本的に、ネットワークシステムを利用したい場合はインストーラで機能をインストールするだけで完了します。ConektonのデフォルトではPhotonを利用しているため、必要に応じてApp IDなどを取得してください。
+基本的に、ネットワークシステムはインストールするだけで完了します。
+ConektonのデフォルトではPhotonを利用しているため、必要に応じてApp IDなどを取得してください。
 
 Photonの設定が完了している場合は特になにもすることなく、自動的に接続を開始します。
 
