@@ -36,6 +36,48 @@ namespace Conekton.ARUtility.Input.Infrastructure
         {
             OVRInput.SetControllerVibration(data.Frequency, data.Amplitude);
         }
+
+        bool IInputController.IsDown(ButtonType type)
+        {
+            switch (type)
+            {
+                case ButtonType.One:
+                    return OVRInput.GetDown(OVRInput.Button.One);
+
+                case ButtonType.Two:
+                    return OVRInput.GetDown(OVRInput.Button.Two);
+
+                case ButtonType.Three:
+                    return OVRInput.GetDown(OVRInput.Button.Three);
+
+                case ButtonType.Four:
+                    return OVRInput.GetDown(OVRInput.Button.Four);
+
+                default:
+                    return false;
+            }
+        }
+
+        bool IInputController.IsUp(ButtonType type)
+        {
+            switch (type)
+            {
+                case ButtonType.One:
+                    return OVRInput.GetUp(OVRInput.Button.One);
+
+                case ButtonType.Two:
+                    return OVRInput.GetUp(OVRInput.Button.Two);
+
+                case ButtonType.Three:
+                    return OVRInput.GetUp(OVRInput.Button.Three);
+
+                case ButtonType.Four:
+                    return OVRInput.GetUp(OVRInput.Button.Four);
+
+                default:
+                    return false;
+            }
+        }
     }
 }
 #endif

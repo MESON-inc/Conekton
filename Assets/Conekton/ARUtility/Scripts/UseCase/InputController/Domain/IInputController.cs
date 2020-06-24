@@ -11,6 +11,14 @@ namespace Conekton.ARUtility.Input.Domain
         static public HapticData Default => new HapticData { DurationSeconds = 0.1f, Frequency = 200f, Amplitude = 0.8f, };
     }
 
+    public enum ButtonType
+    {
+        One,
+        Two,
+        Three,
+        Four,
+    }
+
     public interface IInputController
     {
         bool IsTriggerDown { get; }
@@ -23,5 +31,7 @@ namespace Conekton.ARUtility.Input.Domain
         Quaternion Rotation { get; }
         Vector2 Touch { get; }
         void TriggerHapticVibration(HapticData data);
+        bool IsDown(ButtonType type);
+        bool IsUp(ButtonType type);
     }
 }

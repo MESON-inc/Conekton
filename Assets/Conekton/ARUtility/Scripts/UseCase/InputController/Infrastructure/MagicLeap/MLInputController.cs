@@ -8,6 +8,8 @@ using UnityEngine.XR.MagicLeap;
 
 using Zenject;
 
+using Conekton.ARUtility.Input.Domain;
+
 namespace Conekton.ARUtility.Input.Infrastructure
 {
     public class MLInputController : IInputController, IInitializable, ITickable, ILateDisposable
@@ -40,6 +42,9 @@ namespace Conekton.ARUtility.Input.Infrastructure
         Vector2 IInputController.Touch => (_inputController == null) ? Vector3.zero :
                                        _inputController.Touch1Active ? _inputController.Touch1PosAndForce :
                                                                        Vector2.zero;
+        bool IInputController.IsTouch => UnityEngine.Input.touchCount > 0;
+        bool IInputController.IsTouchDown => false;
+        bool IInputController.IsTouchUp => false;
 
         void IInitializable.Initialize()
         {
@@ -100,6 +105,16 @@ namespace Conekton.ARUtility.Input.Infrastructure
         {
             // NOTE: It should calculate haptics intensity by data.
             _inputController.StartFeedbackPatternVibe(_pattern, _intensity);
+        }
+
+        bool IInputController.IsDown(ButtonType type)
+        {
+            return false;
+        }
+
+        bool IInputController.IsUp(ButtonType type)
+        {
+            return false;
         }
     }
 }
