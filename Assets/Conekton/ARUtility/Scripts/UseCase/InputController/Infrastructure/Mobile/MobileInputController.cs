@@ -87,6 +87,16 @@ namespace Conekton.ARUtility.Input.Infrastructure
         {
             // do nothing.
         }
+
+        bool IInputController.IsDown(ButtonType type)
+        {
+            return false;
+        }
+
+        bool IInputController.IsUp(ButtonType type)
+        {
+            return false;
+        }
     }
 }
 

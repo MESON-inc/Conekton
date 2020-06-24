@@ -45,5 +45,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spatialAnchorPrefab: {fileID: 3717716140935424245, guid: 3d1df6fe30c758b4dbe20094dd18eca4,
     type: 3}
-  _spatialAnchorTunerPrefab: {fileID: 1835057752686743515, guid: 39c40024af1b2e1458815ea1c50cb43a,
-    type: 3}

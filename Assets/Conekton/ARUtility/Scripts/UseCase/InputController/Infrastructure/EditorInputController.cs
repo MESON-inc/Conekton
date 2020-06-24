@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using Zenject;
+
 using Conekton.ARUtility.Input.Domain;
+using Conekton.ARUtility.Input.Application;
 
 namespace Conekton.ARUtility.Input.Infrastructure
 {
     public class EditorInputController : MonoBehaviour, IInputController
     {
+        [Inject] private EditorInputSettings _inputSettings = null;
+
         [SerializeField] private KeyCode _triggerDownKey = KeyCode.D;
         [SerializeField] private KeyCode _triggerUpKey = KeyCode.U;
 
@@ -51,6 +56,48 @@ namespace Conekton.ARUtility.Input.Infrastructure
         void IInputController.TriggerHapticVibration(HapticData data)
         {
             // do nothing.
+        }
+
+        bool IInputController.IsDown(ButtonType type)
+        {
+            switch (type)
+            {
+                case ButtonType.One:
+                    return UnityEngine.Input.GetKeyDown(_inputSettings.One);
+
+                case ButtonType.Two:
+                    return UnityEngine.Input.GetKeyDown(_inputSettings.Two);
+
+                case ButtonType.Three:
+                    return UnityEngine.Input.GetKeyDown(_inputSettings.Three);
+
+                case ButtonType.Four:
+                    return UnityEngine.Input.GetKeyDown(_inputSettings.Four);
+
+                default:
+                    return false;
+            }
+        }
+
+        bool IInputController.IsUp(ButtonType type)
+        {
+            switch (type)
+            {
+                case ButtonType.One:
+                    return UnityEngine.Input.GetKeyUp(_inputSettings.One);
+
+                case ButtonType.Two:
+                    return UnityEngine.Input.GetKeyUp(_inputSettings.Two);
+
+                case ButtonType.Three:
+                    return UnityEngine.Input.GetKeyUp(_inputSettings.Three);
+
+                case ButtonType.Four:
+                    return UnityEngine.Input.GetKeyUp(_inputSettings.Four);
+
+                default:
+                    return false;
+            }
         }
 
         private void Update()
