@@ -42,3 +42,5 @@ sysinfo.txt
 
 # Dependencies
 Assets/Plugins/Zenject/
+Assets/Photon/
+Assets/Photon.meta
