@@ -8,7 +8,7 @@ using UnityEngine.XR.ARSubsystems;
 
 namespace Conekton.ARUtility.UseCase.ARMarkerIDSolver.Application
 {
-    [CreateAssetMenu(fileName = "MarkerIDDatabaseInstaller", menuName = "Installers/MarkerIDDatabaseInstaller")]
+    [CreateAssetMenu(fileName = "MarkerIDDatabaseInstaller", menuName = "ARUtility/Installers/MarkerIDDatabaseInstaller")]
     public class MarkerIDSolverDataInstaller : ScriptableObjectInstaller<MarkerIDSolverDataInstaller>
     {
         [SerializeField] private MarkerIDDatabase _markerIDDatabase = null;
