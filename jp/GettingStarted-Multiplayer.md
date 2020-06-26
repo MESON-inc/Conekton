@@ -94,7 +94,7 @@ public interface IAvatarWearable
 }
 ```
 
-`AvatarWearType`は以下のように定義されています。それぞれ、頭、右手、左手に対してオブジェクトを配置することができます。
+`AvatarWearType`は以下のように定義されています。それぞれ、頭、左手、右手に対してオブジェクトを配置することができます。
 
 ```
 public enum AvatarWearType
