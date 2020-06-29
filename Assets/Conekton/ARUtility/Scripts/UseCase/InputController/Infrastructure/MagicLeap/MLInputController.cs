@@ -12,9 +12,11 @@ using Conekton.ARUtility.Input.Domain;
 
 namespace Conekton.ARUtility.Input.Infrastructure
 {
-    public class MLInputController : IInputController, IInitializable, ITickable, ILateDisposable
+    public class MLInputController : IInputController, ITickable, ILateDisposable
     {
         private readonly Vector3 VECTOR3_FORWARD = Vector3.forward;
+
+        private bool _hasInitialized = false;
 
         private bool _isTriggerDown = false;
         private bool _isTriggerUp = false;
@@ -46,21 +48,6 @@ namespace Conekton.ARUtility.Input.Infrastructure
         bool IInputController.IsTouchDown => false;
         bool IInputController.IsTouchUp => false;
 
-        void IInitializable.Initialize()
-        {
-            MLResult result = MLInput.Start();
-
-            if (!result.IsOk)
-            {
-                Debug.LogError("MLInput won't start.");
-                return;
-            }
-
-            MLInput.OnTriggerDown += HandleOnTriggerDown;
-            MLInput.OnTriggerUp += HandleOnTriggerUp;
-            MLInput.OnControllerConnected += HandleOnControllerConnected;
-        }
-
         void ILateDisposable.LateDispose()
         {
             MLInput.OnTriggerDown -= HandleOnTriggerDown;
@@ -70,7 +57,40 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
         void ITickable.Tick()
         {
+            if (!_hasInitialized)
+            {
+                InitializeMLInputIfNeeded();
+                return;
+            }
+
             TriggerCheck();
+        }
+
+        private void InitializeMLInputIfNeeded()
+        {
+            if (_hasInitialized)
+            {
+                return;
+            }
+
+            if (!MLInput.IsStarted)
+            {
+                return;
+            }
+
+            MLResult result = MLInput.Start();
+
+            if (!result.IsOk)
+            {
+                Debug.LogError("MLInput won't start.");
+                return;
+            }
+
+            _hasInitialized = true;
+
+            MLInput.OnTriggerDown += HandleOnTriggerDown;
+            MLInput.OnTriggerUp += HandleOnTriggerUp;
+            MLInput.OnControllerConnected += HandleOnControllerConnected;
         }
 
         private void TriggerCheck()

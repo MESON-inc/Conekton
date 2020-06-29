@@ -31,30 +31,51 @@ namespace Conekton.ARUtility.Player.Infrastructure
         Pose IPlayer.GetHumanLocalPose(HumanPoseType type) => GetHumanLocalPose(type);
         bool IPlayer.IsActiveHumanPose(HumanPoseType type) => IsActiveHumanPose(type);
 
+        private bool _hasInitialized = false;
+
         private bool _canUseHands = false;
 
         private bool CanUseHand => MLHandTracking.IsStarted && _canUseHands;
 
         #region ### MonoBehaviour ###
-        private void Start()
+        private void Update()
         {
-            MLResult result = MLHands.Start();
+            if (!_hasInitialized)
+            {
+                InitializeMLHandTrackingIfNeeded();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            MLHandTracking.Stop();
+        }
+        #endregion ### MonoBehaviour ###
+
+        private void InitializeMLHandTrackingIfNeeded()
+        {
+            if (_hasInitialized)
+            {
+                return;
+            }
+
+            if (!MLHandTracking.IsStarted)
+            {
+                return;
+            }
+
+            MLResult result = MLHandTracking.Start();
 
             if (result.IsOk)
             {
                 _canUseHands = true;
+                _hasInitialized = true;
             }
             else
             {
                 Debug.LogError("MLHands won't start.");
             }
         }
-
-        private void OnDestroy()
-        {
-            MLHands.Stop();
-        }
-        #endregion ### MonoBehaviour ###
 
         private Pose GetHumanPose(HumanPoseType type)
         {
