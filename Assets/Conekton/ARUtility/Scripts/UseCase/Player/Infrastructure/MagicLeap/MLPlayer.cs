@@ -33,7 +33,7 @@ namespace Conekton.ARUtility.Player.Infrastructure
 
         private bool _canUseHands = false;
 
-        private bool CanUseHand => MLHands.IsStarted && _canUseHands;
+        private bool CanUseHand => MLHandTracking.IsStarted && _canUseHands;
 
         #region ### MonoBehaviour ###
         private void Start()
@@ -112,7 +112,7 @@ namespace Conekton.ARUtility.Player.Infrastructure
                 return Quaternion.identity;
             }
 
-            MLHand hand = GetHandByType(type);
+            MLHandTracking.Hand hand = GetHandByType(type);
 
             if (!hand.IsVisible)
             {
@@ -129,15 +129,15 @@ namespace Conekton.ARUtility.Player.Infrastructure
             return Quaternion.LookRotation(dir);
         }
 
-        private MLHand GetHandByType(HumanPoseType type)
+        private MLHandTracking.Hand GetHandByType(HumanPoseType type)
         {
             switch (type)
             {
                 case HumanPoseType.LeftHand:
-                    return MLHands.Left;
+                    return MLHandTracking.Left;
 
                 case HumanPoseType.RightHand:
-                    return MLHands.Right;
+                    return MLHandTracking.Right;
             }
 
             return null;
@@ -151,10 +151,18 @@ namespace Conekton.ARUtility.Player.Infrastructure
                     return true;
 
                 case HumanPoseType.LeftHand:
-                    return MLHands.Left.IsVisible;
+                    if (!CanUseHand || MLHandTracking.Left == null)
+                    {
+                        return false;
+                    }
+                    return MLHandTracking.Left.IsVisible;
 
                 case HumanPoseType.RightHand:
-                    return MLHands.Right.IsVisible;
+                    if (!CanUseHand || MLHandTracking.Right == null)
+                    {
+                        return false;
+                    }
+                    return MLHandTracking.Right.IsVisible;
             }
 
             return false;

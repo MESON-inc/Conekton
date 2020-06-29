@@ -25,9 +25,9 @@ namespace Conekton.ARUtility.Input.Infrastructure
         private bool _lastTriggerDown = false;
         private bool _lastTriggerUp = false;
 
-        private UnityEngine.XR.MagicLeap.MLInputController _inputController = null;
-        private MLInputControllerFeedbackPatternVibe _pattern = MLInputControllerFeedbackPatternVibe.ForceDown;
-        private MLInputControllerFeedbackIntensity _intensity = MLInputControllerFeedbackIntensity.Medium;
+        private MLInput.Controller _inputController = null;
+        private MLInput.Controller.FeedbackPatternVibe _pattern = MLInput.Controller.FeedbackPatternVibe.ForceDown;
+        private MLInput.Controller.FeedbackIntensity _intensity = MLInput.Controller.FeedbackIntensity.Medium;
 
         bool IInputController.IsTriggerDown => _isTriggerDown;
 
@@ -38,9 +38,9 @@ namespace Conekton.ARUtility.Input.Infrastructure
         Vector3 IInputController.Position => (_inputController == null) ? Vector3.zero : _inputController.Position;
 
         Quaternion IInputController.Rotation => (_inputController == null) ? Quaternion.identity : _inputController.Orientation;
-        
-        Vector2 IInputController.Touch => (_inputController == null) ? Vector3.zero :
-                                       _inputController.Touch1Active ? _inputController.Touch1PosAndForce :
+
+        Vector2 IInputController.Touch => (_inputController == null) ? Vector2.zero :
+                                       _inputController.Touch1Active ? (Vector2)_inputController.Touch1PosAndForce :
                                                                        Vector2.zero;
         bool IInputController.IsTouch => UnityEngine.Input.touchCount > 0;
         bool IInputController.IsTouchDown => false;
