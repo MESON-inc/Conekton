@@ -71,6 +71,13 @@ namespace Conekton.ARUtility.Input.Infrastructure
             TriggerCheck();
         }
 
+        /// <summary>
+        /// Try get controller reference.
+        /// 
+        /// This is because "MLInput.OnControllerConnected" event won't invoke.
+        /// I think why Zenject.IInitialize timing is too late to register an event.
+        /// So this method try to get a reference cotroller at the initializing.
+        /// </summary>
         private void TryGetController()
         {
             if (_inputController != null)
