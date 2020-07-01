@@ -159,7 +159,7 @@ Photonの設定が完了している場合は特になにもすることなく�
 
 ### 主な利用ケース
 
-IMultiplayerNetworkSystemインターフェースの主な利用ケースはイベントハンドリングでしょう。IMultiplayerNetworkSystemいにたーフェースには各タイミングごとにイベントが用意されています。
+IMultiplayerNetworkSystemインターフェースの主な利用ケースはイベントハンドリングでしょう。IMultiplayerNetworkSystemインターフェースには各タイミングごとにイベントが用意されています。
 
 - public delegate void ConnectedEvent();
 - public delegate void DisconnectedEvent();
