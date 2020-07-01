@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace Conekton.ARMultiplayer.Avatar.Domain
 {
+    /// <summary>
+    /// AvatarID is a data structure.
+    /// 
+    /// This struct will be used matching each Avatar object.
+    /// </summary>
     public struct AvatarID
     {
         static public AvatarID NoSet => new AvatarID { ID = -1, };
@@ -57,6 +62,9 @@ namespace Conekton.ARMultiplayer.Avatar.Domain
         Right,
     }
 
+    /// <summary>
+    /// IAvatar provides ways to access an avatar pose.
+    /// </summary>
     public interface IAvatar
     {
         AvatarID AvatarID { get; }
@@ -73,6 +81,9 @@ namespace Conekton.ARMultiplayer.Avatar.Domain
         void Destory();
     }
 
+    /// <summary>
+    /// IAvatarWearable provides ways to equipe some items to the avatar.
+    /// </summary>
     public interface IAvatarWearable
     {
         AvatarWearType WearType { get; }
@@ -80,17 +91,26 @@ namespace Conekton.ARMultiplayer.Avatar.Domain
         void Unwear();
     }
 
+    /// <summary>
+    /// IAvatarWearablePack is just a pack of IAvatarWearable.
+    /// </summary>
     public interface IAvatarWearablePack
     {
         IAvatarWearable[] GetWearables();
     }
 
+    /// <summary>
+    /// IAvatarController provides ways to control an avatar object.
+    /// </summary>
     public interface IAvatarController
     {
         Pose GetHeadPose();
         Pose GetHandPose(AvatarPoseType type);
     }
 
+    /// <summary>
+    /// IAvatarService seems like an end point from a client.
+    /// </summary>
     public interface IAvatarService
     {
         IAvatar Create();
@@ -99,6 +119,11 @@ namespace Conekton.ARMultiplayer.Avatar.Domain
         IAvatar GetMain();
     }
 
+    /// <summary>
+    /// IAvatarSystem is the system.
+    /// 
+    /// The class that implement this interface will provide ways about IAvatar control.
+    /// </summary>
     public interface IAvatarSystem
     {
         IAvatar CreateMain();
@@ -109,6 +134,11 @@ namespace Conekton.ARMultiplayer.Avatar.Domain
         IAvatar GetMain();
     }
 
+    /// <summary>
+    /// IAvatarRepository is a repository.
+    /// 
+    /// The class that implement this interface will store all IAvatar objects.
+    /// </summary>
     public interface IAvatarRepository
     {
         IAvatar Find(AvatarID id);

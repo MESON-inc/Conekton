@@ -3,15 +3,60 @@ using UnityEngine;
 
 namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
 {
+    /// <summary>
+    /// This event will invoke when a client has connected to the server.
+    /// </summary>
     public delegate void ConnectedEvent();
+
+    /// <summary>
+    /// This event will invoke when a client has disconnected from the server.
+    /// </summary>
     public delegate void DisconnectedEvent();
+
+    /// <summary>
+    /// This event will invoke when any player has connected to the server.
+    /// </summary>
+    /// <param name="playerID">Connected player ID.</param>
     public delegate void PlayerConnectedEvent(PlayerID playerID);
+
+    /// <summary>
+    /// This event will invoke when any player has been disconnected from the server.
+    /// </summary>
+    /// <param name="playerID">Disconnected player ID.</param>
     public delegate void PlayerDisconnectedEvent(PlayerID playerID);
+
+    /// <summary>
+    /// This event will invoke when a remote player object has been created.
+    /// </summary>
+    /// <param name="avatar">Reference of an avatar that is controled by remote player.</param>
+    /// <param name="remotePlayer">A remote player that created the avatar.</param>
     public delegate void CreatedRemotePlayerEvent(IAvatar avatar, IRemotePlayer remotePlayer);
+
+    /// <summary>
+    /// This event will invoke when a local player object has been created.
+    /// </summary>
+    /// <param name="avatar">Reference of the local avatar.</param>
+    /// <param name="remotePlayer">A remote player object that is used syncing between a local player and a remote player.</param>
     public delegate void CreatedLocalPlayerEvent(IAvatar avatar, IRemotePlayer remotePlayer);
+
+    /// <summary>
+    /// This event will invoke when a remote player object has been destroyed.
+    /// </summary>
+    /// <param name="avatar">Destroyed avatar object.</param>
+    /// <param name="remotePlayer">A remote player that controled the destroyed avatar.</param>
     public delegate void DestroyedRemotePlayerEvent(IAvatar avatar, IRemotePlayer remotePlayer);
+
+    /// <summary>
+    /// This event will invoke when a remote player is being destroyed.
+    /// 
+    /// This is because some developers want to know about a remote player is being destroyed so the developers can control something before the object is destroyed. 
+    /// </summary>
+    /// <param name="remotePlayer"></param>
     public delegate void DestroyingRemotePlayerEvent(IRemotePlayer remotePlayer);
 
+    /// <summary>
+    /// This is a PlayerID data struct.
+    /// </summary>
     public struct PlayerID
     {
         static public PlayerID NoSet = new PlayerID { ID = -1 };
@@ -57,6 +102,9 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         void SetHandPose(AvatarPoseType type, Pose pose);
     }
 
+    /// <summary>
+    /// IRemotePlayer present ways to control a remote player's avatar.
+    /// </summary>
     public interface IRemotePlayer : IAvatarController
     {
         event DestroyingRemotePlayerEvent OnDestroyingRemotePlayer;
@@ -64,6 +112,11 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         void SetTargetAvatarController(IAvatarController avatarController);
     }
 
+    /// <summary>
+    /// IMultiplayerNetworkSystem is the main system for the networking.
+    /// 
+    /// The class that implement this interface will control network status with IMultiplayerNetworkInfrastructure.
+    /// </summary>
     public interface IMultiplayerNetworkSystem
     {
         event ConnectedEvent OnConnected;
@@ -82,6 +135,9 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         void RemoveRemotePlayer(IRemotePlayer remotePlayer);
     }
 
+    /// <summary>
+    /// IMultiplayerNetworkInfrastructure is abstructed ways to access each network infrastructure such as Photon.
+    /// </summary>
     public interface IMultiplayerNetworkInfrastructure
     {
         event ConnectedEvent OnServerConnected;
