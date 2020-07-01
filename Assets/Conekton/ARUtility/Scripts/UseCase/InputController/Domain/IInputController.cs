@@ -2,6 +2,10 @@
 
 namespace Conekton.ARUtility.Input.Domain
 {
+    /// <summary>
+    /// This is a data structure.
+    /// This will be used for "TriggerHapticVibration" interface.
+    /// </summary>
     public struct HapticData
     {
         public float DurationSeconds;
@@ -11,6 +15,9 @@ namespace Conekton.ARUtility.Input.Domain
         static public HapticData Default => new HapticData { DurationSeconds = 0.1f, Frequency = 200f, Amplitude = 0.8f, };
     }
 
+    /// <summary>
+    /// ButtonType enum means to use that it can't abstract button types such as OVRInput.Button.One.
+    /// </summary>
     public enum ButtonType
     {
         One,
@@ -19,6 +26,9 @@ namespace Conekton.ARUtility.Input.Domain
         Four,
     }
 
+    /// <summary>
+    /// IInputController provides ways to access each platform controller.
+    /// </summary>
     public interface IInputController
     {
         bool IsTriggerDown { get; }
