@@ -13,6 +13,9 @@ namespace Conekton.ARMultiplayer.PersistentCoordinate.Domain
         High = 100,
     }
 
+    /// <summary>
+    /// This is a struct to use PCA's ID.
+    /// </summary>
     public struct PCAID
     {
         static public bool IsNotSet(PCAID id)
@@ -53,6 +56,9 @@ namespace Conekton.ARMultiplayer.PersistentCoordinate.Domain
         }
     }
 
+    /// <summary>
+    /// IPCA is abstructed of some fixed anchor in a space.
+    /// </summary>
     public interface IPCA
     {
         PCAID ID { get; set; }
@@ -62,6 +68,9 @@ namespace Conekton.ARMultiplayer.PersistentCoordinate.Domain
         Quaternion Rotation { get; }
     }
 
+    /// <summary>
+    /// IPersistentCoordinateService is an end point from a client.
+    /// </summary>
     public interface IPersistentCoordinateService
     {
         IReadOnlyCollection<IPCA> GetAllPCA();
@@ -70,6 +79,9 @@ namespace Conekton.ARMultiplayer.PersistentCoordinate.Domain
         void Unregister(IPCA pca);
     }
 
+    /// <summary>
+    /// IPersistentCoordinateSystem provides ways to access all IPCAs.
+    /// </summary>
     public interface IPersistentCoordinateSystem
     {
         IReadOnlyCollection<IPCA> GetAllPCA();
@@ -78,6 +90,11 @@ namespace Conekton.ARMultiplayer.PersistentCoordinate.Domain
         void Unregister(IPCA pca);
     }
 
+    /// <summary>
+    /// IPersistentCoordinateRepository is a repository.
+    /// 
+    /// The class that implemented this interface will store all IPCA objects.
+    /// </summary>
     public interface IPersistentCoordinateRepository
     {
         IReadOnlyCollection<IPCA> GetAllPCA();
