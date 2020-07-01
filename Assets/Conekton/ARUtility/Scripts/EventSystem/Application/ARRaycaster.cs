@@ -52,10 +52,10 @@ namespace Conekton.ARUtility.EventSystem.Application
                 gameObject.AddComponent<CanvasRaycastTarget>();
             }
 #elif PLATFORM_LUMIN
-            MLInputRaycaster raycaster;
+            MLInputRaycasterBehavior raycaster;
             if (!gameObject.TryGetComponent(out raycaster))
             {
-                gameObject.AddComponent<MLInputRaycaster>();
+                gameObject.AddComponent<MLInputRaycasterBehavior>();
             }
 #endif
         }

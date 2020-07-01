@@ -16,6 +16,8 @@ namespace Conekton.ARUtility.Input.Infrastructure
     {
         private readonly Vector3 VECTOR3_FORWARD = Vector3.forward;
 
+        private bool _hasInitialized = false;
+
         private bool _isTriggerDown = false;
         private bool _isTriggerUp = false;
 
@@ -25,9 +27,9 @@ namespace Conekton.ARUtility.Input.Infrastructure
         private bool _lastTriggerDown = false;
         private bool _lastTriggerUp = false;
 
-        private UnityEngine.XR.MagicLeap.MLInputController _inputController = null;
-        private MLInputControllerFeedbackPatternVibe _pattern = MLInputControllerFeedbackPatternVibe.ForceDown;
-        private MLInputControllerFeedbackIntensity _intensity = MLInputControllerFeedbackIntensity.Medium;
+        private MLInput.Controller _inputController = null;
+        private MLInput.Controller.FeedbackPatternVibe _pattern = MLInput.Controller.FeedbackPatternVibe.ForceDown;
+        private MLInput.Controller.FeedbackIntensity _intensity = MLInput.Controller.FeedbackIntensity.Medium;
 
         bool IInputController.IsTriggerDown => _isTriggerDown;
 
@@ -38,9 +40,9 @@ namespace Conekton.ARUtility.Input.Infrastructure
         Vector3 IInputController.Position => (_inputController == null) ? Vector3.zero : _inputController.Position;
 
         Quaternion IInputController.Rotation => (_inputController == null) ? Quaternion.identity : _inputController.Orientation;
-        
-        Vector2 IInputController.Touch => (_inputController == null) ? Vector3.zero :
-                                       _inputController.Touch1Active ? _inputController.Touch1PosAndForce :
+
+        Vector2 IInputController.Touch => (_inputController == null) ? Vector2.zero :
+                                       _inputController.Touch1Active ? (Vector2)_inputController.Touch1PosAndForce :
                                                                        Vector2.zero;
         bool IInputController.IsTouch => UnityEngine.Input.touchCount > 0;
         bool IInputController.IsTouchDown => false;
@@ -48,17 +50,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
         void IInitializable.Initialize()
         {
-            MLResult result = MLInput.Start();
-
-            if (!result.IsOk)
-            {
-                Debug.LogError("MLInput won't start.");
-                return;
-            }
-
-            MLInput.OnTriggerDown += HandleOnTriggerDown;
-            MLInput.OnTriggerUp += HandleOnTriggerUp;
-            MLInput.OnControllerConnected += HandleOnControllerConnected;
+            InitializeMLInputIfNeeded();
         }
 
         void ILateDisposable.LateDispose()
@@ -70,7 +62,76 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
         void ITickable.Tick()
         {
+            if (!_hasInitialized)
+            {
+                InitializeMLInputIfNeeded();
+                return;
+            }
+
             TriggerCheck();
+        }
+
+        /// <summary>
+        /// Try get controller reference.
+        /// 
+        /// This is because "MLInput.OnControllerConnected" event won't invoke.
+        /// I think why Zenject.IInitialize timing is too late to register an event.
+        /// So this method try to get a reference cotroller at the initializing.
+        /// </summary>
+        private void TryGetController()
+        {
+            if (_inputController != null)
+            {
+                return;
+            }
+
+            if (!MLInput.IsStarted)
+            {
+                return;
+            }
+
+            MLResult result = MLInput.Start();
+
+            if (!result.IsOk)
+            {
+                return;
+            }
+
+            _inputController = MLInput.GetController(0);
+        }
+
+        private void InitializeMLInputIfNeeded()
+        {
+            if (_hasInitialized)
+            {
+                return;
+            }
+
+            if (!MLInput.IsStarted)
+            {
+                Debug.Log("<<<< MLInput hasn't started >>>>");
+                return;
+            }
+
+            MLResult result = MLInput.Start();
+
+            if (!result.IsOk)
+            {
+                Debug.LogError("MLInput won't start.");
+                return;
+            }
+
+            _hasInitialized = true;
+
+            MLInput.OnTriggerDown += HandleOnTriggerDown;
+            MLInput.OnTriggerUp += HandleOnTriggerUp;
+            MLInput.OnControllerConnected += HandleOnControllerConnected;
+
+            TryGetController();
+
+            Debug.Log(_inputController);
+
+            Debug.Log("<<<< Sccessed to initialize MLInput >>>>");
         }
 
         private void TriggerCheck()
@@ -89,6 +150,8 @@ namespace Conekton.ARUtility.Input.Infrastructure
         private void HandleOnControllerConnected(byte controllerId)
         {
             _inputController = MLInput.GetController(controllerId);
+
+            Debug.Log($"<<<< Got a MLInput.Controller {_inputController} >>>>");
         }
 
         private void HandleOnTriggerDown(byte controllerId, float triggerValue)
