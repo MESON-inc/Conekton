@@ -31,30 +31,58 @@ namespace Conekton.ARUtility.Player.Infrastructure
         Pose IPlayer.GetHumanLocalPose(HumanPoseType type) => GetHumanLocalPose(type);
         bool IPlayer.IsActiveHumanPose(HumanPoseType type) => IsActiveHumanPose(type);
 
+        private bool _hasInitialized = false;
+
         private bool _canUseHands = false;
 
-        private bool CanUseHand => MLHands.IsStarted && _canUseHands;
+        private bool CanUseHand => MLHandTracking.IsStarted && _canUseHands;
 
         #region ### MonoBehaviour ###
         private void Start()
         {
-            MLResult result = MLHands.Start();
+            InitializeMLHandTrackingIfNeeded();
+        }
+
+        private void Update()
+        {
+            if (!_hasInitialized)
+            {
+                InitializeMLHandTrackingIfNeeded();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            MLHandTracking.Stop();
+        }
+        #endregion ### MonoBehaviour ###
+
+        private void InitializeMLHandTrackingIfNeeded()
+        {
+            if (_hasInitialized)
+            {
+                return;
+            }
+
+            if (!MLHandTracking.IsStarted)
+            {
+                return;
+            }
+
+            MLResult result = MLHandTracking.Start();
 
             if (result.IsOk)
             {
                 _canUseHands = true;
+                _hasInitialized = true;
+
+                Debug.Log("<<<< Sccessed to initialize MLHandTracking feature >>>>");
             }
             else
             {
                 Debug.LogError("MLHands won't start.");
             }
         }
-
-        private void OnDestroy()
-        {
-            MLHands.Stop();
-        }
-        #endregion ### MonoBehaviour ###
 
         private Pose GetHumanPose(HumanPoseType type)
         {
@@ -112,7 +140,7 @@ namespace Conekton.ARUtility.Player.Infrastructure
                 return Quaternion.identity;
             }
 
-            MLHand hand = GetHandByType(type);
+            MLHandTracking.Hand hand = GetHandByType(type);
 
             if (!hand.IsVisible)
             {
@@ -129,15 +157,15 @@ namespace Conekton.ARUtility.Player.Infrastructure
             return Quaternion.LookRotation(dir);
         }
 
-        private MLHand GetHandByType(HumanPoseType type)
+        private MLHandTracking.Hand GetHandByType(HumanPoseType type)
         {
             switch (type)
             {
                 case HumanPoseType.LeftHand:
-                    return MLHands.Left;
+                    return MLHandTracking.Left;
 
                 case HumanPoseType.RightHand:
-                    return MLHands.Right;
+                    return MLHandTracking.Right;
             }
 
             return null;
@@ -151,10 +179,18 @@ namespace Conekton.ARUtility.Player.Infrastructure
                     return true;
 
                 case HumanPoseType.LeftHand:
-                    return MLHands.Left.IsVisible;
+                    if (!CanUseHand || MLHandTracking.Left == null)
+                    {
+                        return false;
+                    }
+                    return MLHandTracking.Left.IsVisible;
 
                 case HumanPoseType.RightHand:
-                    return MLHands.Right.IsVisible;
+                    if (!CanUseHand || MLHandTracking.Right == null)
+                    {
+                        return false;
+                    }
+                    return MLHandTracking.Right.IsVisible;
             }
 
             return false;
