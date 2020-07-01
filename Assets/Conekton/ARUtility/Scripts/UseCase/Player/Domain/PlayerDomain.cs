@@ -13,6 +13,11 @@ namespace Conekton.ARUtility.Player.Domain
         Other = 9999,
     }
 
+    /// <summary>
+    /// IPlayer provides ways to access to each platform camera rig.
+    /// 
+    /// This interface also provides to access to Human Pose that represent a head and hands gesture.
+    /// </summary>
     public interface IPlayer
     {
         Transform Root { get; }

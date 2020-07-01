@@ -2,6 +2,11 @@
 
 namespace Conekton.ARUtility.UseCase.ARAnchor.Domain
 {
+    /// <summary>
+    /// Anchor ID data structure.
+    /// 
+    /// This struct will be used matching anchor objects.
+    /// </summary>
     public struct AnchorID
     {
         static public AnchorID NoSet => new AnchorID { ID = -1, };
@@ -34,6 +39,9 @@ namespace Conekton.ARUtility.UseCase.ARAnchor.Domain
         }
     }
 
+    /// <summary>
+    /// IARAnchor provides ways to asscess / control the object pose.
+    /// </summary>
     public interface IARAnchor
     {
         AnchorID ID { get; }
@@ -43,18 +51,29 @@ namespace Conekton.ARUtility.UseCase.ARAnchor.Domain
         void SetPositionAndRotation(Vector3 position, Quaternion rotation);
     }
 
+    /// <summary>
+    /// IARAnchorService seems like an end point from a client to this system.
+    /// </summary>
     public interface IARAnchorService
     {
         IARAnchor Create();
         IARAnchor Find(AnchorID anchorID);
     }
 
+    /// <summary>
+    /// IARAnchorSystem is the system.
+    /// 
+    /// The class that implement this interface will provide ways that are Create and Find.
+    /// </summary>
     public interface IARAnchorSystem
     {
         IARAnchor Create();
         IARAnchor Find(AnchorID anchorID);
     }
 
+    /// <summary>
+    /// IARAnchorRepository is a repository to store all IARAnchor objects.
+    /// </summary>
     public interface IARAnchorRepository
     {
         IARAnchor Create(AnchorID anchorID);
