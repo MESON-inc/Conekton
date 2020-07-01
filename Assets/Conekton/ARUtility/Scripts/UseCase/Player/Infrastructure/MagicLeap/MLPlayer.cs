@@ -38,6 +38,11 @@ namespace Conekton.ARUtility.Player.Infrastructure
         private bool CanUseHand => MLHandTracking.IsStarted && _canUseHands;
 
         #region ### MonoBehaviour ###
+        private void Start()
+        {
+            InitializeMLHandTrackingIfNeeded();
+        }
+
         private void Update()
         {
             if (!_hasInitialized)
@@ -70,6 +75,8 @@ namespace Conekton.ARUtility.Player.Infrastructure
             {
                 _canUseHands = true;
                 _hasInitialized = true;
+
+                Debug.Log("<<<< Sccessed to initialize MLHandTracking feature >>>>");
             }
             else
             {

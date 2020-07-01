@@ -12,7 +12,7 @@ using Conekton.ARUtility.Input.Domain;
 
 namespace Conekton.ARUtility.Input.Infrastructure
 {
-    public class MLInputController : IInputController, ITickable, ILateDisposable
+    public class MLInputController : IInputController, IInitializable, ITickable, ILateDisposable
     {
         private readonly Vector3 VECTOR3_FORWARD = Vector3.forward;
 
@@ -48,6 +48,11 @@ namespace Conekton.ARUtility.Input.Infrastructure
         bool IInputController.IsTouchDown => false;
         bool IInputController.IsTouchUp => false;
 
+        void IInitializable.Initialize()
+        {
+            InitializeMLInputIfNeeded();
+        }
+
         void ILateDisposable.LateDispose()
         {
             MLInput.OnTriggerDown -= HandleOnTriggerDown;
@@ -66,6 +71,28 @@ namespace Conekton.ARUtility.Input.Infrastructure
             TriggerCheck();
         }
 
+        private void TryGetController()
+        {
+            if (_inputController != null)
+            {
+                return;
+            }
+
+            if (!MLInput.IsStarted)
+            {
+                return;
+            }
+
+            MLResult result = MLInput.Start();
+
+            if (!result.IsOk)
+            {
+                return;
+            }
+
+            _inputController = MLInput.GetController(0);
+        }
+
         private void InitializeMLInputIfNeeded()
         {
             if (_hasInitialized)
@@ -75,6 +102,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
             if (!MLInput.IsStarted)
             {
+                Debug.Log("<<<< MLInput hasn't started >>>>");
                 return;
             }
 
@@ -91,6 +119,12 @@ namespace Conekton.ARUtility.Input.Infrastructure
             MLInput.OnTriggerDown += HandleOnTriggerDown;
             MLInput.OnTriggerUp += HandleOnTriggerUp;
             MLInput.OnControllerConnected += HandleOnControllerConnected;
+
+            TryGetController();
+
+            Debug.Log(_inputController);
+
+            Debug.Log("<<<< Sccessed to initialize MLInput >>>>");
         }
 
         private void TriggerCheck()
@@ -109,6 +143,8 @@ namespace Conekton.ARUtility.Input.Infrastructure
         private void HandleOnControllerConnected(byte controllerId)
         {
             _inputController = MLInput.GetController(controllerId);
+
+            Debug.Log($"<<<< Got a MLInput.Controller {_inputController} >>>>");
         }
 
         private void HandleOnTriggerDown(byte controllerId, float triggerValue)
