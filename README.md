@@ -99,6 +99,13 @@ Nreal向けの例
 </div>
 
 
+### Magic Leapのセットアップ
+
+Magic Leap向けに利用する場合にエラーが発生するケースが確認されています。  
+[詳しくはこちら](./jp/setup_magicleap.md)に記載があります。Magic Leap向けに利用される場合は参照ください。
+
+
+
 ### Extenjectのインポート
 
 前述の通り、ConektonはExtenjectを利用して構築されているため、別途Extenjectをインポートする必要があります。
