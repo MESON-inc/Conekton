@@ -26,7 +26,7 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
 
         void ITickable.Tick()
         {
-            if (NRFrame.SessionStatus != SessionState.Tracking)
+            if (NRFrame.SessionStatus != SessionState.Running)
             {
                 return;
             }
