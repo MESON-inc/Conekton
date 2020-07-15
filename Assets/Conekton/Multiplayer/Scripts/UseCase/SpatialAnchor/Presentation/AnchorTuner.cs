@@ -6,7 +6,7 @@ using Conekton.ARMultiplayer.SpatialAnchor.Domain;
 
 namespace Conekton.ARMultiplayer.SpatialAnchor.Infrastructure
 {
-    public class StubAnchorTuner : MonoBehaviour, ISpatialAnchorTuner
+    public class AnchorTuner : MonoBehaviour, ISpatialAnchorTuner
     {
         private ISpatialAnchor _anchor = null;
 
