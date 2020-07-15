@@ -12,7 +12,6 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Application
 
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<MultiplayerNetworkSystem>().AsCached().NonLazy();
             Container.Bind<IMultiplayerNetworkInfrastructure>().To<PhotonNetworkInfra>().FromComponentInNewPrefab(_photonNetworkInfraPrefab).AsCached();
         }
     }
