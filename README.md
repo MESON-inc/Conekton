@@ -1,6 +1,7 @@
 <div align="center">
-<img src="./jp/images/Logo_White.png" title="Conekton" />
+<img src="./jp/images/Logo.png" title="Conekton" />
 </div>
+
 
 [English version here](./en/)
 
