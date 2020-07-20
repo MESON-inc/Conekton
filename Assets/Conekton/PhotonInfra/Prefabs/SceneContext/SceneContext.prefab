@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7759800227061556945
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7759800227061556951}
+  - component: {fileID: 7759800227061556950}
+  m_Layer: 0
+  m_Name: SceneContext
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &7759800227061556951
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7759800227061556945}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7759800227061556950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7759800227061556945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers:
+  - {fileID: 11400000, guid: c0be5b822d09ad94da3b6ddff0a9a36d, type: 2}
+  - {fileID: 11400000, guid: 9666ec46a82807b45bed120919078938, type: 2}
+  - {fileID: 11400000, guid: 63cd850703855f54b90e3a14490b59e6, type: 2}
+  _monoInstallers: []
+  _installerPrefabs:
+  - {fileID: 3418669983450341982, guid: 669f9bc4f06e54742ab96b5d2ccf0d5c, type: 3}
+  - {fileID: 6622722888184015973, guid: bb59ddcc16847ca47b34c20d27c59b39, type: 3}
+  - {fileID: 8011520019732181185, guid: 49ebff52c2836c94c926fde753a7368e, type: 3}
+  - {fileID: 2770909152683395380, guid: 65822e5b782be314085c43286afa4ad6, type: 3}
+  - {fileID: 5700535107153526552, guid: 1553b1d8daeebbd499a2f19cd950f106, type: 3}
+  - {fileID: 4710894914437388256, guid: 11729b734eeed5141a61edba5954aee3, type: 3}
+  - {fileID: 6436140932209335602, guid: 2d3b30f54d157c445b4a66035c147813, type: 3}
+  - {fileID: 341091036541371812, guid: 099b58a1eccbf8e469d70c37838afc9e, type: 3}
+  - {fileID: 5477266151900985313, guid: d12c15aae12b44f419b0ce27c07bfe4a, type: 3}
+  - {fileID: 240890494411249429, guid: 2cb27de87d71e4840b160ee1465df74f, type: 3}
+  _autoRun: 1
+  OnPreInstall:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostInstall:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreResolve:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostResolve:
+    m_PersistentCalls:
+      m_Calls: []
+  _parentNewObjectsUnderSceneContext: 0
+  _contractNames:
+  - Demo
+  _parentContractNames: []
