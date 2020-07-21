@@ -55,10 +55,6 @@ Please make sure to read the following.
 
 [Click here](./code_of_conduct.md) to check our Code of Conduct.
 
-### About Conekton Beta
-
-Currently (2020/05), the beta version of Conekton is only offered. Therefore, we limit the number of people who are allowed to modify and fix the Conekton system. We will start the full operation of Conekton as OSS as soon as we are ready to offer. We don't restrict the use of Conekton as long as the license covers its usage.
-
 
 
 
