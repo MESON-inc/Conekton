@@ -53,16 +53,16 @@ Conekton使用者はVR上でコンテンツを制作し、手頃なVR HMD（主�
 
 各プラットフォームのスイッチングも、プラットフォーム切り替えを行うだけで完了します。
 
+
+
 ## Notice
+
 Conektonをご使用頂く前にご確認ください。
 
 ### Code of Conductについて
 
 詳細については[こちら](./jp/code_of_conduct.md)
 
-### 現時点の制約について（β版的立ち位置）
-
-現在、ConektonはOSS化に向けて準備段階としています。そのため、PRなど修正・改修などについては一部の人に限定させていただいています。ドキュメントなどが整備された段階で完全にOSSとして運用を開始しますので、今しばらくお待ち下さい。なお、**使用についてはライセンスの範囲で一切の制限はありません**。
 
 
 ## Installation
@@ -106,19 +106,31 @@ Extenjectについては[こちらから最新バージョン](https://github.co
 
 
 
-### Photonのインポート
+### [Optional] Photonのインポート
 
 Conektonのマルチユーザのデフォルトの仕組みでは[Photon](https://assetstore.unity.com/packages/tools/network/pun-2-free-119922)を利用しています。
 しかし任意のネットワーク・インフラを利用することができるように設計されているため、独自のネットワーク・インフラに置き換えて利用することもできるようになっています。
 
 すぐにでも動作を確認したい場合は前述の[Photon](https://assetstore.unity.com/packages/tools/network/pun-2-free-119922) SDKをインポートしてください。
 
-他のネットワーク・インフラによる拡張については後日ドキュメントを公開します。
+#### PhotonInfraパッケージのインポート
+
+Photonを利用したバージョンはオプショナルになっており、[Releaseページ](https://github.com/MESON-inc/Conekton/releases)のConekton_Photon_v.x.x.x.unitypackageをダウンロードしインポートしてください。
+
+![Importing-photon-infra](./jp/images/Importing-photon-infra.png)
+
+インポートすると**PhotonInfra**というフォルダが**Conekton**フォルダ以下に配置されるので、その中のデモ用シーンを起動するとPhotonを利用した同期処理が実行されます。
+
+![Importing-folders](./jp/images/Imported-folders.png)
+
+Resources内のPrefabはPhotonから利用されるものです。Photonの制約上、ここにファイルを配置しないとならないためこれらがここにインポートされます。
+
 
 ### 各種SDKのインポート
 
 開発対象のプラットフォームに応じて適切なSDKをインポートしてください。  
 なおNRSDKについては`1.3.0`を、Magic Leapについては`0.24.0`での動作を確認しています。
+
 
 
 ## Getting started
