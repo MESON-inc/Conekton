@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2760695438859496834
+--- !u!1 &7117874683847980574
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4038978275178327275}
-  - component: {fileID: 6538892724084476001}
+  - component: {fileID: 1482772448428580124}
+  - component: {fileID: 5700535107153526552}
   m_Layer: 0
-  m_Name: SpatialAnchorInstaller
+  m_Name: PhotonNetworkInfraInstaller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4038978275178327275
+--- !u!4 &1482772448428580124
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2760695438859496834}
+  m_GameObject: {fileID: 7117874683847980574}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.010640213, y: 0.00689458, z: 0.012459875}
+  m_LocalPosition: {x: 0.11855593, y: -0.3763049, z: 0.09982933}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6538892724084476001
+--- !u!114 &5700535107153526552
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2760695438859496834}
+  m_GameObject: {fileID: 7117874683847980574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62e78a8f3ebc77c4baf6fe50b29fb1e8, type: 3}
+  m_Script: {fileID: 11500000, guid: fa23fa082f680584b98a1a37dfaa0e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spatialAnchorPrefab: {fileID: 3717716140935424245, guid: 3d1df6fe30c758b4dbe20094dd18eca4,
-    type: 3}
-  _anchorTunerRepository: {fileID: 7678643097361590271, guid: d23ef7bf10708f3459a1c7a20ee32697,
+  _photonNetworkInfraPrefab: {fileID: 1141347132020257769, guid: 63a3230101899c74995bbc979f6b1b15,
     type: 3}
