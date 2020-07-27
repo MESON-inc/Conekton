@@ -5,7 +5,7 @@ using Conekton.ARMultiplayer.PersistentCoordinate.Infrastructure;
 
 namespace Conekton.ARMultiplayer.PersistentCoordinate.Application
 {
-    public class PersistentCoordinateInstaller : MonoInstaller
+    public class PhotonPersistentCoordinateInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {
@@ -14,6 +14,8 @@ namespace Conekton.ARMultiplayer.PersistentCoordinate.Application
                 .FromSubContainerResolve()
                 .ByNewGameObjectMethod(InstallBindingsToSubContainer)
                 .AsCached();
+
+            RegisterCustomTypeToPhoton();
         }
 
         private void InstallBindingsToSubContainer(DiContainer subContainer)
@@ -21,6 +23,11 @@ namespace Conekton.ARMultiplayer.PersistentCoordinate.Application
             subContainer.Bind<IPersistentCoordinateService>().To<PersistentCoordinateService>().AsCached();
             subContainer.Bind<IPersistentCoordinateSystem>().To<PersistentCoordinateSystem>().AsCached();
             subContainer.Bind<IPersistentCoordinateRepository>().To<PersistentCoordinateRepository>().AsCached();
+        }
+
+        private void RegisterCustomTypeToPhoton()
+        {
+            ExitGames.Client.Photon.PhotonPeer.RegisterType(typeof(PCAID), (byte)'A', PCAIDSerializer.Serialize, PCAIDSerializer.Deserialize);
         }
     }
 }

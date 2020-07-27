@@ -7,10 +7,9 @@ using Conekton.ARMultiplayer.SpatialAnchor.Infrastructure;
 
 namespace Conekton.ARMultiplayer.SpatialAnchor.Application
 {
-    public class SpatialAnchorInstaller : MonoInstaller
+    public class PhotonSpatialAnchorInstaller : MonoInstaller
     {
         [SerializeField] private GameObject _spatialAnchorPrefab = null;
-        [SerializeField] private SpatialAnchorTunerRepository _anchorTunerRepository = null;
 
         public override void InstallBindings()
         {
@@ -33,7 +32,7 @@ namespace Conekton.ARMultiplayer.SpatialAnchor.Application
         {
             subContainer.Bind<ISpatialAnchorSystem>().To<SpatialAnchorSystem>().AsCached();
             subContainer.Bind<ISpatialAnchorRepository>().To<SpatialAnchorRepository>().AsCached();
-            subContainer.Bind<ISpatialAnchorTunerRepository>().FromComponentInNewPrefab(_anchorTunerRepository).AsCached();
+            subContainer.Bind<ISpatialAnchorTunerRepository>().To<PhotonSpatialAnchorTunerRepository>().AsCached();
             subContainer.BindInterfacesAndSelfTo<SpatialAnchorService>().AsCached();
         }
     }

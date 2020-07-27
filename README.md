@@ -66,7 +66,6 @@ Conektonをご使用頂く前にご確認ください。
 
 
 
-
 ## Installation
 
 ### パッケージのインポート
@@ -115,14 +114,25 @@ Extenjectについては[こちらから最新バージョン](https://github.co
 
 
 
-### Photonのインポート
+### [Optional] Photonのインポート
 
 Conektonのマルチユーザのデフォルトの仕組みでは[Photon](https://assetstore.unity.com/packages/tools/network/pun-2-free-119922)を利用しています。
 しかし任意のネットワーク・インフラを利用することができるように設計されているため、独自のネットワーク・インフラに置き換えて利用することもできるようになっています。
 
 すぐにでも動作を確認したい場合は前述の[Photon](https://assetstore.unity.com/packages/tools/network/pun-2-free-119922) SDKをインポートしてください。
 
-他のネットワーク・インフラによる拡張については後日ドキュメントを公開します。
+#### PhotonInfraパッケージのインポート
+
+Photonを利用したバージョンはオプショナルになっており、[Releaseページ](https://github.com/MESON-inc/Conekton/releases)のConekton_Photon_v.x.x.x.unitypackageをダウンロードしインポートしてください。
+
+![Importing-photon-infra](./jp/images/Importing-photon-infra.png)
+
+インポートすると**PhotonInfra**というフォルダが**Conekton**フォルダ以下に配置されるので、その中のデモ用シーンを起動するとPhotonを利用した同期処理が実行されます。
+
+![Importing-folders](./jp/images/Imported-folders.png)
+
+Resources内のPrefabはPhotonから利用されるものです。Photonの制約上、ここにファイルを配置しないとならないためこれらがここにインポートされます。
+
 
 ### 各種SDKのインポート
 
