@@ -1,6 +1,7 @@
 <div align="center">
-<img src="./jp/images/Logo_White.png" title="Conekton" />
+<img src="./jp/images/Logo.png" title="Conekton" />
 </div>
+
 
 [English version here](./en/)
 
@@ -97,6 +98,13 @@ Conektonでは`Nreal`と`Oculus`双方に対応しています。どちらもAnd
 <img src="./jp/images/symbols-setting.png" title="Symbols setting" /><br />
 Nreal向けの例
 </div>
+
+
+### Magic Leapのセットアップ
+
+Magic Leap向けに利用する場合にエラーが発生するケースが確認されています。  
+[詳しくはこちら](./jp/setup_magicleap.md)に記載があります。Magic Leap向けに利用される場合は参照ください。
+
 
 
 ### Extenjectのインポート
