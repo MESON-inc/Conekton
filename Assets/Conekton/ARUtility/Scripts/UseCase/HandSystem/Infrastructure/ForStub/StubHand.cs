@@ -4,11 +4,10 @@ using System.Reflection;
 using UnityEngine;
 
 using Conekton.ARUtility.HandSystemUseCase.Domain;
-using Conekton.ARUtility.HandSystemUseCase.Application;
 
 namespace Conekton.ARUtility.HandSystemUseCase.Infrastructure
 {
-    public class EditorHand : MonoBehaviour, IHand
+    public class StubHand : MonoBehaviour, IHand
     {
         public HandType HandType { get; set; } = HandType.Left;
 

@@ -6,27 +6,27 @@ using Conekton.ARUtility.HandSystemUseCase.Domain;
 
 namespace Conekton.ARUtility.HandSystemUseCase.Infrastructure
 {
-    public class EditorHandProvider : MonoBehaviour, IHandProvider
+    public class StubHandProvider : MonoBehaviour, IHandProvider
     {
         [SerializeField] private bool _showGUI = true;
 
         private IHand[] _hands = null;
 
-        private EditorHand _leftHand = null;
-        private EditorHand _rightHand = null;
+        private StubHand _leftHand = null;
+        private StubHand _rightHand = null;
 
         private bool _controlTargetIsLeft = true;
 
         #region ### MonoBehaviour ###
         private void Awake()
         {
-            GameObject leftHandObj = new GameObject("EditorLeftHand", typeof(EditorHand));
-            GameObject rightHandObj = new GameObject("EditorRightHand", typeof(EditorHand));
+            GameObject leftHandObj = new GameObject("Stub-LeftHand", typeof(StubHand));
+            GameObject rightHandObj = new GameObject("Stub-RightHand", typeof(StubHand));
 
-            _leftHand = leftHandObj.GetComponent<EditorHand>();
+            _leftHand = leftHandObj.GetComponent<StubHand>();
             _leftHand.HandType = HandType.Left;
 
-            _rightHand = rightHandObj.GetComponent<EditorHand>();
+            _rightHand = rightHandObj.GetComponent<StubHand>();
             _rightHand.HandType = HandType.Right;
 
             _hands = new[]

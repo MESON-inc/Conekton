@@ -8,7 +8,7 @@ namespace Conekton.ARUtility.HandSystemUseCase.Application
 {
     public class HandSystemInstaller : MonoInstaller
     {
-        [SerializeField] private bool _useEditorMode = false;
+        [SerializeField] private bool _useStubMode = false;
 
         public override void InstallBindings()
         {
@@ -18,10 +18,10 @@ namespace Conekton.ARUtility.HandSystemUseCase.Application
                 .AsCached();
 
 #if UNITY_EDITOR
-            if (_useEditorMode)
+            if (_useStubMode)
             {
                 Container
-                    .BindInterfacesAndSelfTo<EditorHandProvider>()
+                    .BindInterfacesAndSelfTo<StubHandProvider>()
                     .FromNewComponentOnNewGameObject()
                     .AsCached()
                     .NonLazy();
@@ -32,6 +32,12 @@ namespace Conekton.ARUtility.HandSystemUseCase.Application
 #if UNITY_ANDROID && PLATFORM_OCULUS
             Container
                 .BindInterfacesAndSelfTo<OculusHandProvider>()
+                .FromNewComponentOnNewGameObject()
+                .AsCached()
+                .NonLazy();
+#else
+            Container
+                .BindInterfacesAndSelfTo<StubHandProvider>()
                 .FromNewComponentOnNewGameObject()
                 .AsCached()
                 .NonLazy();
