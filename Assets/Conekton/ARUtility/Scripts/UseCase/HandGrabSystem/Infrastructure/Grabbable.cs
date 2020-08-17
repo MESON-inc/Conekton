@@ -9,6 +9,12 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
     {
         public event OnTouchedEvent OnTouched;
         public event OnUntouchedEvent OnUntouched;
+        public event OnBeganGrabEvent OnBeganGrab;
+        public event OnMovedGrabEvent OnMovedGrab;
+        public event OnEndedGrabEvent OnEndedGrab;
+        public event OnPausedGrabEvent OnPausedGrab;
+        public event OnResumedGrabEvent OnResumedGrab;
+        public event OnForceEndedGrabEvent OnForceEndedGrab;
         
         public bool IsGrabbed { get; private set; } = false;
 
@@ -24,32 +30,32 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
 
         public void Begin(IGrabber grabber)
         {
-            throw new System.NotImplementedException();
+            OnBeganGrab?.Invoke(grabber, this);
         }
 
         public void Move(IGrabber grabber)
         {
-            throw new System.NotImplementedException();
+            OnMovedGrab?.Invoke(grabber, this);
         }
 
         public void End(IGrabber grabber)
         {
-            throw new System.NotImplementedException();
+            OnEndedGrab?.Invoke(grabber, this);
         }
 
         public void ForceEnd()
         {
-            throw new System.NotImplementedException();
+            OnForceEndedGrab?.Invoke(this);
         }
 
         public void Pause()
         {
-            throw new System.NotImplementedException();
+            OnPausedGrab?.Invoke();
         }
 
         public void Resume()
         {
-            throw new System.NotImplementedException();
+            OnResumedGrab?.Invoke();
         }
     }
 }

@@ -26,17 +26,19 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
 
         void IHandGrabSystem.BeginGrab(IGrabber grabber, IGrabbable grabbable)
         {
-            throw new System.NotImplementedException();
+            grabber.Grab(grabbable);
+            grabbable.Begin(grabber);
         }
 
         void IHandGrabSystem.MoveGrab(IGrabber grabber, IGrabbable grabbable)
         {
-            throw new System.NotImplementedException();
+            grabbable.Move(grabber);
         }
 
         void IHandGrabSystem.EndGrab(IGrabber grabber, IGrabbable grabbable)
         {
-            throw new System.NotImplementedException();
+            grabber.Ungrab(grabbable);
+            grabbable.End(grabber);
         }
     }
 }

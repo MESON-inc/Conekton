@@ -36,10 +36,23 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
 
         #region ### IGrabber interface ###
 
-        IReadOnlyList<IGrabbable> IGrabber.GetTargetGrabbables()
+        public bool IsGrabbed { get; private set; } = false;
+
+        public IReadOnlyList<IGrabbable> GetTargetGrabbables()
         {
             return _targetGrabbables;
         }
+
+        public void Grab(IGrabbable grabbable)
+        {
+            IsGrabbed = true;
+        }
+
+        public void Ungrab(IGrabbable grabbable)
+        {
+            IsGrabbed = false;
+        }
+        #endregion ### IGrabber interface ###
         
         private void AddGrabbable(IGrabbable grabbable)
         {
@@ -56,16 +69,5 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
                 _targetGrabbables.Remove(grabbable);
             }
         }
-
-        void IGrabber.Grab(IGrabbable grabbable)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        void IGrabber.Ungrab(IGrabbable grabbable)
-        {
-            throw new System.NotImplementedException();
-        }
-        #endregion ### IGrabber interface ###
     }
 }

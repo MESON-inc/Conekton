@@ -26,24 +26,25 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
 
             _grabber = GetComponent<IGrabber>();
             _hand = GetComponent<IHand>();
-            
-            _grabber.OnTouched += HandleGrabberOnOnTouched;
-            _grabber.OnUntouched += HandleGrabberOnOnUntouched;
+
+            _grabber.OnTouched += HandleGrabberOnTouched;
+            _grabber.OnUntouched += HandleGrabberOnUntouched;
 
             _injected = true;
         }
 
-        private void HandleGrabberOnOnTouched(IGrabber grabber, IGrabbable grabbable)
+        private void HandleGrabberOnTouched(IGrabber grabber, IGrabbable grabbable)
         {
             _grabSystem.Touched(grabber, grabbable);
         }
 
-        private void HandleGrabberOnOnUntouched(IGrabber grabber, IGrabbable grabbable)
+        private void HandleGrabberOnUntouched(IGrabber grabber, IGrabbable grabbable)
         {
             _grabSystem.Untouched(grabber, grabbable);
         }
 
         #region ### MonoBehaviour ###
+
         private void Update()
         {
             if (!_injected)
@@ -51,18 +52,42 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
                 return;
             }
 
-            if (_hand.GetFingerIsPinching(FingerType.Index))
+            CheckGrabState();
+        }
+
+        #endregion ### MonoBehaviour ###
+
+        private void CheckGrabState()
+        {
+            if (_grabber.IsGrabbed)
             {
-                Grab();
+                if (!_hand.GetFingerIsPinching(FingerType.Index))
+                {
+                    Ungrab();
+                }
+            }
+            else
+            {
+                if (_hand.GetFingerIsPinching(FingerType.Index))
+                {
+                    Grab();
+                }
             }
         }
-        #endregion ### MonoBehaviour ###
 
         private void Grab()
         {
             foreach (var grabbable in _grabber.GetTargetGrabbables())
             {
                 _grabSystem.BeginGrab(_grabber, grabbable);
+            }
+        }
+
+        private void Ungrab()
+        {
+            foreach (var grabbable in _grabber.GetTargetGrabbables())
+            {
+                _grabSystem.EndGrab(_grabber, grabbable);
             }
         }
     }
