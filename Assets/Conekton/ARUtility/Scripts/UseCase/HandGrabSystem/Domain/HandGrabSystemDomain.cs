@@ -44,5 +44,5 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Domain
         IGrabbable[] GetAllGrabbables();
     }
     
-    public interface IGrabController {}
+    public interface IHandGrabController {}
 }
