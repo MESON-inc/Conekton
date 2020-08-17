@@ -26,6 +26,7 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Domain
     {
         event OnTouchedEvent OnTouched;
         event OnUntouchedEvent OnUntouched;
+        bool IsGrabbed { get; }
         void Grab(IGrabbable grabbable);
         void Ungrab(IGrabbable grabbable);
         IReadOnlyList<IGrabbable> GetTargetGrabbables();
@@ -35,6 +36,12 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Domain
     {
         event OnTouchedEvent OnTouched;
         event OnUntouchedEvent OnUntouched;
+        event OnBeganGrabEvent OnBeganGrab;
+        event OnMovedGrabEvent OnMovedGrab;
+        event OnEndedGrabEvent OnEndedGrab;
+        event OnPausedGrabEvent OnPausedGrab;
+        event OnResumedGrabEvent OnResumedGrab;
+        event OnForceEndedGrabEvent OnForceEndedGrab;
         bool IsGrabbed { get; }
         void Touched(IGrabber grabber);
         void UnTouched(IGrabber grabber);
