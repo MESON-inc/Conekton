@@ -77,7 +77,7 @@ namespace Conekton.ARUtility.HandSystemUseCase.Infrastructure
             return _hand.PointerPose.rotation;
         }
 
-        private OVRHand.HandFinger ConvertFingerType(FingerType fingerType)
+        private static OVRHand.HandFinger ConvertFingerType(FingerType fingerType)
         {
             switch (fingerType)
             {
@@ -106,15 +106,22 @@ namespace Conekton.ARUtility.HandSystemUseCase.Infrastructure
             _hand = GetComponent<OVRHand>();
 
             FieldInfo info = _hand.GetType().GetField("HandType", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (info is null)
+            {
+                return;
+            }
+            
             OVRHand.Hand handType = (OVRHand.Hand)info.GetValue(_hand);
 
-            if (handType == OVRHand.Hand.HandLeft)
+            switch (handType)
             {
-                _handType = HandType.Left;
-            }
-            else if (handType == OVRHand.Hand.HandRight)
-            {
-                _handType = HandType.Right;
+                case OVRHand.Hand.HandLeft:
+                    _handType = HandType.Left;
+                    break;
+                
+                case OVRHand.Hand.HandRight:
+                    _handType = HandType.Right;
+                    break;
             }
         }
 #endif
