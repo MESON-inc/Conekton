@@ -65,6 +65,10 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
                 {
                     Ungrab();
                 }
+                else
+                {
+                    Move();
+                }
             }
             else
             {
@@ -80,6 +84,14 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
             foreach (var grabbable in _grabber.GetTargetGrabbables())
             {
                 _grabSystem.BeginGrab(_grabber, grabbable);
+            }
+        }
+
+        private void Move()
+        {
+            foreach (var grabbable in _grabber.GetTargetGrabbables())
+            {
+                _grabSystem.MoveGrab(_grabber, grabbable);
             }
         }
 

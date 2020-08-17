@@ -35,7 +35,6 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
         #endregion ### MonoBehaviour ###
 
         #region ### IGrabber interface ###
-
         public bool IsGrabbed { get; private set; } = false;
 
         public IReadOnlyList<IGrabbable> GetTargetGrabbables()
@@ -51,6 +50,12 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
         public void Ungrab(IGrabbable grabbable)
         {
             IsGrabbed = false;
+        }
+
+        public Pose GetPose()
+        {
+            Transform trans = transform;
+            return new Pose(trans.position, trans.rotation);
         }
         #endregion ### IGrabber interface ###
         

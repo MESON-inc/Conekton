@@ -17,6 +17,10 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
         public event OnForceEndedGrabEvent OnForceEndedGrab;
         
         public bool IsGrabbed { get; private set; } = false;
+        
+        private Vector3 _offsetPosition = Vector3.zero;
+        private Quaternion _offsetRotation = Quaternion.identity;
+        private Quaternion _grabberRotInv = Quaternion.identity;
 
         public void Touched(IGrabber grabber)
         {
@@ -31,11 +35,23 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
         public void Begin(IGrabber grabber)
         {
             OnBeganGrab?.Invoke(grabber, this);
+
+            Transform trans = transform;
+            Pose pose = grabber.GetPose();
+            _grabberRotInv = Quaternion.Inverse(pose.rotation);
+            _offsetPosition = trans.position - pose.position;
+            _offsetRotation = _grabberRotInv * trans.rotation;
         }
 
         public void Move(IGrabber grabber)
         {
             OnMovedGrab?.Invoke(grabber, this);
+
+            Pose pose = grabber.GetPose();
+            Quaternion rot = pose.rotation * _offsetRotation;
+            Vector3 pos = pose.position + (pose.rotation * _grabberRotInv * _offsetPosition);
+            
+            transform.SetPositionAndRotation(pos, rot);
         }
 
         public void End(IGrabber grabber)

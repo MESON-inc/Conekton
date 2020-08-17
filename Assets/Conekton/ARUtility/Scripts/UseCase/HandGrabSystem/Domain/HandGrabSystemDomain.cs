@@ -30,6 +30,7 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Domain
         void Grab(IGrabbable grabbable);
         void Ungrab(IGrabbable grabbable);
         IReadOnlyList<IGrabbable> GetTargetGrabbables();
+        Pose GetPose();
     }
 
     public interface IGrabbable
