@@ -25,18 +25,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _oculusHandPalm: {fileID: 922586652855641707}
---- !u!114 &3702558169802707056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6549632816142600442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3920b7058dd601547888fa4baaf7a8cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3343633952911706777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50,6 +38,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _oculusHandPalm: {fileID: 3702558169802707056}
+--- !u!114 &3702558169802707056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6549632816142600442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3920b7058dd601547888fa4baaf7a8cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5702964307630681807
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -258,8 +258,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4780890119046033176, guid: d0b25ab6a6c7d934196a39eb9c4a0843,
+        type: 3}
+      propertyPath: _cameraRig
+      value: 
+      objectReference: {fileID: 3104159284695571689}
+    - target: {fileID: 4780890119046033176, guid: d0b25ab6a6c7d934196a39eb9c4a0843,
+        type: 3}
+      propertyPath: _camera
+      value: 
+      objectReference: {fileID: 3104159284697239315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0b25ab6a6c7d934196a39eb9c4a0843, type: 3}
+--- !u!1 &3104159284695571689 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4780890119444150126, guid: d0b25ab6a6c7d934196a39eb9c4a0843,
+    type: 3}
+  m_PrefabInstance: {fileID: 7587741116307745671}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &3104159284697239315 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 4780890119445554324, guid: d0b25ab6a6c7d934196a39eb9c4a0843,
+    type: 3}
+  m_PrefabInstance: {fileID: 7587741116307745671}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3099709653976721331 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4776476243250351156, guid: d0b25ab6a6c7d934196a39eb9c4a0843,
