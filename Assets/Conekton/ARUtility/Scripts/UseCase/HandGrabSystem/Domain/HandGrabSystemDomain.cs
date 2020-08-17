@@ -36,6 +36,13 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Domain
         void Pause();
         void Resume();
     }
+
+    public interface IHandGrabReopsitory
+    {
+        void Add(IGrabbable grabbable);
+        void Remove(IGrabbable grabbable);
+        IGrabbable[] GetAllGrabbables();
+    }
     
     public interface IGrabController {}
 }
