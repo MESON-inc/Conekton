@@ -114,6 +114,11 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Application
             Vector3 lastVector = sortedData.Last().normalized;
             sortedData = sortedData.Where(v => Vector3.Dot(v.normalized, lastVector) > 0).ToArray();
 
+            if (sortedData.Length == 1)
+            {
+                return sortedData[0];
+            }
+
             Vector3[] filterdData = Math.LowPassFilter(Math.FilterVelocity(sortedData));
 
             Vector3 velocity = Vector3.zero;
