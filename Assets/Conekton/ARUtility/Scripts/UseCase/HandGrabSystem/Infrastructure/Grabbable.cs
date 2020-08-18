@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using Conekton.ARUtility.HandGrabSystemUseCase.Domain;
 using UnityEngine;
 
+using Conekton.ARUtility.HandGrabSystemUseCase.Application;
+
 namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
 {
+    [RequireComponent(typeof(GrabbableMover))]
     public class Grabbable : MonoBehaviour, IGrabbable
     {
         public event OnTouchedEvent OnTouched;
@@ -19,21 +22,12 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
 
         public bool IsGrabbed { get; private set; } = false;
 
-        private Vector3 _offsetPosition = Vector3.zero;
-        private Quaternion _offsetRotation = Quaternion.identity;
-        private Quaternion _grabberRotInv = Quaternion.identity;
-
-        private Rigidbody _rigidbody = null;
-        private bool _hasRigidbody = false;
-        private bool _initKinematic = false;
+        private GrabbableMover _grabbableMover = null;
+        private bool _isPaused = false;
 
         private void Awake()
         {
-            if (TryGetComponent(out _rigidbody))
-            {
-                _hasRigidbody = true;
-                _initKinematic = _rigidbody.isKinematic;
-            }
+            _grabbableMover = GetComponent<GrabbableMover>();
         }
 
         public void Touched(IGrabber grabber)
@@ -48,61 +42,42 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
 
         public void Begin(IGrabber grabber)
         {
-            Transform trans = transform;
-            Pose pose = grabber.GetPose();
-            _grabberRotInv = Quaternion.Inverse(pose.rotation);
-            _offsetPosition = trans.position - pose.position;
-            _offsetRotation = _grabberRotInv * trans.rotation;
-
-            if (_hasRigidbody)
-            {
-                _rigidbody.isKinematic = true;
-            }
-            
+            _grabbableMover.Begin(grabber);
             OnBeganGrab?.Invoke(grabber, this);
         }
 
         public void Move(IGrabber grabber)
         {
-            Pose pose = grabber.GetPose();
-            Quaternion rot = pose.rotation * _offsetRotation;
-            Vector3 pos = pose.position + (pose.rotation * _grabberRotInv * _offsetPosition);
-
-            if (_hasRigidbody)
+            if (_isPaused)
             {
-                _rigidbody.MovePosition(pos);
-                _rigidbody.MoveRotation(rot);
-            }
-            else
-            {
-                transform.SetPositionAndRotation(pos, rot);
+                return;
             }
             
+            _grabbableMover.Move();
             OnMovedGrab?.Invoke(grabber, this);
         }
 
         public void End(IGrabber grabber)
         {
-            if (_hasRigidbody)
-            {
-                _rigidbody.isKinematic = _initKinematic;
-            }
-            
+            _grabbableMover.End();
             OnEndedGrab?.Invoke(grabber, this);
         }
 
         public void ForceEnd()
         {
+            _grabbableMover.End();
             OnForceEndedGrab?.Invoke(this);
         }
 
         public void Pause()
         {
+            _isPaused = true;
             OnPausedGrab?.Invoke();
         }
 
         public void Resume()
         {
+            _isPaused = false;
             OnResumedGrab?.Invoke();
         }
     }

@@ -12,6 +12,7 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Domain
     public delegate void OnForceEndedGrabEvent(IGrabbable grabbable);
     public delegate void OnPausedGrabEvent();
     public delegate void OnResumedGrabEvent();
+    public delegate void OnThrownEvent(IGrabbable grabbable);
     
     public interface IHandGrabSystem
     {
