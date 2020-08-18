@@ -61,7 +61,7 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
         {
             if (_grabber.IsGrabbed)
             {
-                if (!_hand.GetFingerIsPinching(FingerType.Index))
+                if (!IsPinching())
                 {
                     Ungrab();
                 }
@@ -72,11 +72,16 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
             }
             else
             {
-                if (_hand.GetFingerIsPinching(FingerType.Index))
+                if (IsPinching())
                 {
                     Grab();
                 }
             }
+        }
+
+        private bool IsPinching()
+        {
+            return _hand.GetFingerStrength(FingerType.Index) > 0.5f;
         }
 
         private void Grab()
