@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -39,6 +40,8 @@ namespace Conekton.ARUtility.HandSystemUseCase.Infrastructure
             _ = HandTypeInfo;
         }
         #endregion ### MonoBehaviour ###
+
+        public bool IsTracked => _hand.IsTracked;
 
         public bool GetFingerIsPinching(FingerType fingerType)
         {

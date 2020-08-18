@@ -41,6 +41,7 @@ namespace Conekton.ARUtility.HandSystemUseCase.Domain
     /// </summary>
     public interface IHand
     {
+        bool IsTracked { get; }
         HandType GetHandType();
         bool GetFingerIsPinching(FingerType fingerType);
         Pose GetPose();

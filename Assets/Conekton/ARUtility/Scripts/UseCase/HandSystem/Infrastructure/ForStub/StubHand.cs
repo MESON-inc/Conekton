@@ -23,6 +23,9 @@ namespace Conekton.ARUtility.HandSystemUseCase.Infrastructure
         }
 
         #region ### Interface IHand ###
+
+        public bool IsTracked => true;
+
         public bool GetFingerIsPinching(FingerType fingerType)
         {
             return _pinchStrength > 0.5f;
