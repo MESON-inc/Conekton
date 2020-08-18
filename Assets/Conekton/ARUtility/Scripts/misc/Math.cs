@@ -141,30 +141,45 @@ namespace Conekton.ARUtility.Application
         {
             int N = aMatrix.GetLength(0);
 
-            float[,] lMatrix = new float[N, N];
+            float[][] lMatrix = new float[N][];
+            for (int index = 0; index < N; index++)
+            {
+                lMatrix[index] = new float[N];
+            }
+
             for (int i = 0; i < N; i++)
             {
                 for (int j = 0; j < N; j++)
                 {
-                    lMatrix[i, j] = 0;
+                    lMatrix[i][j] = 0;
                 }
             }
 
-            float[,] uMatrix = new float[N, N];
+            float[][] uMatrix = new float[N][];
+            for (int index = 0; index < N; index++)
+            {
+                uMatrix[index] = new float[N];
+            }
+
             for (int i = 0; i < N; i++)
             {
                 for (int j = 0; j < N; j++)
                 {
-                    uMatrix[i, j] = i == j ? 1f : 0;
+                    uMatrix[i][j] = i == j ? 1f : 0;
                 }
             }
 
-            float[,] buffer = new float[N, N];
+            float[][] buffer = new float[N][];
+            for (int index = 0; index < N; index++)
+            {
+                buffer[index] = new float[N];
+            }
+
             for (int i = 0; i < N; i++)
             {
                 for (int j = 0; j < N; j++)
                 {
-                    buffer[i, j] = 0;
+                    buffer[i][j] = 0;
                 }
             }
 
@@ -172,25 +187,25 @@ namespace Conekton.ARUtility.Application
             {
                 int n = N - i - 1;
 
-                float l0 = lMatrix[i, i] = aMatrix[0, 0];
+                float l0 = lMatrix[i][i] = aMatrix[0, 0];
 
                 float[] l1 = new float[n];
                 for (int j = 0; j < n; j++)
                 {
-                    lMatrix[j + i + 1, i] = l1[j] =  aMatrix[j + 1, 0];
+                    lMatrix[j + i + 1][i] = l1[j] =  aMatrix[j + 1, 0];
                 }
 
                 float[] u1 = new float[n];
                 for (int j = 0; j < n; j++)
                 {
-                    uMatrix[i, j + i + 1] = u1[j] = aMatrix[0, j + 1] / l0;
+                    uMatrix[i][j + i + 1] = u1[j] = aMatrix[0, j + 1] / l0;
                 }
 
                 for (int j = 0; j < n; j++)
                 {
                     for (int k = 0; k < n; k++)
                     {
-                        buffer[j, k] = l1[j] * u1[k];
+                        buffer[j][k] = l1[j] * u1[k];
                     }
                 }
 
@@ -199,7 +214,7 @@ namespace Conekton.ARUtility.Application
                 {
                     for (int k = 0; k < n; k++)
                     {
-                        A1[j, k] = aMatrix[j + 1, k + 1] - buffer[j, k];
+                        A1[j, k] = aMatrix[j + 1, k + 1] - buffer[j][k];
                     }
                 }
 
@@ -212,9 +227,9 @@ namespace Conekton.ARUtility.Application
                 float sum = 0;
                 for (int k = 0; k <= i - 1; k++)
                 {
-                    sum += lMatrix[i, k] * y[k];
+                    sum += lMatrix[i][k] * y[k];
                 }
-                y[i] = (b[i] - sum) / lMatrix[i, i];
+                y[i] = (b[i] - sum) / lMatrix[i][i];
             }
 
             float[] x = new float[N];
@@ -223,7 +238,7 @@ namespace Conekton.ARUtility.Application
                 float sum = 0;
                 for (int j = i + 1; j <= N - 1; j++)
                 {
-                    sum += uMatrix[i, j] * x[j];
+                    sum += uMatrix[i][j] * x[j];
                 }
                 x[i] = y[i] - sum;
             }
