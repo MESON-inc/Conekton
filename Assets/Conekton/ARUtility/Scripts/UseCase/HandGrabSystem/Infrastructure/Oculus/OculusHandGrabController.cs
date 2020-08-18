@@ -67,7 +67,10 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
                 }
                 else
                 {
-                    Move();
+                    if (_hand.IsTracked)
+                    {
+                        Move();
+                    }
                 }
             }
             else
