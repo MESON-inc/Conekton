@@ -11,6 +11,7 @@ namespace Conekton.ARUtility.HandSystemUseCase.Infrastructure
         , IHandProvider
 #endif
     {
+#if UNITY_ANDROID && PLATFORM_OCULUS
         private IHand[] _hands = null;
 
         private void Awake()
@@ -24,7 +25,6 @@ namespace Conekton.ARUtility.HandSystemUseCase.Infrastructure
             }
         }
 
-#if UNITY_ANDROID && PLATFORM_OCULUS
         IHand[] IHandProvider.GetAllHands()
         {
             return _hands;
