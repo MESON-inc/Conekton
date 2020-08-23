@@ -1,7 +1,11 @@
+[![Github issues](https://img.shields.io/github/issues/MESON-inc/Conekton)](https://github.com/MESON-inc/Conekton/issues)
+[![Github forks](https://img.shields.io/github/forks/MESON-inc/Conekton)](https://github.com/MESON-inc/Conekton/network/members)
+[![Github stars](https://img.shields.io/github/stars/MESON-inc/Conekton)](https://github.com/MESON-inc/Conekton/stargazers)
+[![Github license](https://img.shields.io/github/license/MESON-inc/Conekton)](https://github.com/MESON-inc/Conekton/)
+
 <div align="center">
 <img src="./jp/images/Logo.png" title="Conekton" />
 </div>
-
 
 [English version here](./en/)
 
