@@ -50,9 +50,20 @@ Assets/Plugins/Zenject/
 Assets/Photon/
 Assets/Photon.meta
 
+# TextMeshPro
+Assets/TextMesh Pro
+Assets/TextMesh Pro.meta
+
 # MRTK
 Assets/MRTK
 Assets/MRTK.meta
+
+# XR
+Assets/XR
+Assets/XR.meta
+
+# WSA
+Assets/WSA*
 
 # MSBuildForUnity generated
 MSBuildForUnity.Common.props
@@ -70,3 +81,6 @@ Nuget.config*
 /MSBuild/
 /PackagesCopy/
 !/scripts/Packaging/NuGetRestoreProject.csproj
+
+# Rider
+.idea
