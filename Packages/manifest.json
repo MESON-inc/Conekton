@@ -1,5 +1,15 @@
 {
+    "scopedRegistries": [
+        {
+            "name": "MS Build for Unity",
+            "url": "https://pkgs.dev.azure.com/UnityDeveloperTools/MSBuildForUnity/_packaging/UnityDeveloperTools/npm/registry",
+            "scopes": [
+                "com.microsoft"
+            ]
+        }
+    ],
   "dependencies": {
+    "com.microsoft.msbuildforunity": "0.9.1-20200131.14",
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.rider": "1.1.0",
