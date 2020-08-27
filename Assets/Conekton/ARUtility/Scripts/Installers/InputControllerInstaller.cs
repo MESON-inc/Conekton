@@ -44,6 +44,9 @@ namespace Conekton.ARUtility.Input.Application
 #elif PLATFORM_LUMIN
             Container.BindInterfacesAndSelfTo<MLInputController>().AsCached();
             Container.BindInterfacesAndSelfTo<PointerHandlerController>().AsCached().NonLazy();
+#elif UNITY_WSA
+            Container.BindInterfacesAndSelfTo<MRTKInputController>().AsCached();
+            Container.BindInterfacesAndSelfTo<PointerHandlerController>().AsCached().NonLazy();
 #else
             Container.Bind<IInputController>().FromComponentInNewPrefab(_editorInputPrefab).AsCached();
             Container.BindInterfacesAndSelfTo<PointerHandlerController>().AsCached().NonLazy();
