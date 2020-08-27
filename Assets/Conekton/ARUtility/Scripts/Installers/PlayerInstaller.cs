@@ -24,7 +24,7 @@ namespace Conekton.ARUtility.Player.Application
             Container.Bind<IPlayer>().FromComponentInNewPrefab(_mobilePlayerPrefab).AsCached().NonLazy();
 #elif PLATFORM_LUMIN
             Container.Bind<IPlayer>().FromComponentInNewPrefab(_mlPlayerPrefab).AsCached().NonLazy();
-#elif UNITY_WSA || UNITY_WSA_10_0
+#elif UNITY_WSA
             Container.Bind<IPlayer>().To<MRTKPlayer>().AsCached();
 #else
             Container.Bind<IPlayer>().FromComponentInNewPrefab(_editorPlayerPrefab).AsCached().NonLazy();

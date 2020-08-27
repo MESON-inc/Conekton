@@ -3,7 +3,7 @@ using Conekton.ARUtility.Player.Domain;
 
 namespace Conekton.ARUtility.Player.Infrastructure
 {
-#if UNITY_WSA || UNITY_WSA_10_0
+#if UNITY_WSA
     public class MRTKPlayer : IPlayer
     {
         private Camera PlayerCamera => Camera.main;
