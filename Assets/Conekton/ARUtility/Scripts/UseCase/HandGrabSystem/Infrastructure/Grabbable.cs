@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Conekton.ARUtility.HandGrabSystemUseCase.Domain;
+using Conekton.ARUtility.GrabSystemUseCase.Application;
+using Conekton.ARUtility.GrabSystemUseCase.Domain;
 using UnityEngine;
 
-using Conekton.ARUtility.HandGrabSystemUseCase.Application;
-
-namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
+namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
 {
     [RequireComponent(typeof(GrabbableMover))]
     public class Grabbable : MonoBehaviour, IGrabbable

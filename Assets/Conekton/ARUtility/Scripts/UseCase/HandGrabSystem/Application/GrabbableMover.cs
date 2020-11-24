@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Conekton.ARUtility.Application;
-using Conekton.ARUtility.HandGrabSystemUseCase.Domain;
+using Conekton.ARUtility.GrabSystemUseCase.Domain;
 
-namespace Conekton.ARUtility.HandGrabSystemUseCase.Application
+namespace Conekton.ARUtility.GrabSystemUseCase.Application
 {
     public class GrabbableMover : MonoBehaviour
     {

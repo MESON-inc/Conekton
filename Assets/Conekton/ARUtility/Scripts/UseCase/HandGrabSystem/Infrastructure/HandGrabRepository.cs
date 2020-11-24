@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Conekton.ARUtility.HandGrabSystemUseCase.Domain;
+using Conekton.ARUtility.GrabSystemUseCase.Domain;
 using UnityEngine;
 
-namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
+namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
 {
-    public class HandGrabRepository : IHandGrabReopsitory
+    public class GrabRepository : IGrabReopsitory
     {
         private readonly List<IGrabbable> _grabbables = new List<IGrabbable>();
         
-        void IHandGrabReopsitory.Add(IGrabbable grabbable)
+        void IGrabReopsitory.Add(IGrabbable grabbable)
         {
             if (!_grabbables.Contains(grabbable))
             {
@@ -17,7 +17,7 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
             }
         }
 
-        void IHandGrabReopsitory.Remove(IGrabbable grabbable)
+        void IGrabReopsitory.Remove(IGrabbable grabbable)
         {
             if (_grabbables.Contains(grabbable))
             {
@@ -25,7 +25,7 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
             }
         }
 
-        IReadOnlyList<IGrabbable> IHandGrabReopsitory.GetAllGrabbables()
+        IReadOnlyList<IGrabbable> IGrabReopsitory.GetAllGrabbables()
         {
             return _grabbables;
         }

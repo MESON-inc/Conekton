@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Conekton.ARUtility.GrabSystemUseCase.Domain;
 using UnityEngine;
-using Conekton.ARUtility.HandGrabSystemUseCase.Domain;
 using ModestTree;
 
-namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
+namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
 {
-    public class OculusHandGrabber : MonoBehaviour, IGrabber
+    public class OculusGrabber : MonoBehaviour, IGrabber
     {
         public event OnTouchedEvent OnTouched;
         public event OnUntouchedEvent OnUntouched;

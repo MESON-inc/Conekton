@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Conekton.ARUtility.GrabSystemUseCase.Domain;
 using UnityEngine;
 using Zenject;
 using Conekton.ARUtility.HandSystemUseCase.Domain;
-using Conekton.ARUtility.HandGrabSystemUseCase.Domain;
 
-namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
+namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
 {
-    public class OculusHandGrabController : MonoBehaviour, IHandGrabController
+    public class OculusHandGrabController : MonoBehaviour, IGrabController
     {
-        private IHandGrabSystem _grabSystem = null;
+        private IGrabSystem _grabSystem = null;
         private IHandSystem _handSystem = null;
 
         private IGrabber _grabber = null;
@@ -19,7 +19,7 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure
         private bool _injected = false;
 
         [Inject]
-        private void Injection(IHandGrabSystem grabSystem, IHandSystem handSystem)
+        private void Injection(IGrabSystem grabSystem, IHandSystem handSystem)
         {
             _grabSystem = grabSystem;
             _handSystem = handSystem;

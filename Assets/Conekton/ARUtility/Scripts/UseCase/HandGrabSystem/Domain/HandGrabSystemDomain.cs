@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Conekton.ARUtility.HandGrabSystemUseCase.Domain
+namespace Conekton.ARUtility.GrabSystemUseCase.Domain
 {
     public delegate void OnTouchedEvent(IGrabber grabber, IGrabbable grabbable);
     public delegate void OnUntouchedEvent(IGrabber grabber, IGrabbable grabbable);
@@ -14,7 +14,7 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Domain
     public delegate void OnResumedGrabEvent();
     public delegate void OnThrownEvent(IGrabbable grabbable);
     
-    public interface IHandGrabSystem
+    public interface IGrabSystem
     {
         void Touched(IGrabber grabber, IGrabbable grabbable);
         void Untouched(IGrabber grabber, IGrabbable grabbable);
@@ -55,12 +55,12 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Domain
         void Resume();
     }
 
-    public interface IHandGrabReopsitory
+    public interface IGrabReopsitory
     {
         void Add(IGrabbable grabbable);
         void Remove(IGrabbable grabbable);
         IReadOnlyList<IGrabbable> GetAllGrabbables();
     }
     
-    public interface IHandGrabController {}
+    public interface IGrabController {}
 }

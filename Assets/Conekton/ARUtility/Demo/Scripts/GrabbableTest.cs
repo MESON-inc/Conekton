@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Conekton.ARUtility.HandGrabSystemUseCase.Domain;
+using Conekton.ARUtility.GrabSystemUseCase.Domain;
 using UnityEngine;
 
 namespace Conekton.ARUtility.Demo

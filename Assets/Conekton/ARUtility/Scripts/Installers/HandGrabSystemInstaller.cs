@@ -1,21 +1,21 @@
-using Conekton.ARUtility.HandGrabSystemUseCase.Domain;
-using Conekton.ARUtility.HandGrabSystemUseCase.Infrastructure;
+using Conekton.ARUtility.GrabSystemUseCase.Domain;
+using Conekton.ARUtility.GrabSystemUseCase.Infrastructure;
 using UnityEngine;
 using Zenject;
 
-namespace Conekton.ARUtility.HandGrabSystemUseCase.Application
+namespace Conekton.ARUtility.GrabSystemUseCase.Application
 {
     public class HandGrabSystemInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {
             Container
-                .Bind<IHandGrabSystem>()
-                .To<HandGrabSystem>()
+                .Bind<IGrabSystem>()
+                .To<GrabSystem>()
                 .AsCached();
 
             Container
-                .Bind<IHandGrabReopsitory>()
+                .Bind<IGrabReopsitory>()
                 .FromSubContainerResolve()
                 .ByNewGameObjectMethod(InstallBindingsToSubContainer)
                 .AsCached();
@@ -24,8 +24,8 @@ namespace Conekton.ARUtility.HandGrabSystemUseCase.Application
         private void InstallBindingsToSubContainer(DiContainer subContainer)
         {
             subContainer
-                .Bind<IHandGrabReopsitory>()
-                .To<HandGrabRepository>()
+                .Bind<IGrabReopsitory>()
+                .To<GrabRepository>()
                 .AsCached();
         }
     }
