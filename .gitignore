@@ -44,3 +44,5 @@ sysinfo.txt
 Assets/Plugins/Zenject/
 Assets/Photon/
 Assets/Photon.meta
+Assets/Oculus*
+Assets/Oculus.meta
