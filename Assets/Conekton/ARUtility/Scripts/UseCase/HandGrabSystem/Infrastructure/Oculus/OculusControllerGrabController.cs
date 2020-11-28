@@ -11,6 +11,8 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
 {
     public class OculusControllerGrabController : MonoBehaviour, IGrabController
     {
+        [SerializeField] private ControllerType _controllerType = ControllerType.Right;
+        
         private IGrabSystem _grabSystem = null;
         private IGrabber _grabber = null;
         private IInputController _inputController = null;
@@ -58,12 +60,12 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
 
         private void CheckTrigger()
         {
-            if (_inputController.IsTriggerDown)
+            if (_inputController.IsTriggerDown(_controllerType))
             {
                 _isTrigger = true;
             }
 
-            if (_inputController.IsTriggerUp)
+            if (_inputController.IsTriggerUp(_controllerType))
             {
                 _isTrigger = false;
             }

@@ -13,13 +13,13 @@ namespace Conekton.ARUtility.Input.Infrastructure
     {
         [Inject] private IPlayer _player = null;
 
-        bool IInputController.IsTriggerDown => IsTriggerDown();
-        bool IInputController.IsTriggerUp => IsTriggerUp();
-        bool IInputController.IsTouch => UnityEngine.Input.touchCount > 0;
-        bool IInputController.IsTouchDown => IsTouchDown();
-        bool IInputController.IsTouchUp => IsTouchUp();
+        bool IInputController.IsTriggerDown(ControllerType type) => IsTriggerDown(type);
+        bool IInputController.IsTriggerUp(ControllerType type) => IsTriggerUp(type);
+        bool IInputController.IsTouch(ControllerType type) => UnityEngine.Input.touchCount > 0;
+        bool IInputController.IsTouchDown(ControllerType type) => IsTouchDown(type);
+        bool IInputController.IsTouchUp(ControllerType type) => IsTouchUp(type);
 
-        private bool IsTouchDown()
+        private bool IsTouchDown(ControllerType type)
         {
             if (UnityEngine.Input.touchCount == 0)
             {
@@ -30,7 +30,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
             return touch.phase == TouchPhase.Began;
         }
 
-        private bool IsTouchUp()
+        private bool IsTouchUp(ControllerType type)
         {
             if (UnityEngine.Input.touchCount == 0)
             {
@@ -41,7 +41,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
             return touch.phase == TouchPhase.Ended;
         }
 
-        private bool IsTriggerDown()
+        private bool IsTriggerDown(ControllerType type)
         {
             if (UnityEngine.Input.touchCount == 0)
             {
@@ -58,7 +58,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
             return false;
         }
 
-        private bool IsTriggerUp()
+        private bool IsTriggerUp(ControllerType type)
         {
             if (UnityEngine.Input.touchCount == 0)
             {
@@ -75,25 +75,25 @@ namespace Conekton.ARUtility.Input.Infrastructure
             return false;
         }
 
-        Vector3 IInputController.Forward => _player.CameraRig.transform.forward;
+        Vector3 IInputController.GetForward(ControllerType type) => _player.CameraRig.transform.forward;
 
-        Vector3 IInputController.Position => _player.Position;
+        Vector3 IInputController.GetPosition(ControllerType type) => _player.Position;
 
-        Quaternion IInputController.Rotation => _player.Rotation;
+        Quaternion IInputController.GetRotation(ControllerType type) => _player.Rotation;
 
-        Vector2 IInputController.Touch => Vector2.zero;
+        Vector2 IInputController.Touch(ControllerType type) => Vector2.zero;
 
-        void IInputController.TriggerHapticVibration(HapticData data)
+        void IInputController.TriggerHapticVibration(ControllerType type, HapticData data)
         {
             // do nothing.
         }
 
-        bool IInputController.IsDown(ButtonType type)
+        bool IInputController.IsDown(ControllerType controllerType, ButtonType buttonType)
         {
             return false;
         }
 
-        bool IInputController.IsUp(ButtonType type)
+        bool IInputController.IsUp(ControllerType controllerType, ButtonType buttonType)
         {
             return false;
         }

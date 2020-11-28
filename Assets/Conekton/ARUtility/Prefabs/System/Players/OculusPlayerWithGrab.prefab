@@ -1,29 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &34440423515804725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5938323416001124508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ee82a31404f90047b842c7597ac09cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &9107642437248285033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5938323416001124508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ccb08c6fd4efbf40ad640643e175a5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!135 &915228614132348944
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -37,6 +13,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &34440423515804725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5938323416001124508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ee82a31404f90047b842c7597ac09cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _controllerType: 0
+--- !u!114 &9107642437248285033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5938323416001124508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ccb08c6fd4efbf40ad640643e175a5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &6705403140010789889
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -115,30 +116,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6a3a6ce352c3f845993c8b4449086a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5148265437359442913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3031161561674154907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ee82a31404f90047b842c7597ac09cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4723763381054680710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3031161561674154907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ccb08c6fd4efbf40ad640643e175a5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!135 &1245041781694912871
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -152,6 +129,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4723763381054680710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3031161561674154907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ccb08c6fd4efbf40ad640643e175a5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5148265437359442913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3031161561674154907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ee82a31404f90047b842c7597ac09cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _controllerType: 1
 --- !u!54 &8592209200269308318
 Rigidbody:
   m_ObjectHideFlags: 0
