@@ -10,11 +10,15 @@ namespace Conekton.ARUtility.Demo
     {
         [Inject] private IInputController _inputController = null;
 
+        [SerializeField] private Transform _leftTrans = null;
+        [SerializeField] private Transform _rightTrans = null;
+
         [SerializeField] private Text _textViewLeft = null;
         [SerializeField] private Text _textViewRight = null;
 
         private void Update()
         {
+            UpdatePose();
             CheckEvents(ControllerType.Left, _textViewLeft);
             CheckEvents(ControllerType.Right, _textViewRight);
         }
@@ -36,6 +40,12 @@ namespace Conekton.ARUtility.Demo
             target.text += $"{type} input controller Three button is down? {_inputController.IsDown(type, ButtonType.Three)}\n";
             target.text += $"{type} input controller Four button is up? {_inputController.IsUp(type, ButtonType.Four)}\n";
             target.text += $"{type} input controller Four button is down? {_inputController.IsDown(type, ButtonType.Four)}\n";
+        }
+
+        private void UpdatePose()
+        {
+            _leftTrans.SetPositionAndRotation(_inputController.GetPosition(ControllerType.Left), _inputController.GetRotation(ControllerType.Left));
+            _rightTrans.SetPositionAndRotation(_inputController.GetPosition(ControllerType.Right), _inputController.GetRotation(ControllerType.Right));
         }
     }
 }
