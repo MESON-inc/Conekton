@@ -22,6 +22,7 @@ namespace Conekton.ARUtility.Demo
         private void CheckEvents(ControllerType type, Text target)
         {
             target.text = "";
+            target.text += $"{type} input controller is triggering? {_inputController.IsTrigger(type)}\n";
             target.text += $"{type} input controller trigger is down? {_inputController.IsTriggerDown(type)}\n";
             target.text += $"{type} input controller trigger is up? {_inputController.IsTriggerUp(type)}\n";
             target.text += $"{type} input controller is touching? {_inputController.IsTouch(type)}\n";
