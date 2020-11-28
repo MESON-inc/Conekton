@@ -18,6 +18,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
         private bool _hasInitialized = false;
 
+        private bool _isTriggering = false;
         private bool _isTriggerDown = false;
         private bool _isTriggerUp = false;
 
@@ -30,6 +31,8 @@ namespace Conekton.ARUtility.Input.Infrastructure
         private MLInput.Controller _inputController = null;
         private MLInput.Controller.FeedbackPatternVibe _pattern = MLInput.Controller.FeedbackPatternVibe.ForceDown;
         private MLInput.Controller.FeedbackIntensity _intensity = MLInput.Controller.FeedbackIntensity.Medium;
+
+        bool IInputController.IsTrigger(ControllerType type) => _isTriggering;
 
         bool IInputController.IsTriggerDown(ControllerType type) => _isTriggerDown;
 
@@ -144,6 +147,16 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
             _triggerDownEvent = false;
             _triggerUpEvent = false;
+            
+            if (_isTriggerDown)
+            {
+                _isTriggering = true;
+            }
+
+            if (_isTriggerUp)
+            {
+                _isTriggering = false;
+            }
         }
 
 
