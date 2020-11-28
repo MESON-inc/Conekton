@@ -18,6 +18,8 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
         private readonly Vector3 VECTOR3_FORWARD = Vector3.forward;
 
+        bool IInputController.IsTrigger(ControllerType type) => NRInput.GetButton(ControllerButton.TRIGGER);
+        
         bool IInputController.IsTriggerDown(ControllerType type) => NRInput.GetButtonDown(ControllerButton.TRIGGER);
 
         bool IInputController.IsTriggerUp(ControllerType type) => NRInput.GetButtonUp(ControllerButton.TRIGGER);
