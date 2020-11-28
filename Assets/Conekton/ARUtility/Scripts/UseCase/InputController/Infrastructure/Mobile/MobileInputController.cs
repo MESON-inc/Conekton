@@ -13,6 +13,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
     {
         [Inject] private IPlayer _player = null;
 
+        bool IInputController.IsTrigger(ControllerType type) => IsTrigger(type);
         bool IInputController.IsTriggerDown(ControllerType type) => IsTriggerDown(type);
         bool IInputController.IsTriggerUp(ControllerType type) => IsTriggerUp(type);
         bool IInputController.IsTouch(ControllerType type) => UnityEngine.Input.touchCount > 0;
@@ -39,6 +40,11 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
             Touch touch = UnityEngine.Input.GetTouch(0);
             return touch.phase == TouchPhase.Ended;
+        }
+        
+        private bool IsTrigger(ControllerType type)
+        {
+            return UnityEngine.Input.touchCount != 0;
         }
 
         private bool IsTriggerDown(ControllerType type)

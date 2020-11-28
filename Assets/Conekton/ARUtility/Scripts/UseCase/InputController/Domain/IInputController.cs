@@ -40,6 +40,7 @@ namespace Conekton.ARUtility.Input.Domain
     /// </summary>
     public interface IInputController
     {
+        bool IsTrigger(ControllerType type);
         bool IsTriggerDown(ControllerType type);
         bool IsTriggerUp(ControllerType type);
         bool IsTouch(ControllerType type);

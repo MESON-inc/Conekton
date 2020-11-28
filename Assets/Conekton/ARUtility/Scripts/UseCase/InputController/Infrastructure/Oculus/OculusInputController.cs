@@ -58,6 +58,12 @@ namespace Conekton.ARUtility.Input.Infrastructure
             OVRInput.Controller controllerType = GetOculusControllerType(type);
             return _player.Root.localToWorldMatrix.MultiplyPoint(OVRInput.GetLocalControllerPosition(controllerType));
         }
+        
+        bool IInputController.IsTrigger(ControllerType type)
+        {
+            OVRInput.Controller touchType = GetOculusTouchType(type);
+            return OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, touchType);
+        }
 
         bool IInputController.IsTriggerDown(ControllerType type)
         {

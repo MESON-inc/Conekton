@@ -39,6 +39,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
         private Quaternion _rotation = Quaternion.identity;
         private readonly Vector3 VECTOR3_FORWARD = Vector3.forward;
 
+        bool IInputController.IsTrigger(ControllerType type) => UnityEngine.Input.GetKey(_triggerDownKey);
         bool IInputController.IsTriggerDown(ControllerType type) => UnityEngine.Input.GetKeyDown(_triggerDownKey);
         bool IInputController.IsTriggerUp(ControllerType type) => UnityEngine.Input.GetKeyDown(_triggerUpKey);
         bool IInputController.IsTouch(ControllerType type) => UnityEngine.Input.GetKey(_touchDownKey);
