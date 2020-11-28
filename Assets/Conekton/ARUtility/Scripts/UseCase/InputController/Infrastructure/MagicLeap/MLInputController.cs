@@ -31,22 +31,22 @@ namespace Conekton.ARUtility.Input.Infrastructure
         private MLInput.Controller.FeedbackPatternVibe _pattern = MLInput.Controller.FeedbackPatternVibe.ForceDown;
         private MLInput.Controller.FeedbackIntensity _intensity = MLInput.Controller.FeedbackIntensity.Medium;
 
-        bool IInputController.IsTriggerDown => _isTriggerDown;
+        bool IInputController.IsTriggerDown(ControllerType type) => _isTriggerDown;
 
-        bool IInputController.IsTriggerUp => _isTriggerUp;
+        bool IInputController.IsTriggerUp(ControllerType type) => _isTriggerUp;
 
-        Vector3 IInputController.Forward => (this as IInputController).Rotation * VECTOR3_FORWARD;
+        Vector3 IInputController.GetForward(ControllerType type) => (this as IInputController).GetRotation(type) * VECTOR3_FORWARD;
 
-        Vector3 IInputController.Position => (_inputController == null) ? Vector3.zero : _inputController.Position;
+        Vector3 IInputController.GetPosition(ControllerType type) => (_inputController == null) ? Vector3.zero : _inputController.Position;
 
-        Quaternion IInputController.Rotation => (_inputController == null) ? Quaternion.identity : _inputController.Orientation;
+        Quaternion IInputController.GetRotation(ControllerType type) => (_inputController == null) ? Quaternion.identity : _inputController.Orientation;
 
-        Vector2 IInputController.Touch => (_inputController == null) ? Vector2.zero :
+        Vector2 IInputController.Touch(ControllerType type) => (_inputController == null) ? Vector2.zero :
                                        _inputController.Touch1Active ? (Vector2)_inputController.Touch1PosAndForce :
                                                                        Vector2.zero;
-        bool IInputController.IsTouch => UnityEngine.Input.touchCount > 0;
-        bool IInputController.IsTouchDown => false;
-        bool IInputController.IsTouchUp => false;
+        bool IInputController.IsTouch(ControllerType type) => UnityEngine.Input.touchCount > 0;
+        bool IInputController.IsTouchDown(ControllerType type) => false;
+        bool IInputController.IsTouchUp(ControllerType type) => false;
 
         void IInitializable.Initialize()
         {
@@ -164,22 +164,21 @@ namespace Conekton.ARUtility.Input.Infrastructure
             _triggerUpEvent = true;
         }
 
-        void IInputController.TriggerHapticVibration(HapticData data)
+        void IInputController.TriggerHapticVibration(ControllerType type, HapticData data)
         {
             // NOTE: It should calculate haptics intensity by data.
             _inputController.StartFeedbackPatternVibe(_pattern, _intensity);
         }
 
-        bool IInputController.IsDown(ButtonType type)
+        bool IInputController.IsDown(ControllerType controllerType, ButtonType buttonType)
         {
             return false;
         }
 
-        bool IInputController.IsUp(ButtonType type)
+        bool IInputController.IsUp(ControllerType controllerType, ButtonType buttonType)
         {
             return false;
         }
     }
 }
 #endif
-
