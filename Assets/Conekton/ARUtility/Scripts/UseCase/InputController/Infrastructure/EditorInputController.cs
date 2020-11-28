@@ -51,7 +51,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
         Quaternion IInputController.GetRotation(ControllerType type) => _rotation;
 
-        Vector2 IInputController.Touch(ControllerType type) => Vector2.zero;
+        Vector2 IInputController.GetTouch(ControllerType type) => Vector2.zero;
 
         void IInputController.TriggerHapticVibration(ControllerType type, HapticData data)
         {

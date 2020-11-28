@@ -41,7 +41,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
         Quaternion IInputController.GetRotation(ControllerType type) => (_inputController == null) ? Quaternion.identity : _inputController.Orientation;
 
-        Vector2 IInputController.Touch(ControllerType type) => (_inputController == null) ? Vector2.zero :
+        Vector2 IInputController.GetTouch(ControllerType type) => (_inputController == null) ? Vector2.zero :
                                        _inputController.Touch1Active ? (Vector2)_inputController.Touch1PosAndForce :
                                                                        Vector2.zero;
         bool IInputController.IsTouch(ControllerType type) => UnityEngine.Input.touchCount > 0;

@@ -102,7 +102,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
             return _player.Root.rotation * OVRInput.GetLocalControllerRotation(controllerType);
         }
 
-        Vector2 IInputController.Touch(ControllerType type)
+        Vector2 IInputController.GetTouch(ControllerType type)
         {
             OVRInput.Controller touchType = GetOculusTouchType(type);
             return OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, touchType);

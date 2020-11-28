@@ -48,7 +48,7 @@ namespace Conekton.ARUtility.Input.Domain
         Vector3 GetPosition(ControllerType type);
         Vector3 GetForward(ControllerType type);
         Quaternion GetRotation(ControllerType type);
-        Vector2 Touch(ControllerType type);
+        Vector2 GetTouch(ControllerType type);
         void TriggerHapticVibration(ControllerType type, HapticData data);
         bool IsDown(ControllerType controllerType, ButtonType buttonType);
         bool IsUp(ControllerType controllerType, ButtonType buttonType);
