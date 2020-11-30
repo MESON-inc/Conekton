@@ -19,6 +19,8 @@ namespace Conekton.ARUtility.Input.Infrastructure
         private GameObject _clickTarget = null;
         private bool _needsSendClickEvent = false;
 
+        private ControllerType _controllerType = ControllerType.Right;
+
         void ITickable.Tick()
         {
             CheckSendClickEvent();
@@ -84,7 +86,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
         private void CheckTriggerDown(GameObject target)
         {
-            if (!_inputController.IsTriggerDown)
+            if (!_inputController.IsTriggerDown(_controllerType))
             {
                 return;
             }
@@ -99,7 +101,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
         private void CheckTriggerUp(GameObject target)
         {
-            if (!_inputController.IsTriggerUp)
+            if (!_inputController.IsTriggerUp(_controllerType))
             {
                 return;
             }
@@ -182,7 +184,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
         private Ray GetRay()
         {
-            return new Ray(_inputController.Position, _inputController.Forward);
+            return new Ray(_inputController.GetPosition(_controllerType), _inputController.GetForward(_controllerType));
         }
     }
 }

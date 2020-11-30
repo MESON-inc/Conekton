@@ -27,21 +27,31 @@ namespace Conekton.ARUtility.Input.Domain
     }
 
     /// <summary>
+    /// ControllerType enum means to get either left or right handed.
+    /// </summary>
+    public enum ControllerType
+    {
+        Left,
+        Right,
+    }
+
+    /// <summary>
     /// IInputController provides ways to access each platform controller.
     /// </summary>
     public interface IInputController
     {
-        bool IsTriggerDown { get; }
-        bool IsTriggerUp { get; }
-        bool IsTouch { get; }
-        bool IsTouchDown { get; }
-        bool IsTouchUp { get; }
-        Vector3 Position { get; }
-        Vector3 Forward { get; }
-        Quaternion Rotation { get; }
-        Vector2 Touch { get; }
-        void TriggerHapticVibration(HapticData data);
-        bool IsDown(ButtonType type);
-        bool IsUp(ButtonType type);
+        bool IsTrigger(ControllerType type);
+        bool IsTriggerDown(ControllerType type);
+        bool IsTriggerUp(ControllerType type);
+        bool IsTouch(ControllerType type);
+        bool IsTouchDown(ControllerType type);
+        bool IsTouchUp(ControllerType type);
+        Vector3 GetPosition(ControllerType type);
+        Vector3 GetForward(ControllerType type);
+        Quaternion GetRotation(ControllerType type);
+        Vector2 GetTouch(ControllerType type);
+        void TriggerHapticVibration(ControllerType type, HapticData data);
+        bool IsDown(ControllerType controllerType, ButtonType buttonType);
+        bool IsUp(ControllerType controllerType, ButtonType buttonType);
     }
 }

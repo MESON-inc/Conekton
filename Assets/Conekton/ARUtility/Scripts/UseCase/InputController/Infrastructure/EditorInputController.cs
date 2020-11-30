@@ -39,28 +39,29 @@ namespace Conekton.ARUtility.Input.Infrastructure
         private Quaternion _rotation = Quaternion.identity;
         private readonly Vector3 VECTOR3_FORWARD = Vector3.forward;
 
-        bool IInputController.IsTriggerDown => UnityEngine.Input.GetKeyDown(_triggerDownKey);
-        bool IInputController.IsTriggerUp => UnityEngine.Input.GetKeyDown(_triggerUpKey);
-        bool IInputController.IsTouch => UnityEngine.Input.GetKey(_touchDownKey);
-        bool IInputController.IsTouchDown => UnityEngine.Input.GetKeyDown(_touchDownKey);
-        bool IInputController.IsTouchUp => UnityEngine.Input.GetKeyDown(_touchUpKey);
+        bool IInputController.IsTrigger(ControllerType type) => UnityEngine.Input.GetKey(_triggerDownKey);
+        bool IInputController.IsTriggerDown(ControllerType type) => UnityEngine.Input.GetKeyDown(_triggerDownKey);
+        bool IInputController.IsTriggerUp(ControllerType type) => UnityEngine.Input.GetKeyDown(_triggerUpKey);
+        bool IInputController.IsTouch(ControllerType type) => UnityEngine.Input.GetKey(_touchDownKey);
+        bool IInputController.IsTouchDown(ControllerType type) => UnityEngine.Input.GetKeyDown(_touchDownKey);
+        bool IInputController.IsTouchUp(ControllerType type) => UnityEngine.Input.GetKeyDown(_touchUpKey);
 
-        Vector3 IInputController.Forward => _rotation * VECTOR3_FORWARD;
+        Vector3 IInputController.GetForward(ControllerType type) => _rotation * VECTOR3_FORWARD;
 
-        Vector3 IInputController.Position => _position;
+        Vector3 IInputController.GetPosition(ControllerType type) => _position;
 
-        Quaternion IInputController.Rotation => _rotation;
+        Quaternion IInputController.GetRotation(ControllerType type) => _rotation;
 
-        Vector2 IInputController.Touch => Vector2.zero;
+        Vector2 IInputController.GetTouch(ControllerType type) => Vector2.zero;
 
-        void IInputController.TriggerHapticVibration(HapticData data)
+        void IInputController.TriggerHapticVibration(ControllerType type, HapticData data)
         {
             // do nothing.
         }
 
-        bool IInputController.IsDown(ButtonType type)
+        bool IInputController.IsDown(ControllerType controllerType, ButtonType buttonType)
         {
-            switch (type)
+            switch (buttonType)
             {
                 case ButtonType.One:
                     return UnityEngine.Input.GetKeyDown(_inputSettings.One);
@@ -79,9 +80,9 @@ namespace Conekton.ARUtility.Input.Infrastructure
             }
         }
 
-        bool IInputController.IsUp(ButtonType type)
+        bool IInputController.IsUp(ControllerType controllerType, ButtonType buttonType)
         {
-            switch (type)
+            switch (buttonType)
             {
                 case ButtonType.One:
                     return UnityEngine.Input.GetKeyUp(_inputSettings.One);
