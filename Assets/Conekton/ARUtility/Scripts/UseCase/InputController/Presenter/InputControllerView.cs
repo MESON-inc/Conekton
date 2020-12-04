@@ -19,6 +19,7 @@ namespace Conekton.ARUtility.Input.Presenter
 
         [SerializeField] private float _laserDistance = 1f;
         [SerializeField] private Transform _reticle = null;
+        [SerializeField] private ControllerType _controllerType = ControllerType.Right;
 
         private LineRenderer _lineRenderer = null;
         private Vector3[] _positions = new Vector3[2];
@@ -38,7 +39,7 @@ namespace Conekton.ARUtility.Input.Presenter
 
         private void UpdatePose()
         {
-            transform.SetPositionAndRotation(_inputController.Position, _inputController.Rotation);
+            transform.SetPositionAndRotation(_inputController.GetPosition(_controllerType), _inputController.GetRotation(_controllerType));
 
             float dist = _laserDistance;
 
@@ -47,8 +48,8 @@ namespace Conekton.ARUtility.Input.Presenter
                 dist = hitDistance;
             }
 
-            _positions[0] = _inputController.Position;
-            _positions[1] = _positions[0] + _inputController.Forward * dist;
+            _positions[0] = _inputController.GetPosition(_controllerType);
+            _positions[1] = _positions[0] + _inputController.GetForward(_controllerType) * dist;
 
             _lineRenderer.SetPositions(_positions);
 
@@ -75,7 +76,7 @@ namespace Conekton.ARUtility.Input.Presenter
 
         private Ray GetRayByController()
         {
-            return new Ray(_inputController.Position, _inputController.Forward);
+            return new Ray(_inputController.GetPosition(_controllerType), _inputController.GetForward(_controllerType));
         }
 
         private float ObjectCollisionDistance()

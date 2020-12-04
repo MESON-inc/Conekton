@@ -8,6 +8,7 @@ using Zenject;
 
 using Conekton.ARUtility.Input.Domain;
 using Conekton.ARUtility.Input.Application;
+using ControllerType = Conekton.ARUtility.Input.Domain.ControllerType;
 
 namespace Conekton.ARUtility.Input.Infrastructure
 {
@@ -17,32 +18,34 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
         private readonly Vector3 VECTOR3_FORWARD = Vector3.forward;
 
-        bool IInputController.IsTriggerDown => NRInput.GetButtonDown(ControllerButton.TRIGGER);
+        bool IInputController.IsTrigger(ControllerType type) => NRInput.GetButton(ControllerButton.TRIGGER);
+        
+        bool IInputController.IsTriggerDown(ControllerType type) => NRInput.GetButtonDown(ControllerButton.TRIGGER);
 
-        bool IInputController.IsTriggerUp => NRInput.GetButtonUp(ControllerButton.TRIGGER);
+        bool IInputController.IsTriggerUp(ControllerType type) => NRInput.GetButtonUp(ControllerButton.TRIGGER);
 
-        bool IInputController.IsTouchDown => NRInput.GetButtonDown(ControllerButton.TRIGGER);
+        bool IInputController.IsTouchDown(ControllerType type) => NRInput.GetButtonDown(ControllerButton.TRIGGER);
 
-        bool IInputController.IsTouchUp => NRInput.GetButtonDown(ControllerButton.TRIGGER);
+        bool IInputController.IsTouchUp(ControllerType type) => NRInput.GetButtonDown(ControllerButton.TRIGGER);
 
-        bool IInputController.IsTouch => NRInput.GetButton(ControllerButton.TRIGGER);
+        bool IInputController.IsTouch(ControllerType type) => NRInput.GetButton(ControllerButton.TRIGGER);
 
-        Vector3 IInputController.Forward => (this as IInputController).Rotation * VECTOR3_FORWARD;
+        Vector3 IInputController.GetForward(ControllerType type) => (this as IInputController).GetRotation(type) * VECTOR3_FORWARD;
 
-        Vector3 IInputController.Position => NRInput.AnchorsHelper.GetAnchor(ControllerAnchorEnum.RightLaserAnchor).position;
+        Vector3 IInputController.GetPosition(ControllerType type) => NRInput.AnchorsHelper.GetAnchor(ControllerAnchorEnum.RightLaserAnchor).position;
 
-        Quaternion IInputController.Rotation => NRInput.AnchorsHelper.GetAnchor(ControllerAnchorEnum.RightLaserAnchor).rotation;
+        Quaternion IInputController.GetRotation(ControllerType type) => NRInput.AnchorsHelper.GetAnchor(ControllerAnchorEnum.RightLaserAnchor).rotation;
 
-        Vector2 IInputController.Touch => NRInput.GetTouch();
+        Vector2 IInputController.GetTouch(ControllerType type) => NRInput.GetTouch();
 
-        void IInputController.TriggerHapticVibration(HapticData data)
+        void IInputController.TriggerHapticVibration(ControllerType type, HapticData data)
         {
             NRInput.TriggerHapticVibration(data.DurationSeconds, data.Frequency, data.Amplitude);
         }
 
-        bool IInputController.IsDown(ButtonType type)
+        bool IInputController.IsDown(ControllerType controllerType, ButtonType buttonType)
         {
-            switch (type)
+            switch (buttonType)
             {
                 case ButtonType.One:
                     return NRInput.GetButtonDown(_inputSettings.One);
@@ -61,9 +64,9 @@ namespace Conekton.ARUtility.Input.Infrastructure
             }
         }
 
-        bool IInputController.IsUp(ButtonType type)
+        bool IInputController.IsUp(ControllerType controllerType, ButtonType buttonType)
         {
-            switch (type)
+            switch (buttonType)
             {
                 case ButtonType.One:
                     return NRInput.GetButtonUp(_inputSettings.One);
@@ -84,4 +87,3 @@ namespace Conekton.ARUtility.Input.Infrastructure
     }
 }
 #endif
-
