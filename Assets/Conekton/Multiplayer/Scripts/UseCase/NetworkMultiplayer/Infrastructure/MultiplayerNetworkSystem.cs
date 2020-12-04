@@ -9,16 +9,19 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
     {
         [Inject] private IMultiplayerNetworkInfrastructure _infra = null;
         [Inject] private IAvatarService _avatarService = null;
+        [Inject] private IMultiplayerNetworkContext _context = null;
 
         public event ConnectedEvent OnConnected;
         public event DisconnectedEvent OnDisconnected;
         public event CreatedRemotePlayerEvent OnCreatedRemotePlayer;
         public event CreatedLocalPlayerEvent OnCreatedLocalPlayer;
         public event DestroyedRemotePlayerEvent OnDestroyedRemotePlayer;
+        public event ReceivedRemotePlayerCustomDataEvent OnReceivedRemotePlayerCustomData;
 
         private IAvatarController _mainAvatarController = null;
 
         #region ### for Zenject interfaces ###
+
         void IInitializable.Initialize()
         {
             _infra.OnServerConnected += HandleOnConnected;
@@ -26,7 +29,12 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             _infra.OnPlayerConnected += HandlePlayerConnected;
             _infra.OnPlayerDisconnected += HandlePlayerDisconnected;
 
-            _infra.Connect();
+            _context.SetSystem(this);
+
+            if (_context.AutoConnect)
+            {
+                _infra.Connect();
+            }
         }
 
         void ILateDisposable.LateDispose()
@@ -50,7 +58,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
         private void HandleOnConnected()
         {
-            CreateRemotePlayerForLocalPlayer();
+            _context.OnConnected();
 
             OnConnected?.Invoke();
         }
@@ -64,6 +72,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
         #region ### for IMultiplayerNetworkSystem interfaces ###
         bool IMultiplayerNetworkSystem.IsConnected => _infra.IsConnected;
+
         void IMultiplayerNetworkSystem.Connect()
         {
             _infra.Connect();
@@ -97,7 +106,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             return avatar;
         }
 
-        private void CreateRemotePlayerForLocalPlayer()
+        void IMultiplayerNetworkSystem.CreateRemotePlayerForLocalPlayer(object args)
         {
             Debug.Log("Will create Remote Player for Local Player.");
 
@@ -108,8 +117,13 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
                 _mainAvatarController = avatar.AvatarController;
             }
 
-            _infra.CreateRemotePlayer();
             _infra.RegisterMainAvatar(avatar.AvatarID);
+            _infra.CreateRemotePlayer(args);
+        }
+
+        public void ReceivedRemotePlayerCustomData(IRemotePlayer remotePlayer, object args)
+        {
+            OnReceivedRemotePlayerCustomData?.Invoke(remotePlayer, args);
         }
 
         private void CreateRemotePlayerLocalPlayer(IRemotePlayer remotePlayer, object args)
@@ -177,4 +191,3 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         }
     }
 }
-

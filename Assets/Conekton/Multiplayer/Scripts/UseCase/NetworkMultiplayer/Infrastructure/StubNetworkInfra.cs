@@ -31,7 +31,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             DelayDisconnect();
         }
 
-        IRemotePlayer IMultiplayerNetworkInfrastructure.CreateRemotePlayer()
+        IRemotePlayer IMultiplayerNetworkInfrastructure.CreateRemotePlayer(object args)
         {
             return null;
         }

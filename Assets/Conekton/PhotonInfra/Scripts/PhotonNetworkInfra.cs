@@ -81,9 +81,9 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             PhotonNetwork.Disconnect();
         }
 
-        IRemotePlayer IMultiplayerNetworkInfrastructure.CreateRemotePlayer()
+        IRemotePlayer IMultiplayerNetworkInfrastructure.CreateRemotePlayer(object args)
         {
-            GameObject remoteGO = PhotonNetwork.Instantiate(_remotePlayerPath, Vector3.zero, Quaternion.identity, 0);
+            GameObject remoteGO = PhotonNetwork.Instantiate(_remotePlayerPath, Vector3.zero, Quaternion.identity, 0, new object[] { args });
             return remoteGO.GetComponent<IRemotePlayer>();
         }
 
