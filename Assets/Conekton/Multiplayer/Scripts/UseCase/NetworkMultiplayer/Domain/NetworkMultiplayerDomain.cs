@@ -54,6 +54,8 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
     /// <param name="remotePlayer"></param>
     public delegate void DestroyingRemotePlayerEvent(IRemotePlayer remotePlayer);
 
+    public delegate void ReceivedRemotePlayerCustomDataEvent(IRemotePlayer remotePlayer, object args);
+
     /// <summary>
     /// This is a PlayerID data struct.
     /// </summary>
@@ -124,6 +126,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         event CreatedRemotePlayerEvent OnCreatedRemotePlayer;
         event CreatedLocalPlayerEvent OnCreatedLocalPlayer;
         event DestroyedRemotePlayerEvent OnDestroyedRemotePlayer;
+        event ReceivedRemotePlayerCustomDataEvent OnReceivedRemotePlayerCustomData;
         bool IsConnected { get; }
         void Connect();
         void Disconnect();
@@ -133,6 +136,8 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         void CreateRemotePlayerLocalPlayer(IRemotePlayer remotePlayer, object args);
         void CreatedRemotePlayer(IRemotePlayer remotePlayer, object args);
         void RemoveRemotePlayer(IRemotePlayer remotePlayer);
+        void CreateRemotePlayerForLocalPlayer(object args);
+        void ReceivedRemotePlayerCustomData(IRemotePlayer remotePlayer, object args);
     }
 
     /// <summary>
@@ -147,7 +152,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         bool IsConnected { get; }
         void Connect();
         void Disconnect();
-        IRemotePlayer CreateRemotePlayer();
+        IRemotePlayer CreateRemotePlayer(object args);
         PlayerID[] GetAllRemotePlayerID();
         PlayerID GetPlayerID(AvatarID avatarID);
         /// <summary>
@@ -170,5 +175,14 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
     }
 
     public interface IMultiplayerNetworkIDRepository { }
+
+    public interface IMultiplayerNetworkContext
+    {
+        bool AutoConnect { get; }
+        void SetSystem(IMultiplayerNetworkSystem system);
+        void SetArgument(object args);
+        void Connect();
+        void OnConnected();
+    }
 }
 
