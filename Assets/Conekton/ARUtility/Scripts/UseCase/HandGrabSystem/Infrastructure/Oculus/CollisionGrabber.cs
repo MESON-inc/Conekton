@@ -7,7 +7,7 @@ using ModestTree;
 
 namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
 {
-    public class OculusGrabber : MonoBehaviour, IGrabber
+    public class CollisionGrabber : MonoBehaviour, IGrabber
     {
         public event OnTouchedEvent OnTouched;
         public event OnUntouchedEvent OnUntouched;

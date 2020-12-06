@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using Conekton.ARUtility.GrabSystemUseCase.Domain;
 using UnityEngine;
 using Zenject;
-using Conekton.ARUtility.HandSystemUseCase.Domain;
 using Conekton.ARUtility.Input.Domain;
 
 namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
 {
-    public class OculusControllerGrabController : MonoBehaviour, IGrabController
+    public class ControllerGrabController : MonoBehaviour, IGrabController
     {
         [SerializeField] private ControllerType _controllerType = ControllerType.Right;
         
