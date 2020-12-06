@@ -5,7 +5,6 @@ using Conekton.ARUtility.GrabSystemUseCase.Domain;
 using Conekton.ARUtility.Input.Domain;
 using UnityEngine;
 using ModestTree;
-using OVR.OpenVR;
 using Zenject;
 
 namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
@@ -17,12 +16,6 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
         [SerializeField] private ControllerType _controllerType = ControllerType.Right;
 
         private IGrabbable _hoverGrabbable = null;
-
-        private void Awake()
-        {
-            OnTouched += (grabber, grabbable) => Debug.Log("Touched");
-            OnUntouched += (grabber, grabbable) => Debug.Log("Untouched");
-        }
 
         private void Update()
         {
