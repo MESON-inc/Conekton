@@ -17,19 +17,16 @@ namespace Conekton.ARMultiplayer.Avatar.Infrastructure
 
         IAvatar IAvatarSystem.CreateMain()
         {
-            return _repository.Create(_mainID);
+            return Create(_mainID);
         }
 
         IAvatar IAvatarSystem.Create()
         {
             AvatarID id = GetNewID();
-            return _repository.Create(id);
+            return Create(id);
         }
 
-        IAvatar IAvatarSystem.Create(AvatarID id)
-        {
-            return _repository.Create(id);
-        }
+        IAvatar IAvatarSystem.Create(AvatarID id) => Create(id);
 
         void IAvatarSystem.Remove(AvatarID id)
         {
@@ -49,6 +46,11 @@ namespace Conekton.ARMultiplayer.Avatar.Infrastructure
             {
                 ID = (_avatarIndex++).ToString().GetHashCode(),
             };
+        }
+
+        private IAvatar Create(AvatarID id)
+        {
+            return _repository.Create(id);
         }
     }
 }
