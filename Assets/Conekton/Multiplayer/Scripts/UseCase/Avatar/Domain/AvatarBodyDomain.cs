@@ -57,9 +57,8 @@ namespace Conekton.ARMultiplayer.AvatarBody.Domain
         AvatarBodyType BodyType { get; }
         AvatarBodyID BodyID { get; }
         Transform Transform { get; }
+        void Active(bool active);
         void SetAvatar(IAvatar avatar);
-        void SetAsMain(bool asMain);
-        void Release();
     }
 
     public interface IAvatarBodyIDGenerator
@@ -71,11 +70,15 @@ namespace Conekton.ARMultiplayer.AvatarBody.Domain
     {
         IAvatarBody Create(TAvatarType args);
         IAvatarBody Find(AvatarBodyID id);
+        IAvatarBody Get(TAvatarType args);
+        void Release(IAvatarBody body);
     }
     
-    public interface IAvatarBodyRepository
+    public interface IAvatarBodyRepository<TAvatarType>
     {
         IAvatarBody Find(AvatarBodyID id);
+        IAvatarBody Get(TAvatarType args);
         void Save(AvatarBodyType bodyType, IAvatarBody avatarBody);
+        void Release(IAvatarBody body);
     }
 }

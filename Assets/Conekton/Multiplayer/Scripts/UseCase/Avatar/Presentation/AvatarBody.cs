@@ -25,20 +25,15 @@ namespace Conekton.ARMultiplayer.AvatarBody.Presentation
             _bodyType = args.BodyType;
             _bodyID = args.BodyID;
         }
-        
+
+        public void Active(bool active)
+        {
+            gameObject.SetActive(active);
+        }
+
         public void SetAvatar(IAvatar avatar)
         {
             _avatar = avatar;
-        }
-
-        public void SetAsMain(bool asMain)
-        {
-            //
-        }
-
-        public void Release()
-        {
-            //
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Conekton.ARMultiplayer.Avatar.Application
                 .AsCached();
             
             subContainer
-                .Bind<IAvatarBodyRepository>()
+                .Bind<IAvatarBodyRepository<AvatarBodyTypeArgs>>()
                 .To<AvatarBodyRepository>()
                 .AsCached();
             
