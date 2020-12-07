@@ -280,3 +280,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa916c37ef7d07a4f92e30185ad6b3a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _headTrans: {fileID: 2726045601896430033}
+  _leftHandTrans: {fileID: 2726045602300376090}
+  _rightHandTrans: {fileID: 5221077999160083321}
