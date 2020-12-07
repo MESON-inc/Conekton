@@ -5,6 +5,7 @@ using UnityEngine;
 using Zenject;
 
 using Conekton.ARMultiplayer.Avatar.Domain;
+using Conekton.ARMultiplayer.AvatarBody.Domain;
 
 namespace Conekton.ARMultiplayer.Avatar.Application
 {
@@ -12,8 +13,20 @@ namespace Conekton.ARMultiplayer.Avatar.Application
     {
         [Inject] private IAvatarSystem _system = null;
         [Inject(Id = "Player")] private IAvatarController _playerAvatarController = null;
+        [Inject] private IAvatarBodySystem<AvatarBodyTypeArgs> _avatarBodySystem = null;
 
-        IAvatar IAvatarService.Create() => _system.Create();
+        IAvatar IAvatarService.Create()
+        {
+            IAvatar avatar = _system.Create();
+
+            IAvatarBody body = _avatarBodySystem.Get(new AvatarBodyTypeArgs
+            {
+                BodyType = AvatarBodyType.B,
+            });
+            body.SetAvatar(avatar);
+            
+            return avatar;
+        }
         void IAvatarService.Remove(AvatarID id) => _system.Remove(id);
         IAvatar IAvatarService.Find(AvatarID id) => _system.Find(id);
         IAvatar IAvatarService.GetMain() => GetOrCreateMain();
@@ -29,6 +42,12 @@ namespace Conekton.ARMultiplayer.Avatar.Application
             {
                 IAvatar avatar = _system.CreateMain();
                 avatar.SetAvatarController(_playerAvatarController);
+
+                IAvatarBody body = _avatarBodySystem.Get(new AvatarBodyTypeArgs
+                {
+                    BodyType = AvatarBodyType.A,
+                });
+                body.SetAvatar(avatar);
             }
 
             return _system.GetMain();
