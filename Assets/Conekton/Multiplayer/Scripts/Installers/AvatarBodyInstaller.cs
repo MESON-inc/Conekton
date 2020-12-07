@@ -9,7 +9,7 @@ namespace Conekton.ARMultiplayer.Avatar.Application
 {
     public class AvatarBodyInstaller : MonoInstaller
     {
-        [SerializeField] private GameObject _avatarBodyPrefab = null;
+        [SerializeField] private GameObject _avatarBodyFactoryPrefab = null;
 
         public override void InstallBindings()
         {
@@ -31,10 +31,11 @@ namespace Conekton.ARMultiplayer.Avatar.Application
                 .Bind<IAvatarBodyRepository<AvatarBodyTypeArgs>>()
                 .To<AvatarBodyRepository>()
                 .AsCached();
-            
+
             subContainer
-                .BindFactory<AvatarBodyTypeArgs, AvatarBodyClass, AvatarBodyFactory>()
-                .FromComponentInNewPrefab(_avatarBodyPrefab);
+                .Bind<AvatarBodyFactory>()
+                .FromComponentInNewPrefab(_avatarBodyFactoryPrefab)
+                .AsCached();
         }
     }
 }

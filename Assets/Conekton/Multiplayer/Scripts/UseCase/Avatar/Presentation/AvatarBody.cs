@@ -15,7 +15,7 @@ namespace Conekton.ARMultiplayer.AvatarBody.Presentation
         public AvatarBodyID BodyID => _bodyID;
         public Transform Transform => transform;
 
-        private AvatarBodyType _bodyType = AvatarBodyType.Default;
+        private AvatarBodyType _bodyType = AvatarBodyType.A;
         private AvatarBodyID _bodyID = default;
         private IAvatar _avatar = null;
 

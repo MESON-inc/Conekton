@@ -43,12 +43,13 @@ namespace Conekton.ARMultiplayer.AvatarBody.Domain
     
     public enum AvatarBodyType
     {
-        Default,
+        A,
+        B,
     }
 
     public class AvatarBodyTypeArgs
     {
-        public AvatarBodyType BodyType { get; set; } = AvatarBodyType.Default;
+        public AvatarBodyType BodyType { get; set; } = AvatarBodyType.A;
         public AvatarBodyID BodyID { get; set; }
     }
     
@@ -72,6 +73,11 @@ namespace Conekton.ARMultiplayer.AvatarBody.Domain
         IAvatarBody Find(AvatarBodyID id);
         IAvatarBody Get(TAvatarType args);
         void Release(IAvatarBody body);
+    }
+
+    public interface IAvatarBodyFactory<TAvatarType>
+    {
+        IAvatarBody Create(TAvatarType args);
     }
     
     public interface IAvatarBodyRepository<TAvatarType>
