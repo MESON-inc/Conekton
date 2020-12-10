@@ -15,7 +15,7 @@ namespace Conekton.ARMultiplayer.Demo.RPC.Infrastructure
     {
         [Inject] private IDemoRPCService _service = null;
         [Inject] private IMultiplayerNetworkSystem _networkSystem = null;
-        [Inject] private IAvatarSystem _avatarSystem = null;
+        [Inject] private IAvatarService _avatarService = null;
 
         public void SendID(AvatarID avatarID, DemoID demoID)
         {
@@ -28,7 +28,7 @@ namespace Conekton.ARMultiplayer.Demo.RPC.Infrastructure
         {
             AvatarID aid = _networkSystem.GetAvatarID(playerID);
             DemoID did = new DemoID { ID = demoID };
-            IAvatar avatar = _avatarSystem.Find(aid);
+            IAvatar avatar = _avatarService.Find(aid);
             _service.Set(avatar, did);
         }
     }
