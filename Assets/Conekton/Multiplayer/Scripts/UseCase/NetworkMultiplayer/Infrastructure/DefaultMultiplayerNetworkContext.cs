@@ -11,6 +11,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         private IMultiplayerNetworkSystem _networkSystem = null;
         private IRoomOptions _roomOptions = null;
         private object _args = null;
+        private string _roomName = "";
 
         public bool AutoConnect => true;
 
@@ -19,6 +20,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         {
             _networkSystem = system;
             _roomOptions = options;
+            _roomName = _roomOptions.DefaultRoomName;
             _networkSystem.OnConnected += HandleOnConnected;
         }
 
@@ -31,10 +33,11 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         }
 
         public void SetArgument(object args) => _args = args;
+        public void SetRoomName(string roomName) => _roomName = roomName;
 
         public void Connect()
         {
-            _networkSystem.Connect(_roomOptions);
+            _networkSystem.Connect(_roomName, _roomOptions);
         }
 
         public void Disconnect()

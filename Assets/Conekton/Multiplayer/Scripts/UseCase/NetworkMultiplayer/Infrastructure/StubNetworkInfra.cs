@@ -17,7 +17,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
         bool IMultiplayerNetworkInfrastructure.IsConnected => _isConnected;
 
-        void IMultiplayerNetworkInfrastructure.Connect(IRoomOptions roomOptions)
+        void IMultiplayerNetworkInfrastructure.Connect(string roomName, IRoomOptions roomOptions)
         {
             Debug.Log("Connect to stub server.");
 
