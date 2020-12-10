@@ -218,6 +218,8 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             roomOptions.PlayerTtl = _roomOptions.PlayerTtl;
             roomOptions.EmptyRoomTtl = _roomOptions.EmptyRoomTtl;
 
+            Debug.Log($"Will enter {_roomName} with options, PlayerTtl {_roomOptions.PlayerTtl.ToString()}, EmptyRoomTtl {_roomOptions.EmptyRoomTtl.ToString()}");
+
             PhotonNetwork.JoinOrCreateRoom(_roomName, roomOptions, TypedLobby.Default);
         }
 
