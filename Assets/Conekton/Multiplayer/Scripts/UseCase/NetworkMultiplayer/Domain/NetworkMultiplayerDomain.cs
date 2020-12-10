@@ -54,6 +54,8 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
     /// <param name="remotePlayer"></param>
     public delegate void DestroyingRemotePlayerEvent(IRemotePlayer remotePlayer);
 
+    public delegate void ReceivedRemotePlayerCustomDataEvent(IRemotePlayer remotePlayer, object args);
+
     /// <summary>
     /// This is a PlayerID data struct.
     /// </summary>
@@ -124,8 +126,9 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         event CreatedRemotePlayerEvent OnCreatedRemotePlayer;
         event CreatedLocalPlayerEvent OnCreatedLocalPlayer;
         event DestroyedRemotePlayerEvent OnDestroyedRemotePlayer;
+        event ReceivedRemotePlayerCustomDataEvent OnReceivedRemotePlayerCustomData;
         bool IsConnected { get; }
-        void Connect();
+        void Connect(string roomName, IRoomOptions roomOptions);
         void Disconnect();
         PlayerID ResolvePlayerID(object args);
         PlayerID GetPlayerID(AvatarID avatarID);
@@ -133,6 +136,8 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         void CreateRemotePlayerLocalPlayer(IRemotePlayer remotePlayer, object args);
         void CreatedRemotePlayer(IRemotePlayer remotePlayer, object args);
         void RemoveRemotePlayer(IRemotePlayer remotePlayer);
+        void CreateRemotePlayerForLocalPlayer(object args);
+        void ReceivedRemotePlayerCustomData(IRemotePlayer remotePlayer, object args);
     }
 
     /// <summary>
@@ -145,9 +150,9 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         event PlayerConnectedEvent OnPlayerConnected;
         event PlayerDisconnectedEvent OnPlayerDisconnected;
         bool IsConnected { get; }
-        void Connect();
+        void Connect(string roomName, IRoomOptions roomOptions);
         void Disconnect();
-        IRemotePlayer CreateRemotePlayer();
+        IRemotePlayer CreateRemotePlayer(object args);
         PlayerID[] GetAllRemotePlayerID();
         PlayerID GetPlayerID(AvatarID avatarID);
         /// <summary>
@@ -170,5 +175,21 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
     }
 
     public interface IMultiplayerNetworkIDRepository { }
+
+    public interface IRoomOptions
+    {
+        string DefaultRoomName { get; }
+        int PlayerTtl { get; }
+        int EmptyRoomTtl { get; }
+    }
+
+    public interface IMultiplayerNetworkContext
+    {
+        bool AutoConnect { get; }
+        void SetArgument(object args);
+        void SetRoomName(string roomName);
+        void Connect();
+        void Disconnect();
+    }
 }
 

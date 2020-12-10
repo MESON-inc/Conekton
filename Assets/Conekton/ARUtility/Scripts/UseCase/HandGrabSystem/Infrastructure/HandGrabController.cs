@@ -8,10 +8,9 @@ using Conekton.ARUtility.HandSystemUseCase.Domain;
 
 namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
 {
-    public class OculusHandGrabController : MonoBehaviour, IGrabController
+    public class HandGrabController : MonoBehaviour, IGrabController
     {
         private IGrabSystem _grabSystem = null;
-        private IHandSystem _handSystem = null;
 
         private IGrabber _grabber = null;
         private IHand _hand = null;
@@ -19,10 +18,9 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
         private bool _injected = false;
 
         [Inject]
-        private void Injection(IGrabSystem grabSystem, IHandSystem handSystem)
+        private void Injection(IGrabSystem grabSystem)
         {
             _grabSystem = grabSystem;
-            _handSystem = handSystem;
 
             _grabber = GetComponent<IGrabber>();
             _hand = GetComponent<IHand>();

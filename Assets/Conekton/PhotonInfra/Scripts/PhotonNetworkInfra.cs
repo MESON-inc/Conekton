@@ -52,11 +52,10 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
     public class PhotonNetworkInfra : MonoBehaviourPunCallbacks, IMultiplayerNetworkInfrastructure
     {
         [SerializeField] private string _remotePlayerPath = "Multiplayer/PhotonRemotePlayer";
-        [SerializeField] private string _roomName = "Room";
-        [SerializeField] private int _playerTtl = 60000;
-        [SerializeField] private int _emptyRoomTtl = 0;
 
         private bool _needsToReconnect = false;
+        private string _roomName = "";
+        private IRoomOptions _roomOptions = null;
 
         public event ConnectedEvent OnServerConnected;
         public event DisconnectedEvent OnServerDisconnected;
@@ -67,9 +66,12 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
         bool IMultiplayerNetworkInfrastructure.IsConnected => PhotonNetwork.IsConnected;
 
-        void IMultiplayerNetworkInfrastructure.Connect()
+        void IMultiplayerNetworkInfrastructure.Connect(string roomName, IRoomOptions roomOptions)
         {
             Debug.Log("Will connect to a Photon server.");
+
+            _roomName = roomName;
+            _roomOptions = roomOptions;
 
             PhotonNetwork.ConnectUsingSettings();
         }
@@ -81,9 +83,9 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             PhotonNetwork.Disconnect();
         }
 
-        IRemotePlayer IMultiplayerNetworkInfrastructure.CreateRemotePlayer()
+        IRemotePlayer IMultiplayerNetworkInfrastructure.CreateRemotePlayer(object args)
         {
-            GameObject remoteGO = PhotonNetwork.Instantiate(_remotePlayerPath, Vector3.zero, Quaternion.identity, 0);
+            GameObject remoteGO = PhotonNetwork.Instantiate(_remotePlayerPath, Vector3.zero, Quaternion.identity, 0, new object[] { args });
             return remoteGO.GetComponent<IRemotePlayer>();
         }
 
@@ -213,8 +215,10 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         private void JoinOrCreateRoom()
         {
             RoomOptions roomOptions = new RoomOptions();
-            roomOptions.PlayerTtl = _playerTtl;
-            roomOptions.EmptyRoomTtl = _emptyRoomTtl;
+            roomOptions.PlayerTtl = _roomOptions.PlayerTtl;
+            roomOptions.EmptyRoomTtl = _roomOptions.EmptyRoomTtl;
+
+            Debug.Log($"Will enter {_roomName} with options, PlayerTtl {_roomOptions.PlayerTtl.ToString()}, EmptyRoomTtl {_roomOptions.EmptyRoomTtl.ToString()}");
 
             PhotonNetwork.JoinOrCreateRoom(_roomName, roomOptions, TypedLobby.Default);
         }

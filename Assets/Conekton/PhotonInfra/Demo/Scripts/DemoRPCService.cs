@@ -14,7 +14,7 @@ namespace Conekton.ARMultiplayer.Demo.RPC.Infrastructure
 {
     public class DemoRPCService : IDemoRPCService, IInitializable, ITickable
     {
-        [Inject] private IAvatarSystem _avatarSystem = null;
+        [Inject] private IAvatarService _avatarService = null;
         [Inject] private DemoRPCNetwork _demoRPCNetwork = null;
         [Inject] private IMultiplayerNetworkSystem _networkSystem = null;
 
@@ -69,8 +69,8 @@ namespace Conekton.ARMultiplayer.Demo.RPC.Infrastructure
         {
             Debug.Log($"Get {_lastDetection.name}");
 
-            AvatarID avatarID = _avatarSystem.CreateMain().AvatarID;
-            IAvatar avatar = _avatarSystem.Find(avatarID);
+            AvatarID avatarID = _avatarService.GetMain().AvatarID;
+            IAvatar avatar = _avatarService.Find(avatarID);
 
             DemoID demoID = _lastDetection.DemoID;
 

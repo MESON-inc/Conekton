@@ -7,7 +7,7 @@ using ModestTree;
 
 namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
 {
-    public class OculusGrabber : MonoBehaviour, IGrabber
+    public class Grabber : MonoBehaviour, IGrabber
     {
         public event OnTouchedEvent OnTouched;
         public event OnUntouchedEvent OnUntouched;
@@ -17,33 +17,14 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
         private readonly List<IGrabbable> _removeTarget = new List<IGrabbable>();
 
         #region ### MonoBehaviour ###
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.TryGetComponent(out IGrabbable grabbable))
-            {
-                TryTouch(grabbable);
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.TryGetComponent(out IGrabbable grabbable))
-            {
-                TryUntouch(grabbable);
-            }
-        }
-
         private void LateUpdate()
         {
             _targetGrabbables.RemoveAll(g => _removeTarget.Contains(g));
             _removeTarget.Clear();
         }
-
         #endregion ### MonoBehaviour ###
 
         #region ### IGrabber interface ###
-
         public bool IsGrabbed { get; private set; } = false;
 
         public IReadOnlyList<IGrabbable> GetTargetGrabbables()
@@ -73,7 +54,7 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
             TryUntouch(grabbable);
         }
 
-        private bool TryTouch(IGrabbable grabbable)
+        public bool TryTouch(IGrabbable grabbable)
         {
             if (!CanTouch(grabbable))
             {
@@ -86,7 +67,7 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
             return true;
         }
 
-        private bool TryUntouch(IGrabbable grabbable)
+        public bool TryUntouch(IGrabbable grabbable)
         {
             if (!CanUntouch(grabbable))
             {

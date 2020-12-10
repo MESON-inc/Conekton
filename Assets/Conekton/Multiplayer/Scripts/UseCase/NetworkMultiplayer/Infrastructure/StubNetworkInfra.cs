@@ -17,7 +17,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
         bool IMultiplayerNetworkInfrastructure.IsConnected => _isConnected;
 
-        void IMultiplayerNetworkInfrastructure.Connect()
+        void IMultiplayerNetworkInfrastructure.Connect(string roomName, IRoomOptions roomOptions)
         {
             Debug.Log("Connect to stub server.");
 
@@ -31,7 +31,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             DelayDisconnect();
         }
 
-        IRemotePlayer IMultiplayerNetworkInfrastructure.CreateRemotePlayer()
+        IRemotePlayer IMultiplayerNetworkInfrastructure.CreateRemotePlayer(object args)
         {
             return null;
         }

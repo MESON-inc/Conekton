@@ -28,6 +28,8 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Domain
         event OnTouchedEvent OnTouched;
         event OnUntouchedEvent OnUntouched;
         bool IsGrabbed { get; }
+        bool TryTouch(IGrabbable grabbable);
+        bool TryUntouch(IGrabbable grabbable);
         void Grab(IGrabbable grabbable);
         void Ungrab(IGrabbable grabbable);
         IReadOnlyList<IGrabbable> GetTargetGrabbables();
