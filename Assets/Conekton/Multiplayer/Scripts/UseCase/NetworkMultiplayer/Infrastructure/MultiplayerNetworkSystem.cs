@@ -9,7 +9,6 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
     {
         [Inject] private IMultiplayerNetworkInfrastructure _infra = null;
         [Inject] private IAvatarService _avatarService = null;
-        [Inject] private IMultiplayerNetworkContext _context = null;
 
         public event ConnectedEvent OnConnected;
         public event DisconnectedEvent OnDisconnected;
@@ -28,13 +27,6 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             _infra.OnServerDisconnected += HandleOnDisconnected;
             _infra.OnPlayerConnected += HandlePlayerConnected;
             _infra.OnPlayerDisconnected += HandlePlayerDisconnected;
-
-            _context.SetSystem(this);
-
-            if (_context.AutoConnect)
-            {
-                _infra.Connect();
-            }
         }
 
         void ILateDisposable.LateDispose()
@@ -58,8 +50,6 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
         private void HandleOnConnected()
         {
-            _context.OnConnected();
-
             OnConnected?.Invoke();
         }
 
@@ -73,9 +63,9 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         #region ### for IMultiplayerNetworkSystem interfaces ###
         bool IMultiplayerNetworkSystem.IsConnected => _infra.IsConnected;
 
-        void IMultiplayerNetworkSystem.Connect()
+        void IMultiplayerNetworkSystem.Connect(string roomName, IRoomOptions roomOptions)
         {
-            _infra.Connect();
+            _infra.Connect(roomName, roomOptions);
         }
 
         void IMultiplayerNetworkSystem.Disconnect()

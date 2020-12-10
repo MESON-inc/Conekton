@@ -13,15 +13,45 @@ namespace Conekton.ARMultiplayer.Avatar.Application
 
         public override void InstallBindings()
         {
-            Container.Bind<IAvatarSystem>().To<AvatarSystem>().AsCached();
-            Container.Bind<IAvatarRepository>().To<AvatarRepository>().AsCached();
+            Container
+                .Bind<IAvatarService>()
+                .FromSubContainerResolve()
+                .ByNewGameObjectMethod(InstallBindingsToSubContainer)
+                .AsCached()
+                .NonLazy();
+        }
 
-            Container.BindInterfacesAndSelfTo<PlayerAvatarController>().AsCached();
-            Container.Bind<IAvatarController>().WithId("Player").To<PlayerAvatarController>().FromResolve();
+        private void InstallBindingsToSubContainer(DiContainer subContainer)
+        {
+            subContainer
+                .BindInterfacesAndSelfTo<AvatarService>()
+                .AsCached()
+                .NonLazy();
+                
+            subContainer
+                .Bind<IAvatarSystem>()
+                .To<AvatarSystem>()
+                .AsCached();
+            
+            subContainer
+                .Bind<IAvatarRepository>()
+                .To<AvatarRepository>()
+                .AsCached();
 
-            Container.BindInterfacesAndSelfTo<AvatarService>().AsCached().NonLazy();
+            subContainer
+                .BindInterfacesAndSelfTo<PlayerAvatarController>()
+                .AsCached();
+            
+            subContainer
+                .Bind<IAvatarController>()
+                .WithId("Player")
+                .To<PlayerAvatarController>()
+                .FromResolve();
 
-            Container.BindFactory<AvatarID, Presentation.Avatar, AvatarFactory>().FromComponentInNewPrefab(_avatarPrefab);
+
+            subContainer
+                .BindFactory<AvatarID, Presentation.Avatar, AvatarFactory>()
+                .FromComponentInNewPrefab(_avatarPrefab);
         }
     }
 }
