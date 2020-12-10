@@ -6,23 +6,16 @@ namespace Conekton.ARUtility.UseCase.WorldOrigin.Domain
 {
     public delegate void MovedEvent(IWorldOrigin origin);
     
-    public interface IWorldOriginService
-    {
-        void UnRegister(IWorldOrigin origin);
-        void Register(IWorldOrigin origin);
-        IWorldOrigin GetWorldOrigin();
-    }
-    
     public interface IWorldOrigin
     {
         event MovedEvent OnMoved;
         Transform Transform { get; }
-        void MoveToPose(Pose pose);
-        void SetAnchor(IWorldAnchor anchor);
+        void AddAnchor(IWorldAnchor anchor);
+        void Clear();
     }
 
     public interface IWorldAnchor
     {
-        Transform Transform { get; }
+        Pose RelativePose { get; }
     }
 }
