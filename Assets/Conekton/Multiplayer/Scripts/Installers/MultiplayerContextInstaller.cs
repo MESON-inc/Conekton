@@ -13,7 +13,8 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Application
             Container
                 .Bind<IMultiplayerNetworkContext>()
                 .To<DefaultMultiplayerNetworkContext>()
-                .AsCached();
+                .AsCached()
+                .NonLazy();
         }
     }
 }

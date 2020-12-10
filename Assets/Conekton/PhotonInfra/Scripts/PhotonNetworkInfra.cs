@@ -52,11 +52,9 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
     public class PhotonNetworkInfra : MonoBehaviourPunCallbacks, IMultiplayerNetworkInfrastructure
     {
         [SerializeField] private string _remotePlayerPath = "Multiplayer/PhotonRemotePlayer";
-        [SerializeField] private string _roomName = "Room";
-        [SerializeField] private int _playerTtl = 60000;
-        [SerializeField] private int _emptyRoomTtl = 0;
 
         private bool _needsToReconnect = false;
+        private IRoomOptions _roomOptions = null;
 
         public event ConnectedEvent OnServerConnected;
         public event DisconnectedEvent OnServerDisconnected;
@@ -67,9 +65,11 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
         bool IMultiplayerNetworkInfrastructure.IsConnected => PhotonNetwork.IsConnected;
 
-        void IMultiplayerNetworkInfrastructure.Connect()
+        void IMultiplayerNetworkInfrastructure.Connect(IRoomOptions roomOptions)
         {
             Debug.Log("Will connect to a Photon server.");
+
+            _roomOptions = roomOptions;
 
             PhotonNetwork.ConnectUsingSettings();
         }
@@ -213,10 +213,10 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         private void JoinOrCreateRoom()
         {
             RoomOptions roomOptions = new RoomOptions();
-            roomOptions.PlayerTtl = _playerTtl;
-            roomOptions.EmptyRoomTtl = _emptyRoomTtl;
+            roomOptions.PlayerTtl = _roomOptions.PlayerTtl;
+            roomOptions.EmptyRoomTtl = _roomOptions.EmptyRoomTtl;
 
-            PhotonNetwork.JoinOrCreateRoom(_roomName, roomOptions, TypedLobby.Default);
+            PhotonNetwork.JoinOrCreateRoom(_roomOptions.RoomName, roomOptions, TypedLobby.Default);
         }
 
         private void SetupPhoton()
