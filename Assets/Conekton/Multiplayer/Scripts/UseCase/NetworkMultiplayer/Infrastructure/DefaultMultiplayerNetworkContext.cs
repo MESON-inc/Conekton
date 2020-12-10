@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 {
-    public class DefaultMultiplayerNetworkContext : IMultiplayerNetworkContext
+    public class DefaultMultiplayerNetworkContext : IMultiplayerNetworkContext, IInitializable
     {
         private IMultiplayerNetworkSystem _networkSystem = null;
         private IRoomOptions _roomOptions = null;
@@ -20,6 +20,14 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             _networkSystem = system;
             _roomOptions = options;
             _networkSystem.OnConnected += HandleOnConnected;
+        }
+
+        void IInitializable.Initialize()
+        {
+            if (AutoConnect)
+            {
+                Connect();
+            }
         }
 
         public void SetArgument(object args) => _args = args;
