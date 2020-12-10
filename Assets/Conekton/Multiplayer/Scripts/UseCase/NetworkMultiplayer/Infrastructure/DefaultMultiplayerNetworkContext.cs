@@ -2,32 +2,50 @@
 using System.Collections.Generic;
 using Conekton.ARMultiplayer.NetworkMultiplayer.Domain;
 using UnityEngine;
+using Zenject;
 
 namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 {
-    public class DefaultMultiplayerNetworkContext : IMultiplayerNetworkContext
+    public class DefaultMultiplayerNetworkContext : IMultiplayerNetworkContext, IInitializable
     {
         private IMultiplayerNetworkSystem _networkSystem = null;
+        private IRoomOptions _roomOptions = null;
         private object _args = null;
+        private string _roomName = "";
 
         public bool AutoConnect => true;
 
-        public void SetSystem(IMultiplayerNetworkSystem system)
+        [Inject]
+        private void Construct(IMultiplayerNetworkSystem system, IRoomOptions options)
         {
             _networkSystem = system;
+            _roomOptions = options;
+            _roomName = _roomOptions.DefaultRoomName;
+            _networkSystem.OnConnected += HandleOnConnected;
         }
 
-        public void SetArgument(object args)
+        void IInitializable.Initialize()
         {
-            _args = args;
+            if (AutoConnect)
+            {
+                Connect();
+            }
         }
+
+        public void SetArgument(object args) => _args = args;
+        public void SetRoomName(string roomName) => _roomName = roomName;
 
         public void Connect()
         {
-            // No need to connect because the system will connect to the server automatically.
+            _networkSystem.Connect(_roomName, _roomOptions);
         }
 
-        public void OnConnected()
+        public void Disconnect()
+        {
+            _networkSystem.Disconnect();
+        }
+
+        private void HandleOnConnected()
         {
             _networkSystem.CreateRemotePlayerForLocalPlayer(_args);
         }

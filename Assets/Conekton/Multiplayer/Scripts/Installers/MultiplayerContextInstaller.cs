@@ -11,9 +11,9 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Application
         public override void InstallBindings()
         {
             Container
-                .Bind<IMultiplayerNetworkContext>()
-                .To<DefaultMultiplayerNetworkContext>()
-                .AsCached();
+                .BindInterfacesAndSelfTo<DefaultMultiplayerNetworkContext>()
+                .AsCached()
+                .NonLazy();
         }
     }
 }
