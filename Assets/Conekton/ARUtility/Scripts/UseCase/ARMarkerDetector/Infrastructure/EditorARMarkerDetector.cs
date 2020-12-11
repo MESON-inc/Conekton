@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using Zenject;
 using Conekton.ARUtility.UseCase.ARAnchor.Domain;
 using Conekton.ARUtility.UseCase.ARMarkerDetector.Domain;
@@ -17,16 +19,23 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
         [SerializeField] private Vector3 _origin = Vector3.zero;
         [SerializeField] private Vector3 _euler = Vector3.zero;
 
+        private Dictionary<string, IARAnchor> _database = new Dictionary<string, IARAnchor>();
+
         private string _idStr = "0";
 
         private void OnGUI()
         {
+            _idStr = GUI.TextField(new Rect(10, 50, 50, 30), _idStr);
+
             if (GUI.Button(new Rect(70, 50, 130, 30), $"Detect Marker {_idStr}"))
             {
                 DetectedAnchor();
             }
 
-            _idStr = GUI.TextField(new Rect(10, 50, 50, 30), _idStr);
+            if (GUI.Button(new Rect(70, 90, 130, 30), $"Update Marker {_idStr}"))
+            {
+                UpdateAnchor();
+            }
         }
 
         private IARAnchor CreateARAnchor()
@@ -39,7 +48,18 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
             if (int.TryParse(_idStr, out int index))
             {
                 IARAnchor anchor = CreateARAnchor();
-                FireDetectedEvent(anchor, index);
+                string id = _markerIDSolver.Solve(index);
+                _database.Add(id, anchor);
+                FireDetectedEvent(anchor, id);
+            }
+        }
+
+        private void UpdateAnchor()
+        {
+            if (int.TryParse(_idStr, out int index))
+            {
+                string id = _markerIDSolver.Solve(index);
+                FireUpdateEvent(id);
             }
         }
 
@@ -48,17 +68,31 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
             anchor.SetPositionAndRotation(_origin, Quaternion.Euler(_euler));
         }
 
-        private void FireDetectedEvent(IARAnchor anchor, int index)
+        private void FireDetectedEvent(IARAnchor anchor, string id)
         {
+            Debug.Log($"Detected an anchor with {id}");
+            
             SetAnchorLocation(anchor);
-
-            string id = _markerIDSolver.Solve(index);
 
             OnDetectAnchorFirst?.Invoke(anchor, new ARMarkerEventData
             {
                 ID = id,
                 Name = $"EditorTrackableImage-[{id}]",
             });
+        }
+
+        private void FireUpdateEvent(string id)
+        {
+            Debug.Log($"Updated an anchor with {id}");
+            
+            if (_database.TryGetValue(id, out IARAnchor anchor))
+            {
+                OnUpdateAnchorPosition?.Invoke(anchor, new ARMarkerEventData
+                {
+                    ID = id,
+                    Name = $"EditorTrackableImage-[{id}]",
+                });
+            }
         }
     }
 }
