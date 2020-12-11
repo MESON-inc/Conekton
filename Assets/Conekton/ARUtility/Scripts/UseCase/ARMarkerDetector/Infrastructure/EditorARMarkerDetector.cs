@@ -23,15 +23,10 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
 
         private void OnGUI()
         {
-            if (GUI.Button(new Rect(10, 40, 150, 50), "Detect New Marker"))
+            if (GUI.Button(new Rect(10, 50, 150, 30), "Detect New Marker"))
             {
                 DetectedAnchor();
             }
-
-            //if (GUI.Button(new Rect(10, 100, 150, 50), "Random update position"))
-            //{
-            //    FireUpdatedEvent();
-            //}
         }
 
         private IARAnchor CreateARAnchor()
@@ -62,17 +57,6 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
                 Name = $"EditorTrackableImage-[{id}]",
             });
         }
-
-        //private void FireUpdatedEvent(IARAnchor anchor)
-        //{
-        //    SetAnchorLocation(anchor);
-
-        //    OnUpdateAnchorPosition?.Invoke(anchor, new ARMarkerEventData
-        //    {
-        //        ID = "",
-        //        Name = "",
-        //    });
-        //}
     }
 }
 
