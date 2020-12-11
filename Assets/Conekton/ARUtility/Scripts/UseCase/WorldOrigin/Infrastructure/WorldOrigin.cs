@@ -15,6 +15,11 @@ namespace Conekton.ARUtility.UseCase.WorldOrigin.Infrastructure
         
         private List<IWorldAnchor> _worldAnchors = new List<IWorldAnchor>();
 
+        private void Update()
+        {
+            UpdatePose();
+        }
+
         public void AddAnchor(IWorldAnchor anchor)
         {
             if (_worldAnchors.Contains(anchor))
@@ -23,6 +28,7 @@ namespace Conekton.ARUtility.UseCase.WorldOrigin.Infrastructure
             }
             
             _worldAnchors.Add(anchor);
+            
             UpdatePose();
         }
 
