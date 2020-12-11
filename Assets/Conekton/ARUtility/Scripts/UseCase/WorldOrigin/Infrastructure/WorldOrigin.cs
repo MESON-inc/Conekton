@@ -53,20 +53,12 @@ namespace Conekton.ARUtility.UseCase.WorldOrigin.Infrastructure
             }
             
             Vector3 resultPos = Vector3.zero;
+            Quaternion firstRot = _worldAnchors[0].RelativePose.rotation;
             float x = 0, y = 0, z = 0, w = 0;
-            
-            Quaternion firstRot = Quaternion.identity;
-            bool foundFirstRot = false;
             
             foreach (var a in _worldAnchors)
             {
                 resultPos += a.RelativePose.position;
-
-                if (!foundFirstRot)
-                {
-                    firstRot = a.RelativePose.rotation;
-                    foundFirstRot = true;
-                }
 
                 float dot = Quaternion.Dot(firstRot, a.RelativePose.rotation);
                 float multi = dot > 0 ? 1f : -1f;
