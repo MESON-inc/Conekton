@@ -19,10 +19,7 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
 
         private void Update()
         {
-            if (!IsGrabbed)
-            {
-                CheckHover();
-            }
+            CheckHover();
         }
 
         private void CheckHover()
@@ -37,17 +34,20 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
 
             if (hit.collider.TryGetComponent(out IGrabbable grabbable))
             {
-                if (_hoverGrabbable == grabbable)
-                {
-                    return;
-                }
-
-                Unhover();
-
-                _hoverGrabbable = grabbable;
-
-                TryTouch(grabbable);
+                Hover(grabbable);
             }
+        }
+
+        private void Hover(IGrabbable grabbable)
+        {
+            if (_hoverGrabbable == grabbable)
+            {
+                return;
+            }
+
+            _hoverGrabbable = grabbable;
+
+            TryTouch(grabbable);
         }
 
         private void Unhover()
@@ -59,25 +59,14 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
             }
         }
 
+        protected override void OnUngrab(IGrabbable grabbable)
+        {
+            _hoverGrabbable = null;
+        }
+
         private Ray GetRay()
         {
             return new Ray(_inputController.GetPosition(_controllerType), _inputController.GetForward(_controllerType));
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.TryGetComponent(out IGrabbable grabbable))
-            {
-                TryTouch(grabbable);
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.TryGetComponent(out IGrabbable grabbable))
-            {
-                TryUntouch(grabbable);
-            }
         }
     }
 }

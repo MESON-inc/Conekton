@@ -18,6 +18,8 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
 
         private bool _injected = false;
         private bool _isTrigger = false;
+        
+        private bool IsTriggerd => _isTrigger;
 
         [Inject]
         private void Injection(IGrabSystem grabSystem, IInputController inputController)
@@ -74,7 +76,7 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
         {
             if (_grabber.IsGrabbed)
             {
-                if (!IsTriggerd())
+                if (!IsTriggerd)
                 {
                     Ungrab();
                 }
@@ -85,17 +87,13 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
             }
             else
             {
-                if (IsTriggerd())
+                if (IsTriggerd)
                 {
                     Grab();
                 }
             }
         }
 
-        private bool IsTriggerd()
-        {
-            return _isTrigger;
-        }
 
         private void Grab()
         {
