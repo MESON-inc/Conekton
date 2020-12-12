@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Conekton.ARUtility.UseCase.WorldOrigin.Infrastructure
 {
-    public class MarkerWorldAnchor : MonoBehaviour, IWorldAnchor
+    public class ARMarkerWorldMarker : MonoBehaviour, IWorldMarker
     {
         [Inject] private IWorldOrigin _worldOrigin = null;
         [Inject] private IARMarkerDetector _markerDetector = null;
