@@ -20,7 +20,7 @@ namespace Conekton.ARUtility.UseCase.WorldOrigin.Infrastructure
             UpdatePose();
         }
 
-        public void AddAnchor(IWorldMarker marker)
+        public void AddMarker(IWorldMarker marker)
         {
             if (_worldMarkers.Contains(marker))
             {

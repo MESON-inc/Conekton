@@ -11,8 +11,8 @@ namespace Conekton.ARUtility.UseCase.WorldOrigin.Infrastructure
 {
     public class ARMarkerWorldMarker : MonoBehaviour, IWorldMarker
     {
-        [Inject] private IWorldOrigin _worldOrigin = null;
         [Inject] private IARMarkerDetector _markerDetector = null;
+        [Inject] private IWorldMarkerController _markerController = null;
 
         [SerializeField] private string _targetName = "";
         [SerializeField] private Transform _target = null;
@@ -62,7 +62,7 @@ namespace Conekton.ARUtility.UseCase.WorldOrigin.Infrastructure
             
             UpdatePose();
             
-            _worldOrigin.AddAnchor(this);
+            _markerController.AddMarker(this);
             
             _markerDetector.OnUpdateAnchorPosition -= HandleOnUpdateAnchorPosition;
         }

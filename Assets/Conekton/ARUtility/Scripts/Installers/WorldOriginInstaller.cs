@@ -4,6 +4,7 @@ using Zenject;
 using Conekton.ARUtility.Player.Domain;
 using Conekton.ARUtility.Player.Infrastructure;
 using Conekton.ARUtility.UseCase.WorldOrigin.Domain;
+using Conekton.ARUtility.UseCase.WorldOrigin.Infrastructure;
 
 namespace Conekton.ARUtility.UseCase.WorldOrigin.Applications
 {
@@ -18,6 +19,11 @@ namespace Conekton.ARUtility.UseCase.WorldOrigin.Applications
                 .To<Infrastructure.WorldOrigin>()
                 .FromComponentInNewPrefab(_worldOriginPrefab)
                 .AsSingle();
+
+            Container
+                .Bind<IWorldMarkerController>()
+                .To<WorldMarkerController>()
+                .AsCached();
         }
     }
 }
