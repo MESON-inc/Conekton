@@ -25,6 +25,8 @@ namespace Conekton.ARUtility.UseCase.WorldOrigin.Infrastructure
         private void Awake()
         {
             _markerDetector.OnUpdateAnchorPosition += HandleOnUpdateAnchorPosition;
+            
+            _markerController.AddMarker(this);
         }
 
         private void Update()
@@ -61,8 +63,6 @@ namespace Conekton.ARUtility.UseCase.WorldOrigin.Infrastructure
             _arAnchor = anchor;
             
             UpdatePose();
-            
-            _markerController.AddMarker(this);
             
             _markerDetector.OnUpdateAnchorPosition -= HandleOnUpdateAnchorPosition;
         }
