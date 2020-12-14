@@ -40,6 +40,8 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
             {
                 _grabbedGrabbables.Add(grabbable);
             }
+            
+            OnGrab(grabbable);
         }
 
         public void Ungrab(IGrabbable grabbable)
@@ -51,8 +53,11 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
                 _grabbedGrabbables.Remove(grabbable);
             }
 
-            TryUntouch(grabbable);
+            OnUngrab(grabbable);
         }
+        
+        protected virtual void OnGrab(IGrabbable grabbable) { }
+        protected virtual void OnUngrab(IGrabbable grabbable) { }
 
         public bool TryTouch(IGrabbable grabbable)
         {

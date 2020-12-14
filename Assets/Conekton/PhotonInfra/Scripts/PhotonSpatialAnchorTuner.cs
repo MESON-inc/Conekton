@@ -18,6 +18,7 @@ namespace Conekton.ARMultiplayer.SpatialAnchor.Presentation
         private IPlayer _player = null;
         private ISpatialAnchor _spatialAnchor = null;
         private IPersistentCoordinateService _pcaService = null;
+        private ISpatialAnchorService _anchorService = null;
         private SpatialAnchorUtility _spatialAnchorUtility = null;
 
         private Dictionary<PCAID, Pose> _remotePCADatabase = new Dictionary<PCAID, Pose>();
@@ -33,7 +34,8 @@ namespace Conekton.ARMultiplayer.SpatialAnchor.Presentation
             _spatialAnchorUtility = spatialAnchorUtility;
             _player = player;
             _pcaService = pcaService;
-            anchorService.RegisterTuner(this, photonView);
+            _anchorService = anchorService;
+            _anchorService.RegisterTuner(this, photonView);
         }
 
         #region ### MonoBehaviour ###
@@ -90,55 +92,8 @@ namespace Conekton.ARMultiplayer.SpatialAnchor.Presentation
                 });
             }
 
-            AdaptToRemotePose();
-        }
-
-        private void AdaptToRemotePose()
-        {
-            var localPCA = _pcaService.GetAllPCA();
-
-            var filterdLocalPCA = localPCA
-                .Where(p => _remotePCADatabase.ContainsKey(p.ID))
-                .ToArray();
-
-            if (filterdLocalPCA.Length == 0)
-            {
-                return;
-            }
-
-            Vector3 averagePos = Vector3.zero;
-            float x = 0, y = 0, z = 0, w = 0;
-
-            Quaternion firstRot = filterdLocalPCA[0].Rotation;
-            bool foundFirstRot = false;
-
-            foreach (var p in filterdLocalPCA)
-            {
-                Pose offsetPose = _spatialAnchorUtility.ConvertToWorldPose(p, _remotePCADatabase[p.ID]);
-
-                averagePos += offsetPose.position;
-
-                if (!foundFirstRot)
-                {
-                    firstRot = offsetPose.rotation;
-                    foundFirstRot = true;
-                }
-
-                float dot = Quaternion.Dot(firstRot, offsetPose.rotation);
-                float multi = dot > 0f ? 1f : -1f;
-
-                x += offsetPose.rotation.x * multi;
-                y += offsetPose.rotation.y * multi;
-                z += offsetPose.rotation.z * multi;
-                w += offsetPose.rotation.w * multi;
-            }
-
-            averagePos /= filterdLocalPCA.Length;
-
-            float k = 1f / Mathf.Sqrt(x * x + y * y + z * z + w * w);
-            Quaternion averageRot = new Quaternion(x * k, y * k, z * k, w * k);
-
-            transform.SetPositionAndRotation(averagePos, averageRot);
+            Pose adaptPose = _anchorService.GetAnchorPose(_remotePCADatabase);
+            transform.SetPositionAndRotation(adaptPose.position, adaptPose.rotation);
         }
 
         private void UpdateAnchor()
@@ -156,4 +111,3 @@ namespace Conekton.ARMultiplayer.SpatialAnchor.Presentation
         }
     }
 }
-
