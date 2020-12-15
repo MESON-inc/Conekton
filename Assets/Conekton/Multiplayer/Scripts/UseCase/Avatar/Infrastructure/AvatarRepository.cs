@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
 using Zenject;
-
 using Conekton.ARMultiplayer.Avatar.Application;
 using Conekton.ARMultiplayer.Avatar.Domain;
 
@@ -29,17 +27,42 @@ namespace Conekton.ARMultiplayer.Avatar.Infrastructure
 
         void IAvatarRepository.Remove(AvatarID id)
         {
-            if (_avatars.ContainsKey(id))
+            if (!_avatars.ContainsKey(id))
             {
-                if (_avatars[id] != null)
-                {
-                    _avatars[id].Destory();
-                }
-
-                _avatars.Remove(id);
-
-                Debug.Log($"Left avatar count is {_avatars.Keys.Count}");
+                return;
             }
+
+            if (TryGetAvatar(id, out IAvatar avatar))
+            {
+                avatar.Destory();
+            }
+
+            _avatars.Remove(id);
+
+            Debug.Log($"Left avatar count is {_avatars.Keys.Count}");
+        }
+
+        private bool TryGetAvatar(AvatarID id, out IAvatar avatar)
+        {
+            if (!_avatars.TryGetValue(id, out avatar))
+            {
+                return false;
+            }
+
+            if (avatar == null)
+            {
+                return false;
+            }
+
+            if (avatar is MonoBehaviour missingCheck)
+            {
+                if (missingCheck == null)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         IAvatar IAvatarRepository.Find(AvatarID id) => Find(id);
@@ -55,4 +78,3 @@ namespace Conekton.ARMultiplayer.Avatar.Infrastructure
         }
     }
 }
-

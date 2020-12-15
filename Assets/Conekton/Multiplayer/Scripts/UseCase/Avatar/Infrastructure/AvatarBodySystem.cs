@@ -54,6 +54,19 @@ namespace Conekton.ARMultiplayer.AvatarBody.Infrastructure
 
         public void Release(IAvatarBody body)
         {
+            if (body == null)
+            {
+                return;
+            }
+
+            if (body is MonoBehaviour missingCheck)
+            {
+                if (missingCheck == null)
+                {
+                    return;
+                }
+            }
+            
             body.Active(false);
             _avatarBodyRepository.Release(body);
         }
