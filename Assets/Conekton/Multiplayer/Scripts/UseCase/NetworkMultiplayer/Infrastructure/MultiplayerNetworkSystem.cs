@@ -167,6 +167,19 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         {
             remotePlayer.OnDestroyingRemotePlayer -= HandleRemotePlayerDestroying;
 
+            if (_infra == null)
+            {
+                return;
+            }
+
+            if (_infra is MonoBehaviour missingCheck)
+            {
+                if (missingCheck == null)
+                {
+                    return;
+                }
+            }
+
             AvatarID avatarID = _infra.GetAvatarID(remotePlayer.PlayerID);
             IAvatar avatar = _avatarService.Find(avatarID);
 
