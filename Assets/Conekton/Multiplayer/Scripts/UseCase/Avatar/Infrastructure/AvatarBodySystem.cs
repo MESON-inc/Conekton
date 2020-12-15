@@ -22,8 +22,14 @@ namespace Conekton.ARMultiplayer.AvatarBody.Infrastructure
             IAvatarBody body = _avatarBodyFactory.Create(args);
             body.Transform.name = $"AvatarBody({args.BodyType.ToString()}) - [{id.ID.ToString()}]";
             body.Transform.SetParent(null);
+            body.OnAvatarBodyFree += HandleOnAvatarBodyFree;
 
             return body;
+        }
+
+        private void HandleOnAvatarBodyFree(IAvatarBody avatarBody)
+        {
+            Release(avatarBody);
         }
 
         public IAvatarBody Find(AvatarBodyID id)

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ namespace Conekton.ARMultiplayer.Avatar.Presentation
         [SerializeField] private Transform _headTrans = null;
         [SerializeField] private Transform _leftHandTrans = null;
         [SerializeField] private Transform _rightHandTrans = null;
+        
+        public event DestroyingAvatarEvent OnDestroyingAvatar;
 
         private AvatarID _avatarID = AvatarID.NoSet;
 
@@ -33,6 +36,11 @@ namespace Conekton.ARMultiplayer.Avatar.Presentation
             {
                 UpdatePose();
             }
+        }
+
+        private void OnDestroy()
+        {
+            OnDestroyingAvatar?.Invoke(this);
         }
 
         private void UpdatePose()
@@ -61,6 +69,11 @@ namespace Conekton.ARMultiplayer.Avatar.Presentation
 
         void IAvatar.Destory()
         {
+            if (gameObject == null)
+            {
+                return;
+            }
+            
             Debug.Log($"Will destory avatar {name}");
             Destroy(gameObject);
         }
