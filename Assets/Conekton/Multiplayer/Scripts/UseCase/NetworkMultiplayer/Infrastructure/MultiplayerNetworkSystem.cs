@@ -46,6 +46,10 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         private void HandlePlayerDisconnected(PlayerID playerID)
         {
             Debug.Log($"Other player has disconnected {playerID}");
+
+            AvatarID aid = (this as IMultiplayerNetworkSystem).GetAvatarID(playerID);
+            
+            _avatarService.Remove(aid);
         }
 
         private void HandleOnConnected()
