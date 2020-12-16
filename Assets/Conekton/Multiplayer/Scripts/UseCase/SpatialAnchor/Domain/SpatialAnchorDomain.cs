@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 using Conekton.ARMultiplayer.NetworkMultiplayer.Domain;
+using Conekton.ARMultiplayer.PersistentCoordinate.Domain;
 
 namespace Conekton.ARMultiplayer.SpatialAnchor.Domain
 {
@@ -74,7 +76,9 @@ namespace Conekton.ARMultiplayer.SpatialAnchor.Domain
     public interface ISpatialAnchorService
     {
         event CreatedAnchorEvent OnCreatedAnchor;
+        ISpatialAnchor GetOrCreateAnchor(PlayerID playerID);
         void RegisterTuner(ISpatialAnchorTuner tuner, object args);
+        Pose GetAnchorPose(Dictionary<PCAID, Pose> comparePCAData);
     }
 
     /// <summary>
@@ -86,6 +90,7 @@ namespace Conekton.ARMultiplayer.SpatialAnchor.Domain
         ISpatialAnchor GetOrCreateAnchor(PlayerID playerID);
         ISpatialAnchorTuner CreateTuner();
         void RegisterTuner(ISpatialAnchorTuner tuner, PlayerID playerID);
+        Pose GetAnchorPose(Dictionary<PCAID, Pose> comparePCAData);
     }
 
     /// <summary>

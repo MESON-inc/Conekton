@@ -46,6 +46,10 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         private void HandlePlayerDisconnected(PlayerID playerID)
         {
             Debug.Log($"Other player has disconnected {playerID}");
+
+            AvatarID aid = (this as IMultiplayerNetworkSystem).GetAvatarID(playerID);
+            
+            _avatarService.Remove(aid);
         }
 
         private void HandleOnConnected()
@@ -166,6 +170,19 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         private void HandleRemotePlayerDestroying(IRemotePlayer remotePlayer)
         {
             remotePlayer.OnDestroyingRemotePlayer -= HandleRemotePlayerDestroying;
+
+            if (_infra == null)
+            {
+                return;
+            }
+
+            if (_infra is MonoBehaviour missingCheck)
+            {
+                if (missingCheck == null)
+                {
+                    return;
+                }
+            }
 
             AvatarID avatarID = _infra.GetAvatarID(remotePlayer.PlayerID);
             IAvatar avatar = _avatarService.Find(avatarID);

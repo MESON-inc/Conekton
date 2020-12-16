@@ -1,7 +1,10 @@
-﻿using Zenject;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using Zenject;
 
 using Conekton.ARMultiplayer.Avatar.Domain;
 using Conekton.ARMultiplayer.NetworkMultiplayer.Domain;
+using Conekton.ARMultiplayer.PersistentCoordinate.Domain;
 using Conekton.ARMultiplayer.SpatialAnchor.Domain;
 
 namespace Conekton.ARMultiplayer.SpatialAnchor.Application
@@ -24,6 +27,10 @@ namespace Conekton.ARMultiplayer.SpatialAnchor.Application
             _networkSystem.OnCreatedLocalPlayer -= HandleOnCreatedLocalPlayer;
             _networkSystem.OnCreatedRemotePlayer -= HandleOnCreatedRemotePlayer;
         }
+
+        ISpatialAnchor ISpatialAnchorService.GetOrCreateAnchor(PlayerID playerID) => _anchorSystem.GetOrCreateAnchor(playerID);
+
+        Pose ISpatialAnchorService.GetAnchorPose(Dictionary<PCAID, Pose> comparePCAData) => _anchorSystem.GetAnchorPose(comparePCAData);
 
         void ISpatialAnchorService.RegisterTuner(ISpatialAnchorTuner tuner, object args)
         {

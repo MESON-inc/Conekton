@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace Conekton.ARMultiplayer.AvatarBody.Domain
 {
+    public delegate void AvatarBodyFreeEvent(IAvatarBody avatarBody);
+    
     public struct AvatarBodyID
     {
         private int _id;
@@ -55,6 +57,7 @@ namespace Conekton.ARMultiplayer.AvatarBody.Domain
     
     public interface IAvatarBody
     {
+        event AvatarBodyFreeEvent OnAvatarBodyFree;
         AvatarBodyType BodyType { get; }
         AvatarBodyID BodyID { get; }
         Transform Transform { get; }

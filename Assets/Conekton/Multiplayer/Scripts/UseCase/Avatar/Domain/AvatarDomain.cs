@@ -5,6 +5,12 @@ using UnityEngine;
 namespace Conekton.ARMultiplayer.Avatar.Domain
 {
     /// <summary>
+    /// This event will invoke when an avatar is being destroyed.
+    /// </summary>
+    /// <param name="avatar"></param>
+    public delegate void DestroyingAvatarEvent(IAvatar avatar);
+    
+    /// <summary>
     /// AvatarID is a data structure.
     /// 
     /// This struct will be used matching each Avatar object.
@@ -67,6 +73,7 @@ namespace Conekton.ARMultiplayer.Avatar.Domain
     /// </summary>
     public interface IAvatar
     {
+        event DestroyingAvatarEvent OnDestroyingAvatar;
         AvatarID AvatarID { get; }
         IAvatarController AvatarController { get; }
         Transform Root { get; }

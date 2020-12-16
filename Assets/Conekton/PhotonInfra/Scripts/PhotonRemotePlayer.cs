@@ -10,31 +10,35 @@ using Conekton.ARMultiplayer.Avatar.Domain;
 
 namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 {
-    public class PhotonRemotePlayer : MonoBehaviourPunCallbacks, IRemotePlayer, IPunObservable
+    public class PhotonRemotePlayer : MonoBehaviourPunCallbacks, IRemotePlayer, IPunObservable, IPunInstantiateMagicCallback 
     {
         private Pose _headPose = default;
         private Pose _leftHandPose = default;
         private Pose _rightHandPose = default;
 
+        private IMultiplayerNetworkSystem _networkSystem = null;
         private IAvatarController _targetAvatarController = null;
         private bool _hasTargetAvatarController = false;
         private PlayerID _playerID = PlayerID.NoSet;
 
         private void OnDestroy()
         {
+            PhotonNetwork.Destroy(gameObject);
             OnDestroyingRemotePlayer?.Invoke(this);
         }
 
         [Inject]
         private void Inject(IMultiplayerNetworkSystem networkSystem)
         {
+            _networkSystem = networkSystem;
+            
             if (photonView.IsMine)
             {
-                networkSystem.CreateRemotePlayerLocalPlayer(this, photonView);
+                _networkSystem.CreateRemotePlayerLocalPlayer(this, photonView);
             }
             else
             {
-                networkSystem.CreatedRemotePlayer(this, photonView);
+                _networkSystem.CreatedRemotePlayer(this, photonView);
             }
         }
 
@@ -72,6 +76,12 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
                 Quaternion rhandRot = (Quaternion)stream.ReceiveNext();
                 SetHandPose(new Pose(rhandPos, rhandRot), AvatarPoseType.Right);
             }
+        }
+        
+        public void OnPhotonInstantiate(PhotonMessageInfo info)
+        {
+            object[] instantiationData = info.photonView.InstantiationData;
+            _networkSystem.ReceivedRemotePlayerCustomData(this, instantiationData?[0]);
         }
 
         #region ### for IAvatarController interface ###
@@ -163,4 +173,3 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         }
     }
 }
-
