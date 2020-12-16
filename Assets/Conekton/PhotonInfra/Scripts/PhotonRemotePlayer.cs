@@ -23,6 +23,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
         private void OnDestroy()
         {
+            PhotonNetwork.Destroy(gameObject);
             OnDestroyingRemotePlayer?.Invoke(this);
         }
 

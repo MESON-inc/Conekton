@@ -16,6 +16,8 @@ namespace Conekton.ARMultiplayer.AvatarBody.Presentation
         [SerializeField] private Transform _leftHandTrans = null;
         [SerializeField] private Transform _rightHandTrans = null;
         
+        public event AvatarBodyFreeEvent OnAvatarBodyFree;
+        
         public AvatarBodyType BodyType => _bodyType;
         public AvatarBodyID BodyID => _bodyID;
         public Transform Transform => transform;
@@ -61,8 +63,25 @@ namespace Conekton.ARMultiplayer.AvatarBody.Presentation
 
         public void SetAvatar(IAvatar avatar)
         {
+            if (_avatar != null)
+            {
+                _avatar.OnDestroyingAvatar -= HandleAvatarOnDestroying;
+            }
+            
             _avatar = avatar;
+
+            if (_avatar != null)
+            {
+                _avatar.OnDestroyingAvatar += HandleAvatarOnDestroying;
+            }
+            
             _hasAvatar = avatar != null;
+        }
+
+        private void HandleAvatarOnDestroying(IAvatar avatar)
+        {
+            SetAvatar(null);
+            OnAvatarBodyFree?.Invoke(this);
         }
     }
 }

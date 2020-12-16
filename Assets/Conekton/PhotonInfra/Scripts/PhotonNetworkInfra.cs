@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -156,6 +157,12 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
                 }
             }
         }
+
+        private void OnDestroy()
+        {
+            (this as IMultiplayerNetworkInfrastructure).Disconnect();
+        }
+
         #endregion ### MonoBehaviour ###
 
         #region ### For Photon ###
