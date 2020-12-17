@@ -13,7 +13,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         private object _args = null;
         private string _roomName = "";
 
-        public bool AutoConnect => true;
+        public bool AutoConnect { get; private set; } = true;
 
         [Inject]
         private void Construct(IMultiplayerNetworkSystem system, IRoomOptions options)
@@ -22,6 +22,11 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             _roomOptions = options;
             _roomName = _roomOptions.DefaultRoomName;
             _networkSystem.OnConnected += HandleOnConnected;
+        }
+
+        public DefaultMultiplayerNetworkContext(bool autoConnect)
+        {
+            AutoConnect = autoConnect;
         }
 
         void IInitializable.Initialize()
