@@ -14,6 +14,8 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         public event PlayerDisconnectedEvent OnPlayerDisconnected;
 
         private bool _isConnected = false;
+        
+        bool IMultiplayerNetworkInfrastructure.IsMaster => true;
 
         bool IMultiplayerNetworkInfrastructure.IsConnected => _isConnected;
 

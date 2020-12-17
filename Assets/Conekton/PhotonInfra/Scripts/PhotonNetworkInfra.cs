@@ -64,6 +64,8 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         public event PlayerDisconnectedEvent OnPlayerDisconnected;
 
         private Dictionary<PlayerID, AvatarReferenceData> _database = new Dictionary<PlayerID, AvatarReferenceData>();
+        
+        bool IMultiplayerNetworkInfrastructure.IsMaster => PhotonNetwork.IsMasterClient;
 
         bool IMultiplayerNetworkInfrastructure.IsConnected => PhotonNetwork.IsConnected;
 

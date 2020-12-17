@@ -65,6 +65,8 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         }
 
         #region ### for IMultiplayerNetworkSystem interfaces ###
+        bool IMultiplayerNetworkSystem.IsMaster => _infra.IsMaster;
+        
         bool IMultiplayerNetworkSystem.IsConnected => _infra.IsConnected;
 
         void IMultiplayerNetworkSystem.Connect(string roomName, IRoomOptions roomOptions)
