@@ -45,3 +45,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _editorMarkerDetectorPrefab: {fileID: 8283592222226493653, guid: 865e2f8d42477f543b99004c0a7abc67,
     type: 3}
+  _MLARMarkerDetectorPrefab: {fileID: 2444122293440020947, guid: b782bf5c9ac135c4c9d554dd8870b9c6,
+    type: 3}

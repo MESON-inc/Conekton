@@ -23,6 +23,8 @@ namespace Conekton.ARUtility.UseCase.ARMarkerIDSolver.Application
             Container.Bind<IMarkerIDSolver<int>>().To<EditorMarkerIDSolver>().AsCached();
 #elif UNITY_IOS || UNITY_ANDROID
             Container.Bind<IMarkerIDSolver<XRReferenceImage>>().To<MobileMarkerIDSolver>().AsCached();
+#elif PLATFORM_LUMIN
+            Container.Bind<IMarkerIDSolver<string>>().To<MLMarkerIDSolver>().AsCached();
 #else
             Container.Bind<IMarkerIDSolver<int>>().To<EditorMarkerIDSolver>().AsCached();
 #endif

@@ -9,6 +9,7 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Application
     public class ARMarkerDetectorInstaller : MonoInstaller
     {
         [SerializeField] private GameObject _editorMarkerDetectorPrefab = null;
+        [SerializeField] private GameObject _MLARMarkerDetectorPrefab = null;
 
         public override void InstallBindings()
         {
@@ -21,6 +22,12 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Application
 #elif UNITY_IOS || UNITY_ANDROID
             Container.Bind<ARTrackedImageManagerProvider>().AsSingle();
             Container.BindInterfacesAndSelfTo<MobileARMarkerDetector>().AsCached();
+#elif PLATFORM_LUMIN
+            Container
+                .Bind<IARMarkerDetector>()
+                .FromComponentInNewPrefab(_MLARMarkerDetectorPrefab)
+                .AsCached()
+                .NonLazy();
 #else
             Container.Bind<IARMarkerDetector>().To<EditorARMarkerDetector>().AsCached();
 #endif
