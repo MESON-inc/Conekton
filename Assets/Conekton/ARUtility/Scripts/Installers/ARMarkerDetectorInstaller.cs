@@ -24,7 +24,7 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Application
             Container.BindInterfacesAndSelfTo<MobileARMarkerDetector>().AsCached();
 #elif PLATFORM_LUMIN
             Container
-                .Bind<IARMarkerDetector>()
+                .BindInterfacesAndSelfTo<MLARMarkerDetector>()
                 .FromComponentInNewPrefab(_MLARMarkerDetectorPrefab)
                 .AsCached()
                 .NonLazy();
