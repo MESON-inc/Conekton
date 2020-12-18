@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿#if PLATFORM_LUMIN
+using System.Collections;
 using System.Collections.Generic;
-using MagicLeap.Core;
 using UnityEditor;
 using UnityEngine;
 
-#if PLATFORM_LUMIN
 
+using MagicLeap.Core;
 using UnityEngine.XR.MagicLeap;
 
 using Zenject;
