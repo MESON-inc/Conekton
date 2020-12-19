@@ -16,8 +16,7 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
         [Inject] private IARAnchorService _anchorService = null;
         [Inject] private IMarkerIDSolver<int> _markerIDSolver = null;
 
-        [SerializeField] private Vector3 _origin = Vector3.zero;
-        [SerializeField] private Vector3 _euler = Vector3.zero;
+        [SerializeField] private Transform _targetTrans = null;
 
         private Dictionary<string, IARAnchor> _database = new Dictionary<string, IARAnchor>();
 
@@ -65,13 +64,13 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
 
         private void SetAnchorLocation(IARAnchor anchor)
         {
-            anchor.SetPositionAndRotation(_origin, Quaternion.Euler(_euler));
+            anchor.SetPositionAndRotation(_targetTrans.position, _targetTrans.rotation);
         }
 
         private void FireDetectedEvent(IARAnchor anchor, string id)
         {
             Debug.Log($"Detected an anchor with {id}");
-            
+
             SetAnchorLocation(anchor);
 
             OnDetectAnchorFirst?.Invoke(anchor, new ARMarkerEventData
@@ -84,9 +83,11 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
         private void FireUpdateEvent(string id)
         {
             Debug.Log($"Updated an anchor with {id}");
-            
+
             if (_database.TryGetValue(id, out IARAnchor anchor))
             {
+                SetAnchorLocation(anchor);
+
                 OnUpdateAnchorPosition?.Invoke(anchor, new ARMarkerEventData
                 {
                     ID = id,
