@@ -87,11 +87,6 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Application
         private void BindMagicLeapDependency()
         {
             Container
-                .Bind<IMarkerIDSolver<string>>()
-                .To<MLMarkerIDSolver>()
-                .AsCached();
-
-            Container
                 .BindInterfacesAndSelfTo<MLARMarkerDetector>()
                 .FromComponentInNewPrefab(_MLARMarkerDetectorPrefab)
                 .AsCached()

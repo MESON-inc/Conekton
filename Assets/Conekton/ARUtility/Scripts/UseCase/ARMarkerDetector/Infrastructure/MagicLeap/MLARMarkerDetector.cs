@@ -16,7 +16,6 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
     public class MLARMarkerDetector : MonoBehaviour, IARMarkerDetector, IInitializable
     {
         [Inject] private IARAnchorService _anchorService = null;
-        [Inject] private IMarkerIDSolver<string> _markerIDSolver = null;
         [Inject] private MLReferenceImageLibrary _MLReferenceImageLibrary = null;
 
         public DetectAnchorFirstEvent OnDetectAnchorFirst { get; set; }
