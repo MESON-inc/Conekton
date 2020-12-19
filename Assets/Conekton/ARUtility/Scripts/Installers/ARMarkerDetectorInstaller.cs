@@ -52,7 +52,7 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Application
 
         #region ### For detector ###
 
-#if UNITY_IOS || UNITY_ANDROID
+#if (UNITY_IOS || UNITY_ANDROID) && !(PLATFORM_NREAL || PLATFORM_OCULUS)
         private void BindMobileDependency()
         {
             Container
