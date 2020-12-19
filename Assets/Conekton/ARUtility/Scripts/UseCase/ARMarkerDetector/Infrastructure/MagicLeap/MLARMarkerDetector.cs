@@ -25,25 +25,37 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
         public UpdateAnchorPositionEvent OnUpdateAnchorPosition { get; set; }
 
         private Dictionary<string, AnchorID> _database = new Dictionary<string, AnchorID>();
+
         private MLPrivilegeRequesterBehavior _privilegeRequester = null;
-        private MLImageTrackerBehavior _imageTrackerBehavior = null;
 
         void IInitializable.Initialize()
         {
             _privilegeRequester = GetComponent<MLPrivilegeRequesterBehavior>();
             _privilegeRequester.OnPrivilegesDone += HandlePrivilegesDone;
 
-            foreach (var data in _MLReferenceImageLibrary.DataList)
-            {
-                MLImageTrackerBehavior tracker = gameObject.AddComponent<MLImageTrackerBehavior>();
-                tracker.image = data.TargetTexture;
-                tracker.autoUpdate = true;
-            }
+            SetupTrackerBehaviours();
+        }
 
-            _imageTrackerBehavior = GetComponent<MLImageTrackerBehavior>();
-            _imageTrackerBehavior.OnTargetFound += HandleImageTrackerBehaviorOnTargetFound;
-            _imageTrackerBehavior.OnTargetLost += HandleImageTrackerBehaviorOnTargetLost;
-            _imageTrackerBehavior.OnTargetUpdated += HandleImageTrackerBehaviorOnTargetUpdated;
+        private void CreateImageTracker(MLReferenceImage reference)
+        {
+            GameObject go = new GameObject($"Track-{reference.Name}", typeof(MLImageTrackerBehavior));
+            go.transform.SetParent(transform);
+            
+            MLImageTrackerBehavior tracker = go.GetComponent<MLImageTrackerBehavior>();
+            tracker.image = reference.TargetTexture;
+            tracker.autoUpdate = true;
+            tracker.longerDimensionInSceneUnits = reference.LongerDimensionInSceneUnits;
+            tracker.OnTargetFound += HandleImageTrackerBehaviorOnTargetFound;
+            tracker.OnTargetLost += HandleImageTrackerBehaviorOnTargetLost;
+            tracker.OnTargetUpdated += HandleImageTrackerBehaviorOnTargetUpdated;
+        }
+
+        private void SetupTrackerBehaviours()
+        {
+            foreach (var reference in _MLReferenceImageLibrary.DataList)
+            {
+                CreateImageTracker(reference);
+            }
         }
 
         private void HandleImageTrackerBehaviorOnTargetFound(MLImageTracker.Target target, MLImageTracker.Target.Result result)
