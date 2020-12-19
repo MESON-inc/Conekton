@@ -2,13 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MagicLeap.Core;
 using UnityEngine.XR.MagicLeap;
 using Zenject;
 using Conekton.ARUtility.UseCase.ARAnchor.Domain;
 using Conekton.ARUtility.UseCase.ARMarkerDetector.Domain;
 using Conekton.ARUtility.UseCase.ARMarkerIDSolver.Application;
-using Conekton.ARUtility.UseCase.ARMarkerIDSolver.Domain;
 
 namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
 {
