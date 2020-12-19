@@ -83,7 +83,7 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
             AnchorID id;
             string name = target.TargetSettings.Name;
 
-            if (!_database.TryGetValue(name, out id))
+            if (_database.TryGetValue(name, out id))
             {
                 anchor = _anchorService.Find(id);
             }
