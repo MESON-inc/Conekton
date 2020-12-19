@@ -19,12 +19,11 @@ namespace Conekton.ARUtility.Demo
 
         private void HandleUpdateAnchorPosition(IARAnchor anchor, ARMarkerEventData eventdata)
         {
-            Debug.Log("Update position.");
+            transform.SetPositionAndRotation(anchor.Position, anchor.Rotation);
         }
 
         private void HandleDetectAnchorFirst(IARAnchor anchor, ARMarkerEventData eventdata)
         {
-            Debug.Log("Detected an anchor.");
             transform.SetPositionAndRotation(anchor.Position, anchor.Rotation);
         }
     }
