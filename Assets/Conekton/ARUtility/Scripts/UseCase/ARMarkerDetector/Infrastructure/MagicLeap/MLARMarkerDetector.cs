@@ -66,7 +66,7 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
 
         private void HandleImageTrackerBehaviorOnTargetLost(MLMarkerTrackerArgs args)
         {
-            // do nothing.
+            RemoveFromDatabase(args);
         }
 
         private void HandlePrivilegesDone(MLResult result)
@@ -114,6 +114,15 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
             if (!_database.ContainsKey(markerID))
             {
                 _database.Add(markerID, anchor.ID);
+            }
+        }
+
+        private void RemoveFromDatabase(MLMarkerTrackerArgs args)
+        {
+            string markerID = GetMarkerID(args);
+            if (_database.ContainsKey(markerID))
+            {
+                _database.Remove(markerID);
             }
         }
 
