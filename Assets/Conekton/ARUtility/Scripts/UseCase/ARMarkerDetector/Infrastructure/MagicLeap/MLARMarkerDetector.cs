@@ -20,6 +20,7 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
         public UpdateAnchorPositionEvent OnUpdateAnchorPosition { get; set; }
 
         private Dictionary<string, AnchorID> _database = new Dictionary<string, AnchorID>();
+        private Dictionary<AnchorID, bool> _activeDatabase = new Dictionary<AnchorID, bool>();
 
         private MLPrivilegeRequesterBehavior _privilegeRequester = null;
 
@@ -53,6 +54,12 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
 
         private void HandleImageTrackerBehaviorOnTargetFound(MLMarkerTrackerArgs args)
         {
+            if (TryGetARAnchor(args, out IARAnchor anchor))
+            {
+                Activate(anchor.ID, true);
+                return;
+            }
+            
             DetectedNewAnchor(args);
         }
 
@@ -63,7 +70,10 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
 
         private void HandleImageTrackerBehaviorOnTargetLost(MLMarkerTrackerArgs args)
         {
-            RemoveFromDatabase(args);
+            if (TryGetARAnchor(args, out IARAnchor anchor))
+            {
+            Activate(anchor.ID, false);
+            }
         }
 
         private void HandlePrivilegesDone(MLResult result)
@@ -86,6 +96,7 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
 
             anchor = _anchorService.Create();
             AddToDatabase(args, anchor);
+            Activate(anchor.ID, true);
 
             return anchor;
         }
@@ -114,13 +125,26 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
             }
         }
 
-        private void RemoveFromDatabase(MLMarkerTrackerArgs args)
+        private void Activate(AnchorID anchorID, bool active)
         {
-            string markerID = GetMarkerID(args);
-            if (_database.ContainsKey(markerID))
+            if (_activeDatabase.ContainsKey(anchorID))
             {
-                _database.Remove(markerID);
+                _activeDatabase[anchorID] = active;
             }
+            else
+            {
+                _activeDatabase.Add(anchorID, active);
+            }
+        }
+
+        private bool IsActive(AnchorID anchorID)
+        {
+            if (_activeDatabase.TryGetValue(anchorID, out bool active))
+            {
+                return active;
+            }
+
+            return false;
         }
 
         private void DetectedNewAnchor(MLMarkerTrackerArgs args)
@@ -138,6 +162,11 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
         private void DetectedUpdateAnchor(MLMarkerTrackerArgs args)
         {
             if (!TryGetARAnchor(args, out IARAnchor anchor))
+            {
+                return;
+            }
+
+            if (!IsActive(anchor.ID))
             {
                 return;
             }
