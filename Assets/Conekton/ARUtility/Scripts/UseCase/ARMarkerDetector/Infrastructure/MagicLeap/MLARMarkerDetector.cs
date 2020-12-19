@@ -1,7 +1,6 @@
 ﻿#if PLATFORM_LUMIN
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using MagicLeap.Core;
 using UnityEngine.XR.MagicLeap;
@@ -10,7 +9,6 @@ using Conekton.ARUtility.UseCase.ARAnchor.Domain;
 using Conekton.ARUtility.UseCase.ARMarkerDetector.Domain;
 using Conekton.ARUtility.UseCase.ARMarkerIDSolver.Application;
 using Conekton.ARUtility.UseCase.ARMarkerIDSolver.Domain;
-using MagicLeap.Core.StarterKit;
 
 namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
 {
@@ -38,13 +36,11 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
 
         private void CreateImageTracker(MLReferenceImage reference)
         {
-            GameObject go = new GameObject($"Track-{reference.Name}", typeof(MLImageTrackerBehavior));
+            GameObject go = new GameObject($"Track-{reference.Name}", typeof(MLMarkerTracker));
             go.transform.SetParent(transform);
             
-            MLImageTrackerBehavior tracker = go.GetComponent<MLImageTrackerBehavior>();
-            tracker.image = reference.TargetTexture;
-            tracker.autoUpdate = true;
-            tracker.longerDimensionInSceneUnits = reference.LongerDimensionInSceneUnits;
+            MLMarkerTracker tracker = go.GetComponent<MLMarkerTracker>();
+            tracker.Setup(reference);
             tracker.OnTargetFound += HandleImageTrackerBehaviorOnTargetFound;
             tracker.OnTargetLost += HandleImageTrackerBehaviorOnTargetLost;
             tracker.OnTargetUpdated += HandleImageTrackerBehaviorOnTargetUpdated;
@@ -58,17 +54,17 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
             }
         }
 
-        private void HandleImageTrackerBehaviorOnTargetFound(MLImageTracker.Target target, MLImageTracker.Target.Result result)
+        private void HandleImageTrackerBehaviorOnTargetFound(MLMarkerTrackerArgs args)
         {
-            DetectedNewAnchor(target, result);
+            DetectedNewAnchor(args);
         }
 
-        private void HandleImageTrackerBehaviorOnTargetUpdated(MLImageTracker.Target target, MLImageTracker.Target.Result result)
+        private void HandleImageTrackerBehaviorOnTargetUpdated(MLMarkerTrackerArgs args)
         {
-            DetectedUpdateAnchor(target, result);
+            DetectedUpdateAnchor(args);
         }
 
-        private void HandleImageTrackerBehaviorOnTargetLost(MLImageTracker.Target target, MLImageTracker.Target.Result result)
+        private void HandleImageTrackerBehaviorOnTargetLost(MLMarkerTrackerArgs args)
         {
             // do nothing.
         }
@@ -84,27 +80,27 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
             Debug.Log("Success: Privilege granted.");
         }
 
-        private IARAnchor GetOrCreateARAnchor(MLImageTracker.Target target)
+        private IARAnchor GetOrCreateARAnchor(MLMarkerTrackerArgs args)
         {
-            if (TryGetARAnchor(target, out IARAnchor anchor))
+            if (TryGetARAnchor(args, out IARAnchor anchor))
             {
                 return anchor;
             }
 
             anchor = _anchorService.Create();
-            AddToDatabase(target, anchor);
+            AddToDatabase(args, anchor);
 
             return anchor;
         }
 
-        private bool TryGetARAnchor(MLImageTracker.Target target, out IARAnchor anchor)
+        private bool TryGetARAnchor(MLMarkerTrackerArgs args, out IARAnchor anchor)
         {
-            AnchorID id;
-            string name = target.TargetSettings.Name;
+            AnchorID anchorID;
+            string markerID = GetMarkerID(args);
 
-            if (_database.TryGetValue(name, out id))
+            if (_database.TryGetValue(markerID, out anchorID))
             {
-                anchor = _anchorService.Find(id);
+                anchor = _anchorService.Find(anchorID);
                 return true;
             }
 
@@ -112,36 +108,37 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
             return false;
         }
 
-        private void AddToDatabase(MLImageTracker.Target target, IARAnchor anchor)
+        private void AddToDatabase(MLMarkerTrackerArgs args, IARAnchor anchor)
         {
-            if (!_database.ContainsKey(target.TargetSettings.Name))
+            string markerID = GetMarkerID(args);
+            if (!_database.ContainsKey(markerID))
             {
-                _database.Add(target.TargetSettings.Name, anchor.ID);
+                _database.Add(markerID, anchor.ID);
             }
         }
 
-        private void DetectedNewAnchor(MLImageTracker.Target target, MLImageTracker.Target.Result result)
+        private void DetectedNewAnchor(MLMarkerTrackerArgs args)
         {
-            string name = target.TargetSettings.Name;
+            string markerID = GetMarkerID(args);
 
-            Debug.Log($"Detected new anchor with name {name}");
+            Debug.Log($"Detected new marker [{markerID}]");
 
-            IARAnchor anchor = GetOrCreateARAnchor(target);
-            UpdateAnchorLocation(anchor, result.Position, result.Rotation);
+            IARAnchor anchor = GetOrCreateARAnchor(args);
+            UpdateAnchorLocation(anchor, args.Result.Position, args.Result.Rotation);
 
-            OnDetectAnchorFirst?.Invoke(anchor, CreateEventData(target));
+            OnDetectAnchorFirst?.Invoke(anchor, CreateEventData(args));
         }
 
-        private void DetectedUpdateAnchor(MLImageTracker.Target target, MLImageTracker.Target.Result result)
+        private void DetectedUpdateAnchor(MLMarkerTrackerArgs args)
         {
-            if (!TryGetARAnchor(target, out IARAnchor anchor))
+            if (!TryGetARAnchor(args, out IARAnchor anchor))
             {
                 return;
             }
 
-            UpdateAnchorLocation(anchor, result.Position, result.Rotation);
+            UpdateAnchorLocation(anchor, args.Result.Position, args.Result.Rotation);
 
-            OnUpdateAnchorPosition?.Invoke(anchor, CreateEventData(target));
+            OnUpdateAnchorPosition?.Invoke(anchor, CreateEventData(args));
         }
 
         private void UpdateAnchorLocation(IARAnchor anchor, Vector3 position, Quaternion rotation)
@@ -149,9 +146,14 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
             anchor.SetPositionAndRotation(position, rotation);
         }
 
-        private ARMarkerEventData CreateEventData(MLImageTracker.Target target)
+        private string GetMarkerID(MLMarkerTrackerArgs args)
         {
-            string id = _markerIDSolver.Solve(target.TargetSettings.Name);
+            return args.Reference.ID;
+        }
+
+        private ARMarkerEventData CreateEventData(MLMarkerTrackerArgs args)
+        {
+            string id = GetMarkerID(args);
 
             return new ARMarkerEventData
             {
