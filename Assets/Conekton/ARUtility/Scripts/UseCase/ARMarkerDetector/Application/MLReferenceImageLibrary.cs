@@ -12,6 +12,7 @@ namespace Conekton.ARUtility.UseCase.ARMarkerIDSolver.Application
         public int Index;
         public string ID;
         public Texture2D TargetTexture;
+        public float LongerDimensionInSceneUnits;
     }
 
     [CreateAssetMenu(fileName = "MLReferenceImageLibrary", menuName = "ARUtility/MLReferenceImageLibrary")]
