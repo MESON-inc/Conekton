@@ -3,13 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
-
 using MagicLeap.Core;
 using UnityEngine.XR.MagicLeap;
-
 using Zenject;
-
 using Conekton.ARUtility.UseCase.ARAnchor.Domain;
 using Conekton.ARUtility.UseCase.ARMarkerDetector.Domain;
 using Conekton.ARUtility.UseCase.ARMarkerIDSolver.Application;
@@ -75,26 +71,33 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
 
             Debug.Log("Success: Privilege granted.");
         }
-        
+
         private IARAnchor GetOrCreateARAnchor(MLImageTracker.Target target)
         {
-            IARAnchor anchor = null;
+            if (TryGetARAnchor(target, out IARAnchor anchor))
+            {
+                return anchor;
+            }
 
+            anchor = _anchorService.Create();
+            AddToDatabase(target, anchor);
+
+            return anchor;
+        }
+
+        private bool TryGetARAnchor(MLImageTracker.Target target, out IARAnchor anchor)
+        {
             AnchorID id;
             string name = target.TargetSettings.Name;
 
             if (_database.TryGetValue(name, out id))
             {
                 anchor = _anchorService.Find(id);
+                return true;
             }
 
-            if (anchor == null)
-            {
-                anchor = _anchorService.Create();
-                AddToDatabase(target, anchor);
-            }
-
-            return anchor;
+            anchor = null;
+            return false;
         }
 
         private void AddToDatabase(MLImageTracker.Target target, IARAnchor anchor)
@@ -108,7 +111,7 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
         private void DetectedNewAnchor(MLImageTracker.Target target, MLImageTracker.Target.Result result)
         {
             string name = target.TargetSettings.Name;
-            
+
             Debug.Log($"Detected new anchor with name {name}");
 
             IARAnchor anchor = GetOrCreateARAnchor(target);
@@ -119,8 +122,11 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
 
         private void DetectedUpdateAnchor(MLImageTracker.Target target, MLImageTracker.Target.Result result)
         {
-            IARAnchor anchor = GetOrCreateARAnchor(target);
-            
+            if (!TryGetARAnchor(target, out IARAnchor anchor))
+            {
+                return;
+            }
+
             UpdateAnchorLocation(anchor, result.Position, result.Rotation);
 
             OnUpdateAnchorPosition?.Invoke(anchor, CreateEventData(target));
