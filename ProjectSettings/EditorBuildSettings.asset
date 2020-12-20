@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Conekton/Multiplayer/Demo/Scenes/NetworkDemo.unity
     guid: 589fa55e4f14161428fd9b7022cd20a3
+  - enabled: 1
+    path: Assets/Conekton/ARUtility/Demo/Scenes/MarkerTrackingDemo.unity
+    guid: fa7929be24ad7f04db664652e613cf8c
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 64ace818758a3f84fbcbda96878af1bf,
       type: 2}
