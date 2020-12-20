@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e4896055c495442bfa5c1e2c5b75b0, type: 3}
+  m_Name: MLReferenceImageLibrary
+  m_EditorClassIdentifier: 
+  _dataList:
+  - Name: Nreal's default markerA
+    Index: 0
+    ID: MarkerA
+    TargetTexture: {fileID: 2800000, guid: a5b896e3b09c7434f974f42d79c32e3d, type: 3}
+    LongerDimensionInSceneUnits: 0.5
+  - Name: Nreal's default markerB
+    Index: 1
+    ID: MarkerB
+    TargetTexture: {fileID: 2800000, guid: 38ab9c3dec3b14721b18823da8f76199, type: 3}
+    LongerDimensionInSceneUnits: 0.5
+  - Name: Nreal's default markerC
+    Index: 2
+    ID: MarkerC
+    TargetTexture: {fileID: 2800000, guid: 5e137f13c95a04e90a103f186cd2ba8b, type: 3}
+    LongerDimensionInSceneUnits: 0.5

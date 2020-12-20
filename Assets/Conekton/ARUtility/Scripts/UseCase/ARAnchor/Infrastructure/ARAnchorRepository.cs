@@ -23,6 +23,7 @@ namespace Conekton.ARUtility.UseCase.ARAnchor.Infrastructure
             if (anchor == null)
             {
                 anchor = _factory.Create(anchorID);
+                AddAnchor(anchor);
             }
 
             return anchor;
@@ -36,6 +37,16 @@ namespace Conekton.ARUtility.UseCase.ARAnchor.Infrastructure
             }
 
             return null;
+        }
+
+        private void AddAnchor(IARAnchor anchor)
+        {
+            if (_database.ContainsKey(anchor.ID))
+            {
+                return;
+            }
+            
+            _database.Add(anchor.ID, anchor);
         }
     }
 }

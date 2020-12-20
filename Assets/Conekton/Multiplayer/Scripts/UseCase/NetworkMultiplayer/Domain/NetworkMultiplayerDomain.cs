@@ -127,6 +127,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         event CreatedLocalPlayerEvent OnCreatedLocalPlayer;
         event DestroyedRemotePlayerEvent OnDestroyedRemotePlayer;
         event ReceivedRemotePlayerCustomDataEvent OnReceivedRemotePlayerCustomData;
+        bool IsMaster { get; }
         bool IsConnected { get; }
         void Connect(string roomName, IRoomOptions roomOptions);
         void Disconnect();
@@ -149,6 +150,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         event DisconnectedEvent OnServerDisconnected;
         event PlayerConnectedEvent OnPlayerConnected;
         event PlayerDisconnectedEvent OnPlayerDisconnected;
+        bool IsMaster { get; }
         bool IsConnected { get; }
         void Connect(string roomName, IRoomOptions roomOptions);
         void Disconnect();
