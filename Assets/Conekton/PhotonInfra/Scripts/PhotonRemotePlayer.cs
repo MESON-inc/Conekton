@@ -81,7 +81,13 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         public void OnPhotonInstantiate(PhotonMessageInfo info)
         {
             object[] instantiationData = info.photonView.InstantiationData;
-            _networkSystem.ReceivedRemotePlayerCustomData(this, instantiationData?[0]);
+
+            NetworkArgs args = null;
+            if (instantiationData?.Length > 0)
+            {
+                args = instantiationData[0] as NetworkArgs;
+            }
+            _networkSystem.ReceivedRemotePlayerCustomData(this, args);
         }
 
         #region ### for IAvatarController interface ###

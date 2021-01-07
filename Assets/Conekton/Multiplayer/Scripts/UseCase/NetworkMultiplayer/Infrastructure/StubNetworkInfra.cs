@@ -1,4 +1,5 @@
-﻿using Conekton.ARMultiplayer.NetworkMultiplayer.Domain;
+﻿using System;
+using Conekton.ARMultiplayer.NetworkMultiplayer.Domain;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -33,7 +34,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             DelayDisconnect();
         }
 
-        IRemotePlayer IMultiplayerNetworkInfrastructure.CreateRemotePlayer(object args)
+        IRemotePlayer IMultiplayerNetworkInfrastructure.CreateRemotePlayer(NetworkArgs args)
         {
             return null;
         }
@@ -55,6 +56,8 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
         int IMultiplayerNetworkInfrastructure.UnregisterAvatar(PlayerID playerID) => 0;
         void IMultiplayerNetworkInfrastructure.UnregisterMainAvatar() { }
+
+        void IMultiplayerNetworkInfrastructure.RegisterSerialization(Type type, Serializer serializer, Deserializer deserializer) { }
 
         async private void DelayConnect()
         {
