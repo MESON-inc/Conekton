@@ -44,6 +44,8 @@ namespace Conekton.ARUtility.GrabSystemUseCase.Infrastructure
             {
                 return;
             }
+            
+            Unhover();
 
             _hoverGrabbable = grabbable;
 
