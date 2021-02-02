@@ -37,14 +37,15 @@ namespace Conekton.ARMultiplayer.Avatar.Mock
 
             avatar.SetWearablePack(pack);
         }
+        
+        Pose IAvatarController.GetRootPose()
+        {
+            return new Pose(transform.position, transform.rotation);
+        }
 
         Pose IAvatarController.GetHeadPose()
         {
-            return new Pose
-            {
-                position = _headTrans.position,
-                rotation = _headTrans.rotation,
-            };
+            return new Pose(_headTrans.position, _headTrans.rotation);
         }
 
         Pose IAvatarController.GetHandPose(AvatarPoseType type)
