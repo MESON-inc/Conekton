@@ -1,4 +1,5 @@
 ﻿#if UNITY_ANDROID && PLATFORM_OCULUS
+using System.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 using Conekton.ARUtility.Player.Domain;
@@ -58,7 +59,7 @@ namespace Conekton.ARUtility.Input.Infrastructure
             OVRInput.Controller controllerType = GetOculusControllerType(type);
             return _player.Root.localToWorldMatrix.MultiplyPoint(OVRInput.GetLocalControllerPosition(controllerType));
         }
-        
+
         bool IInputController.IsTrigger(ControllerType type)
         {
             OVRInput.Controller touchType = GetOculusTouchType(type);
@@ -116,8 +117,17 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
         void IInputController.TriggerHapticVibration(ControllerType type, HapticData data)
         {
-            OVRInput.Controller controller = GetOculusControllerType(type);
-            OVRInput.SetControllerVibration(data.Frequency, data.Amplitude, controller);
+            OVRInput.Controller controller = (type == ControllerType.Left) ? OVRInput.Controller.LTouch : OVRInput.Controller.RTouch;
+            TriggerHapticVibrationImpl(data.DurationSeconds, data.Frequency, data.Amplitude, controller);
+        }
+
+        private async void TriggerHapticVibrationImpl(float duration, float frequency, float amplitude, OVRInput.Controller controller)
+        {
+            OVRInput.SetControllerVibration(frequency, amplitude, controller);
+
+            await Task.Delay((int)(duration * 1000));
+            
+            OVRInput.SetControllerVibration(0, 0, controller);
         }
 
         bool IInputController.IsDown(ControllerType controllerType, ButtonType buttonType)
