@@ -39,6 +39,9 @@ namespace Conekton.ARMultiplayer.AvatarBody.Presentation
                 return;
             }
 
+            Pose rootPose = _avatar.GetRootPose();
+            transform.SetPositionAndRotation(rootPose.position, rootPose.rotation);
+
             Pose headPose = _avatar.GetPose(AvatarPoseType.Head);
             _headTrans.SetPositionAndRotation(headPose.position, headPose.rotation);
             

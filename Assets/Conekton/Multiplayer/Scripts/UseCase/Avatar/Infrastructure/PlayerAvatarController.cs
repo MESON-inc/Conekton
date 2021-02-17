@@ -13,13 +13,14 @@ namespace Conekton.ARMultiplayer.Avatar.Infrastructure
         [Inject] private IPlayer _player = null;
         [Inject] private IInputController _inputController = null;
 
+        Pose IAvatarController.GetRootPose()
+        {
+            return new Pose(_player.Root.position, _player.Root.rotation);
+        }
+
         Pose IAvatarController.GetHeadPose()
         {
-            return new Pose
-            {
-                position = _player.Position,
-                rotation = _player.Rotation,
-            };
+            return new Pose(_player.Position, _player.Rotation);
         }
 
         Pose IAvatarController.GetHandPose(AvatarPoseType type)
