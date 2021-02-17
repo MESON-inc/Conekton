@@ -2,11 +2,9 @@
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-
 using Photon.Pun;
 using ExitGames.Client.Photon;
 using Zenject;
-
 using Conekton.ARMultiplayer.Avatar.Domain;
 using Conekton.ARMultiplayer.NetworkMultiplayer.Domain;
 using UnityEngine;
@@ -64,7 +62,30 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         public event PlayerDisconnectedEvent OnPlayerDisconnected;
 
         private Dictionary<PlayerID, AvatarReferenceData> _database = new Dictionary<PlayerID, AvatarReferenceData>();
-        
+
+        // Reserved codes for default registered types in PUN are:
+        // - W (23) for Vector2
+        // - V (22) for Vector3
+        // - Q (17) for Quaternion
+        // - P (16) for PhotonPlayer
+        private byte _typeCode = 0;
+
+        private readonly byte[] _ignoreTypeCodes = new[] { (byte)'P', (byte)'Q', (byte)'V', (byte)'W', };
+
+        private byte GetNextTypeCode()
+        {
+            while (true)
+            {
+                _typeCode++;
+                if (Array.IndexOf(_ignoreTypeCodes, _typeCode) == -1)
+                {
+                    break;
+                }
+            }
+
+            return _typeCode;
+        }
+
         bool IMultiplayerNetworkInfrastructure.IsMaster => PhotonNetwork.IsMasterClient;
 
         bool IMultiplayerNetworkInfrastructure.IsConnected => PhotonNetwork.IsConnected;
@@ -86,7 +107,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             PhotonNetwork.Disconnect();
         }
 
-        IRemotePlayer IMultiplayerNetworkInfrastructure.CreateRemotePlayer(object args)
+        IRemotePlayer IMultiplayerNetworkInfrastructure.CreateRemotePlayer(NetworkArgs args)
         {
             GameObject remoteGO = PhotonNetwork.Instantiate(_remotePlayerPath, Vector3.zero, Quaternion.identity, 0, new object[] { args });
             return remoteGO.GetComponent<IRemotePlayer>();
@@ -143,7 +164,13 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             UnregisterAvatar(pid);
         }
 
+        void IMultiplayerNetworkInfrastructure.RegisterSerialization(Type type, Serializer serializer, Deserializer deserializer)
+        {
+            PhotonPeer.RegisterType(type, GetNextTypeCode(), (obj) => serializer(obj), (bytes) => deserializer(bytes));
+        }
+
         #region ### MonoBehaviour ###
+
         private void Start()
         {
             SetupPhoton();
@@ -168,6 +195,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         #endregion ### MonoBehaviour ###
 
         #region ### For Photon ###
+
         public override void OnJoinedLobby()
         {
             Debug.Log("OnJoinedLobby");
@@ -219,6 +247,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
             OnPlayerDisconnected?.Invoke(CreatePlayerID(otherPlayer.ActorNumber));
         }
+
         #endregion ### For Photon ###
 
         private void JoinOrCreateRoom()
@@ -241,7 +270,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
         private void RegisterPlayerIDTypeToPhoton()
         {
-            PhotonPeer.RegisterType(typeof(PlayerID), (byte)'D', PlayerIDSerializer.Serialize, PlayerIDSerializer.Deserialize);
+            (this as IMultiplayerNetworkInfrastructure).RegisterSerialization(typeof(PlayerID), PlayerIDSerializer.Serialize, PlayerIDSerializer.Deserialize);
         }
 
         private int RegisterAvatar(PlayerID playerID, AvatarID avatarID)
@@ -280,4 +309,3 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         }
     }
 }
-

@@ -1,4 +1,5 @@
-﻿using Conekton.ARMultiplayer.Avatar.Domain;
+﻿using System;
+using Conekton.ARMultiplayer.Avatar.Domain;
 using Conekton.ARMultiplayer.NetworkMultiplayer.Domain;
 using UnityEngine;
 using Zenject;
@@ -27,6 +28,8 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             _infra.OnServerDisconnected += HandleOnDisconnected;
             _infra.OnPlayerConnected += HandlePlayerConnected;
             _infra.OnPlayerDisconnected += HandlePlayerDisconnected;
+            
+            _infra.RegisterSerialization(typeof(NetworkArgs), NetworkArgs.Serialize, NetworkArgs.Deserialize);
         }
 
         void ILateDisposable.LateDispose()
@@ -85,6 +88,11 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         PlayerID IMultiplayerNetworkSystem.ResolvePlayerID(object args) => _infra.ResolvePlayerID(args);
         PlayerID IMultiplayerNetworkSystem.GetPlayerID(AvatarID avatarID) => _infra.GetPlayerID(avatarID);
         AvatarID IMultiplayerNetworkSystem.GetAvatarID(PlayerID playerID) => _infra.GetAvatarID(playerID);
+
+        void IMultiplayerNetworkSystem.RegisterSerialization(Type type, Serializer serializer, Deserializer deserializer)
+        {
+            _infra.RegisterSerialization(type, serializer, deserializer);
+        }
         #endregion ### for IMultiplayerNetworkSystem interfaces ###
 
         private IAvatar GetOrCreateAvatar(PlayerID playerID)
@@ -102,7 +110,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             return avatar;
         }
 
-        void IMultiplayerNetworkSystem.CreateRemotePlayerForLocalPlayer(object args)
+        void IMultiplayerNetworkSystem.CreateRemotePlayerForLocalPlayer(NetworkArgs args)
         {
             Debug.Log("Will create Remote Player for Local Player.");
 
@@ -117,7 +125,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             _infra.CreateRemotePlayer(args);
         }
 
-        public void ReceivedRemotePlayerCustomData(IRemotePlayer remotePlayer, object args)
+        public void ReceivedRemotePlayerCustomData(IRemotePlayer remotePlayer, NetworkArgs args)
         {
             OnReceivedRemotePlayerCustomData?.Invoke(remotePlayer, args);
         }

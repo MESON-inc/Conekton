@@ -1,8 +1,26 @@
-﻿using Conekton.ARMultiplayer.Avatar.Domain;
+﻿using System;
+using Conekton.ARMultiplayer.Avatar.Domain;
 using UnityEngine;
 
 namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
 {
+    public delegate byte[] Serializer(object args);
+    public delegate object Deserializer(byte[] data);
+    
+    [Serializable]
+    public class NetworkArgs : EventArgs
+    {
+        public static byte[] Serialize(object args)
+        {
+            return new byte[0];
+        }
+
+        public static object Deserialize(byte[] data)
+        {
+            return new NetworkArgs();
+        }
+    }
+    
     /// <summary>
     /// This event will invoke when a client has connected to the server.
     /// </summary>
@@ -54,7 +72,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
     /// <param name="remotePlayer"></param>
     public delegate void DestroyingRemotePlayerEvent(IRemotePlayer remotePlayer);
 
-    public delegate void ReceivedRemotePlayerCustomDataEvent(IRemotePlayer remotePlayer, object args);
+    public delegate void ReceivedRemotePlayerCustomDataEvent(IRemotePlayer remotePlayer, NetworkArgs args);
 
     /// <summary>
     /// This is a PlayerID data struct.
@@ -137,8 +155,9 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         void CreateRemotePlayerLocalPlayer(IRemotePlayer remotePlayer, object args);
         void CreatedRemotePlayer(IRemotePlayer remotePlayer, object args);
         void RemoveRemotePlayer(IRemotePlayer remotePlayer);
-        void CreateRemotePlayerForLocalPlayer(object args);
-        void ReceivedRemotePlayerCustomData(IRemotePlayer remotePlayer, object args);
+        void CreateRemotePlayerForLocalPlayer(NetworkArgs args);
+        void ReceivedRemotePlayerCustomData(IRemotePlayer remotePlayer, NetworkArgs args);
+        void RegisterSerialization(Type type, Serializer serializer, Deserializer deserializer);
     }
 
     /// <summary>
@@ -154,7 +173,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         bool IsConnected { get; }
         void Connect(string roomName, IRoomOptions roomOptions);
         void Disconnect();
-        IRemotePlayer CreateRemotePlayer(object args);
+        IRemotePlayer CreateRemotePlayer(NetworkArgs args);
         PlayerID[] GetAllRemotePlayerID();
         PlayerID GetPlayerID(AvatarID avatarID);
         /// <summary>
@@ -174,6 +193,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         /// </summary>
         int UnregisterAvatar(PlayerID playerID);
         void UnregisterMainAvatar();
+        void RegisterSerialization(Type type, Serializer serializer, Deserializer deserializer);
     }
 
     public interface IMultiplayerNetworkIDRepository { }
@@ -188,7 +208,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
     public interface IMultiplayerNetworkContext
     {
         bool AutoConnect { get; }
-        void SetArgument(object args);
+        NetworkArgs Args { get; set; }
         void SetRoomName(string roomName);
         void Connect();
         void Disconnect();
