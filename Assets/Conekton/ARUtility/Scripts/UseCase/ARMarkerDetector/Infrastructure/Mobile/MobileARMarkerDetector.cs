@@ -43,7 +43,7 @@ namespace Conekton.ARUtility.UseCase.ARMarkerDetector.Infrastructure
             IARAnchor anchor = null;
 
             AnchorID id;
-            if (!_database.TryGetValue(image.name, out id))
+            if (_database.TryGetValue(image.name, out id))
             {
                 anchor = _anchorService.Find(id);
             }
