@@ -6,14 +6,14 @@ using Zenject;
 
 namespace Conekton.ARMultiplayer.AvatarBody.Application
 {
-    public class AvatarBodyFactory : MonoBehaviour, IAvatarBodyFactory<AvatarBodyTypeArgs>
+    public class AvatarBodyFactory : MonoBehaviour, IAvatarBodyFactory
     {
         [Inject] private DiContainer _container = null;
 
         [SerializeField] private GameObject _bodyPrefabA = null;
         [SerializeField] private GameObject _bodyPrefabB = null;
         
-        public IAvatarBody Create(AvatarBodyTypeArgs args)
+        public IAvatarBody Create(CreateAvatarBodyArgs args)
         {
             DiContainer subContainer = _container.CreateSubContainer();
             subContainer.BindInstance(args);
@@ -22,11 +22,11 @@ namespace Conekton.ARMultiplayer.AvatarBody.Application
             
             switch (args.BodyType)
             {
-                case AvatarBodyType.A:
+                case (byte)'A':
                     obj = subContainer.InstantiatePrefab(_bodyPrefabA);
                     break;
                 
-                case AvatarBodyType.B:
+                case (byte)'B':
                     obj = subContainer.InstantiatePrefab(_bodyPrefabB);
                     break;
             }

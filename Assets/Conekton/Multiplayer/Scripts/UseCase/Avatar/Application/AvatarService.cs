@@ -13,16 +13,13 @@ namespace Conekton.ARMultiplayer.Avatar.Application
     {
         [Inject] private IAvatarSystem _system = null;
         [Inject(Id = "Player")] private IAvatarController _playerAvatarController = null;
-        [Inject] private IAvatarBodySystem<AvatarBodyTypeArgs> _avatarBodySystem = null;
+        [Inject] private IAvatarBodySystem _avatarBodySystem = null;
 
         IAvatar IAvatarService.Create()
         {
             IAvatar avatar = _system.Create();
 
-            IAvatarBody body = _avatarBodySystem.Get(new AvatarBodyTypeArgs
-            {
-                BodyType = AvatarBodyType.B,
-            });
+            IAvatarBody body = _avatarBodySystem.GetOrCreate((byte)'B');
             body.SetAvatar(avatar);
             
             return avatar;
@@ -43,10 +40,7 @@ namespace Conekton.ARMultiplayer.Avatar.Application
                 IAvatar avatar = _system.CreateMain();
                 avatar.SetAvatarController(_playerAvatarController);
 
-                IAvatarBody body = _avatarBodySystem.Get(new AvatarBodyTypeArgs
-                {
-                    BodyType = AvatarBodyType.A,
-                });
+                IAvatarBody body = _avatarBodySystem.GetOrCreate((byte)'A');
                 body.SetAvatar(avatar);
             }
 

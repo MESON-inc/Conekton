@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Conekton.ARMultiplayer.AvatarBody.Domain
 {
     public delegate void AvatarBodyFreeEvent(IAvatarBody avatarBody);
-    
+
     public struct AvatarBodyID
     {
         private int _id;
@@ -16,7 +16,7 @@ namespace Conekton.ARMultiplayer.AvatarBody.Domain
         {
             return a._id == b._id;
         }
-        
+
         public static bool operator !=(AvatarBodyID a, AvatarBodyID b)
         {
             return a._id != b._id;
@@ -42,23 +42,17 @@ namespace Conekton.ARMultiplayer.AvatarBody.Domain
             _id = id;
         }
     }
-    
-    public enum AvatarBodyType
+
+    public struct CreateAvatarBodyArgs
     {
-        A,
-        B,
+        public byte BodyType;
+        public AvatarBodyID BodyID;
     }
 
-    public class AvatarBodyTypeArgs
-    {
-        public AvatarBodyType BodyType { get; set; } = AvatarBodyType.A;
-        public AvatarBodyID BodyID { get; set; }
-    }
-    
     public interface IAvatarBody
     {
         event AvatarBodyFreeEvent OnAvatarBodyFree;
-        AvatarBodyType BodyType { get; }
+        byte BodyType { get; }
         AvatarBodyID BodyID { get; }
         Transform Transform { get; }
         void Active(bool active);
@@ -69,25 +63,25 @@ namespace Conekton.ARMultiplayer.AvatarBody.Domain
     {
         AvatarBodyID Generate();
     }
-    
-    public interface IAvatarBodySystem<TAvatarType> where TAvatarType : AvatarBodyTypeArgs
+
+    public interface IAvatarBodySystem
     {
-        IAvatarBody Create(TAvatarType args);
+        IAvatarBody Create(byte bodyType);
         IAvatarBody Find(AvatarBodyID id);
-        IAvatarBody Get(TAvatarType args);
+        IAvatarBody GetOrCreate(byte bodyType);
         void Release(IAvatarBody body);
     }
 
-    public interface IAvatarBodyFactory<TAvatarType>
+    public interface IAvatarBodyFactory
     {
-        IAvatarBody Create(TAvatarType args);
+        IAvatarBody Create(CreateAvatarBodyArgs args);
     }
-    
-    public interface IAvatarBodyRepository<TAvatarType>
+
+    public interface IAvatarBodyRepository
     {
         IAvatarBody Find(AvatarBodyID id);
-        IAvatarBody Get(TAvatarType args);
-        void Save(AvatarBodyType bodyType, IAvatarBody avatarBody);
+        IAvatarBody Get(byte bodyType);
+        void Save(byte bodyType, IAvatarBody avatarBody);
         void Release(IAvatarBody body);
     }
 }

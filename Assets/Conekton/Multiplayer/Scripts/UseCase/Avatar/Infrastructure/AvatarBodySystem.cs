@@ -7,19 +7,25 @@ using Zenject;
 
 namespace Conekton.ARMultiplayer.AvatarBody.Infrastructure
 {
-    public class AvatarBodySystem : IAvatarBodySystem<AvatarBodyTypeArgs>, IAvatarBodyIDGenerator
+    public class AvatarBodySystem : IAvatarBodySystem, IAvatarBodyIDGenerator
     {
-        [Inject] private IAvatarBodyRepository<AvatarBodyTypeArgs> _avatarBodyRepository = null;
+        [Inject] private IAvatarBodyRepository _avatarBodyRepository = null;
         [Inject] private AvatarBodyFactory _avatarBodyFactory = null;
 
         private int _avatarBodyIDIndex = -1;
 
-        public IAvatarBody Create(AvatarBodyTypeArgs args)
+        public IAvatarBody Create(byte bodyType)
         {
             AvatarBodyID id = (this as IAvatarBodyIDGenerator).Generate();
 
-            args.BodyID = id;
+            CreateAvatarBodyArgs args = new CreateAvatarBodyArgs
+            {
+                BodyType = bodyType,
+                BodyID = id,
+            };
+
             IAvatarBody body = _avatarBodyFactory.Create(args);
+
             body.Transform.name = $"AvatarBody({args.BodyType.ToString()}) - [{id.ID.ToString()}]";
             body.Transform.SetParent(null);
             body.OnAvatarBodyFree += HandleOnAvatarBodyFree;
@@ -37,18 +43,17 @@ namespace Conekton.ARMultiplayer.AvatarBody.Infrastructure
             return _avatarBodyRepository.Find(id);
         }
 
-        public IAvatarBody Get(AvatarBodyTypeArgs args)
+        public IAvatarBody GetOrCreate(byte bodyType)
         {
-            IAvatarBody body = _avatarBodyRepository.Get(args);
-
+            IAvatarBody body = _avatarBodyRepository.Get(bodyType);
+        
             if (body == null)
             {
-                body = Create(args);
+                body = Create(bodyType);
             }
-
-            body.Active(true);
-            _avatarBodyRepository.Save(args.BodyType, body);
-
+        
+            _avatarBodyRepository.Save(bodyType, body);
+        
             return body;
         }
 
@@ -66,7 +71,7 @@ namespace Conekton.ARMultiplayer.AvatarBody.Infrastructure
                     return;
                 }
             }
-            
+
             body.Active(false);
             _avatarBodyRepository.Release(body);
         }
