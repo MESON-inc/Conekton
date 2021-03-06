@@ -1,5 +1,6 @@
 ﻿using System;
 using Conekton.ARMultiplayer.Avatar.Domain;
+using Conekton.ARMultiplayer.AvatarBody.Domain;
 using Conekton.ARMultiplayer.NetworkMultiplayer.Domain;
 using UnityEngine;
 using Zenject;
@@ -10,6 +11,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
     {
         [Inject] private IMultiplayerNetworkInfrastructure _infra = null;
         [Inject] private IAvatarService _avatarService = null;
+        [Inject] private IAvatarBodySystem _avatarBodySystem = null;
 
         public event ConnectedEvent OnConnected;
         public event DisconnectedEvent OnDisconnected;
@@ -104,6 +106,9 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             {
                 avatar = _avatarService.Create();
             }
+            
+            IAvatarBody body = _avatarBodySystem.GetOrCreate((byte)'B');
+            body.SetAvatar(avatar);
 
             _infra.RegisterAvatar(playerID, avatar.AvatarID);
 

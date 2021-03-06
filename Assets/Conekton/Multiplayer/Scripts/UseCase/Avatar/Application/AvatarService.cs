@@ -12,9 +12,6 @@ namespace Conekton.ARMultiplayer.Avatar.Application
         IAvatar IAvatarService.Create()
         {
             IAvatar avatar = _system.Create();
-
-            // IAvatarBody body = _avatarBodySystem.GetOrCreate((byte)'B');
-            // body.SetAvatar(avatar);
             
             return avatar;
         }
