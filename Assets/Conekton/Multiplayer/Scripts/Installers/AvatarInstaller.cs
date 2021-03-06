@@ -24,7 +24,8 @@ namespace Conekton.ARMultiplayer.Avatar.Application
         private void InstallBindingsToSubContainer(DiContainer subContainer)
         {
             subContainer
-                .BindInterfacesAndSelfTo<AvatarService>()
+                .Bind<IAvatarService>()
+                .To<AvatarService>()
                 .AsCached()
                 .NonLazy();
                 

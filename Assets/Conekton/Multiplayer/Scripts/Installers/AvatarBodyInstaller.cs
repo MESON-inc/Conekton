@@ -10,6 +10,7 @@ namespace Conekton.ARMultiplayer.Avatar.Application
     public class AvatarBodyInstaller : MonoInstaller
     {
         [SerializeField] private GameObject _avatarBodyFactoryPrefab = null;
+        [SerializeField] private byte _defaultMainAvatarBodyType = (byte)'A';
 
         public override void InstallBindings()
         {
@@ -18,6 +19,12 @@ namespace Conekton.ARMultiplayer.Avatar.Application
                 .FromSubContainerResolve()
                 .ByNewGameObjectMethod(InstallBindingsToSubContainer)
                 .AsCached();
+            
+            Container
+                .BindInterfacesAndSelfTo<MainAvatarBuilder>()
+                .AsCached()
+                .WithArguments(_defaultMainAvatarBodyType)
+                .NonLazy();
         }
         
         private void InstallBindingsToSubContainer(DiContainer subContainer)
