@@ -36,7 +36,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             }
         }
 
-        public NetworkArgs Args { get; set; }
+        public NetworkArgs Args { get; set; } = new NetworkArgs();
         
         public void SetRoomName(string roomName) => _roomName = roomName;
 
