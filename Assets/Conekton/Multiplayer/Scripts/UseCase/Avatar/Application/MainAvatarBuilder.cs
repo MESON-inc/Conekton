@@ -1,11 +1,11 @@
 ﻿using Conekton.ARMultiplayer.Avatar.Domain;
 using Conekton.ARMultiplayer.AvatarBody.Domain;
-using UnityEngine;
+using Conekton.ARMultiplayer.AvatarBuilder.Domain;
 using Zenject;
 
 namespace Conekton.ARMultiplayer.Avatar.Application
 {
-    public class MainAvatarBuilder : IInitializable
+    public class MainAvatarBuilder : IMainAvatarBuilder, IInitializable
     {
         [Inject] private IAvatarService _avatarService = null;
         [Inject] private IAvatarBodySystem _avatarBodySystem = null;
