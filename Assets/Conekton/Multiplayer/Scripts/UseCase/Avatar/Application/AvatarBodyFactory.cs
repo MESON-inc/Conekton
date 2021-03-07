@@ -29,6 +29,10 @@ namespace Conekton.ARMultiplayer.AvatarBody.Application
                 case (byte)'B':
                     obj = subContainer.InstantiatePrefab(_bodyPrefabB);
                     break;
+                
+                default:
+                    Debug.LogError($"The passed body type is not found. Received body type is {args.BodyType}");
+                    break;
             }
 
             return obj?.GetComponent<IAvatarBody>();
