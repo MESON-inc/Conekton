@@ -31,15 +31,6 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         private void Inject(IMultiplayerNetworkSystem networkSystem)
         {
             _networkSystem = networkSystem;
-            
-            if (photonView.IsMine)
-            {
-                _networkSystem.CreateRemotePlayerLocalPlayer(this, photonView);
-            }
-            else
-            {
-                _networkSystem.CreatedRemotePlayer(this, photonView);
-            }
         }
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -97,6 +88,22 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             {
                 args = instantiationData[0] as NetworkArgs;
             }
+            
+            object[] remotePlayerArgs = new object[]
+            {
+                photonView,
+                args,
+            };
+           
+            if (photonView.IsMine)
+            {
+                _networkSystem.CreateRemotePlayerLocalPlayer(this, remotePlayerArgs);
+            }
+            else
+            {
+                _networkSystem.CreatedRemotePlayer(this, remotePlayerArgs);
+            }
+            
             _networkSystem.ReceivedRemotePlayerCustomData(this, args);
         }
 

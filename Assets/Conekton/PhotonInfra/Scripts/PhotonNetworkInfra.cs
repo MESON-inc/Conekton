@@ -120,7 +120,26 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
         PlayerID IMultiplayerNetworkInfrastructure.ResolvePlayerID(object args)
         {
-            PhotonView view = args as PhotonView;
+            PhotonView view = null;
+
+            if (args is object[] argsList)
+            {
+                if (argsList.Length > 0)
+                {
+                    view = argsList[0] as PhotonView;
+                }
+            }
+            else
+            {
+                view = args as PhotonView;
+            }
+
+            if (view == null)
+            {
+                Debug.LogError($"PhotonView is not found in the arguments. Please check you passed the argument correctly.");
+                return default;
+            }
+
             int remoteID = view.Owner.ActorNumber;
             return CreatePlayerID(remoteID);
         }
