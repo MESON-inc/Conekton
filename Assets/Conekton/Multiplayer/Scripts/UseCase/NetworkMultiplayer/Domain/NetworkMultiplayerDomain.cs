@@ -5,22 +5,41 @@ using UnityEngine;
 namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
 {
     public delegate byte[] Serializer(object args);
+
     public delegate object Deserializer(byte[] data);
-    
+
     [Serializable]
     public class NetworkArgs : EventArgs
     {
+        public byte BodyType { get; private set; }
+
+        public NetworkArgs() : this((byte)'B')
+        {
+        }
+
+        public NetworkArgs(byte bodyType)
+        {
+            BodyType = bodyType;
+        }
+
         public static byte[] Serialize(object args)
         {
-            return new byte[0];
+            if (args is NetworkArgs nargs)
+            {
+                return new[] {nargs.BodyType};
+            }
+            else
+            {
+                return new byte[0];
+            }
         }
 
         public static object Deserialize(byte[] data)
         {
-            return new NetworkArgs();
+            return data.Length > 0 ? new NetworkArgs(data[0]) : new NetworkArgs();
         }
     }
-    
+
     /// <summary>
     /// This event will invoke when a client has connected to the server.
     /// </summary>
@@ -79,7 +98,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
     /// </summary>
     public struct PlayerID
     {
-        static public PlayerID NoSet = new PlayerID { ID = -1 };
+        static public PlayerID NoSet = new PlayerID {ID = -1};
 
         public int ID;
 
@@ -176,27 +195,34 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         IRemotePlayer CreateRemotePlayer(NetworkArgs args);
         PlayerID[] GetAllRemotePlayerID();
         PlayerID GetPlayerID(AvatarID avatarID);
+
         /// <summary>
         /// This interface depend on a platform.
         /// 
         /// This interface purpose to use resolving PlayerID from object that depend on a platform.
         /// </summary>
         PlayerID ResolvePlayerID(object args);
+
         AvatarID GetAvatarID(PlayerID playerID);
         void RegisterMainAvatar(AvatarID avatarID);
+
         /// <summary>
         /// Register interface will return reference count of an avatar.
         /// </summary>
         int RegisterAvatar(PlayerID playerID, AvatarID avatarID);
+
         /// <summary>
         /// Unregister interface will return reference count of an avatar.
         /// </summary>
         int UnregisterAvatar(PlayerID playerID);
+
         void UnregisterMainAvatar();
         void RegisterSerialization(Type type, Serializer serializer, Deserializer deserializer);
     }
 
-    public interface IMultiplayerNetworkIDRepository { }
+    public interface IMultiplayerNetworkIDRepository
+    {
+    }
 
     public interface IRoomOptions
     {
@@ -214,4 +240,3 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Domain
         void Disconnect();
     }
 }
-
