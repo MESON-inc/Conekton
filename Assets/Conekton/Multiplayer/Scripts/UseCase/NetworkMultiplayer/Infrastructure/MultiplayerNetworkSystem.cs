@@ -153,9 +153,9 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             NetworkArgs nargs = null;
             if (args is object[] argList)
             {
-                if (argList.Length > 0)
+                if (argList.Length >= 2)
                 {
-                    if (argList[0] is NetworkArgs result)
+                    if (argList[1] is NetworkArgs result)
                     {
                         nargs = result;
                     }
