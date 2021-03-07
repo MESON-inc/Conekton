@@ -38,7 +38,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             byte b3 = (byte)((id >> 16) & 0xff);
             byte b4 = (byte)((id >> 24) & 0xff);
 
-            return new byte[] { b1, b2, b3, b4, };
+            return new byte[] {b1, b2, b3, b4,};
         }
     }
 
@@ -70,7 +70,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         // - P (16) for PhotonPlayer
         private byte _typeCode = 0;
 
-        private readonly byte[] _ignoreTypeCodes = new[] { (byte)'P', (byte)'Q', (byte)'V', (byte)'W', };
+        private readonly byte[] _ignoreTypeCodes = new[] {(byte)'P', (byte)'Q', (byte)'V', (byte)'W',};
 
         private byte GetNextTypeCode()
         {
@@ -109,7 +109,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
         IRemotePlayer IMultiplayerNetworkInfrastructure.CreateRemotePlayer(NetworkArgs args)
         {
-            GameObject remoteGO = PhotonNetwork.Instantiate(_remotePlayerPath, Vector3.zero, Quaternion.identity, 0, new object[] { args });
+            GameObject remoteGO = PhotonNetwork.Instantiate(_remotePlayerPath, Vector3.zero, Quaternion.identity, 0, new object[] {args});
             return remoteGO.GetComponent<IRemotePlayer>();
         }
 
@@ -120,7 +120,26 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
         PlayerID IMultiplayerNetworkInfrastructure.ResolvePlayerID(object args)
         {
-            PhotonView view = args as PhotonView;
+            PhotonView view = null;
+
+            if (args is object[] argsList)
+            {
+                if (argsList.Length > 0)
+                {
+                    view = argsList[0] as PhotonView;
+                }
+            }
+            else
+            {
+                view = args as PhotonView;
+            }
+
+            if (view == null)
+            {
+                Debug.LogError($"PhotonView is not found in the arguments. Please check you passed the argument correctly.");
+                return default;
+            }
+
             int remoteID = view.Owner.ActorNumber;
             return CreatePlayerID(remoteID);
         }
@@ -281,7 +300,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             }
             else
             {
-                _database.Add(playerID, new AvatarReferenceData { Count = 1, AvatarID = avatarID, });
+                _database.Add(playerID, new AvatarReferenceData {Count = 1, AvatarID = avatarID,});
                 return _database[playerID].Count;
             }
         }
@@ -305,7 +324,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
 
         private PlayerID CreatePlayerID(int id)
         {
-            return new PlayerID { ID = id };
+            return new PlayerID {ID = id};
         }
     }
 }

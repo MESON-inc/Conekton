@@ -1,5 +1,7 @@
 ﻿using System;
 using Conekton.ARMultiplayer.Avatar.Domain;
+using Conekton.ARMultiplayer.AvatarBody.Domain;
+using Conekton.ARMultiplayer.AvatarBuilder.Domain;
 using Conekton.ARMultiplayer.NetworkMultiplayer.Domain;
 using UnityEngine;
 using Zenject;
@@ -10,6 +12,8 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
     {
         [Inject] private IMultiplayerNetworkInfrastructure _infra = null;
         [Inject] private IAvatarService _avatarService = null;
+        [Inject] private IAvatarBodySystem _avatarBodySystem = null;
+        [Inject] private IRemoteAvatarBuilder _remoteAvatarBuilder = null;
 
         public event ConnectedEvent OnConnected;
         public event DisconnectedEvent OnDisconnected;
@@ -28,7 +32,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             _infra.OnServerDisconnected += HandleOnDisconnected;
             _infra.OnPlayerConnected += HandlePlayerConnected;
             _infra.OnPlayerDisconnected += HandlePlayerDisconnected;
-            
+
             _infra.RegisterSerialization(typeof(NetworkArgs), NetworkArgs.Serialize, NetworkArgs.Deserialize);
         }
 
@@ -39,6 +43,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             _infra.OnPlayerConnected -= HandlePlayerConnected;
             _infra.OnPlayerDisconnected -= HandlePlayerDisconnected;
         }
+
         #endregion ### for Zenject interfaces ###
 
         private void HandlePlayerConnected(PlayerID playerID)
@@ -51,7 +56,7 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             Debug.Log($"Other player has disconnected {playerID}");
 
             AvatarID aid = (this as IMultiplayerNetworkSystem).GetAvatarID(playerID);
-            
+
             _avatarService.Remove(aid);
         }
 
@@ -68,8 +73,9 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         }
 
         #region ### for IMultiplayerNetworkSystem interfaces ###
+
         bool IMultiplayerNetworkSystem.IsMaster => _infra.IsMaster;
-        
+
         bool IMultiplayerNetworkSystem.IsConnected => _infra.IsConnected;
 
         void IMultiplayerNetworkSystem.Connect(string roomName, IRoomOptions roomOptions)
@@ -93,17 +99,14 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         {
             _infra.RegisterSerialization(type, serializer, deserializer);
         }
+
         #endregion ### for IMultiplayerNetworkSystem interfaces ###
 
-        private IAvatar GetOrCreateAvatar(PlayerID playerID)
+        private IAvatar GetOrCreateAvatar(PlayerID playerID, NetworkArgs args)
         {
             AvatarID avatarID = _infra.GetAvatarID(playerID);
-            IAvatar avatar = _avatarService.Find(avatarID);
 
-            if (avatar == null)
-            {
-                avatar = _avatarService.Create();
-            }
+            (IAvatar avatar, IAvatarBody _) = _remoteAvatarBuilder.Build(avatarID, args.BodyType);
 
             _infra.RegisterAvatar(playerID, avatar.AvatarID);
 
@@ -146,7 +149,20 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         private void CreatedRemotePlayer(IRemotePlayer remotePlayer, object args)
         {
             PlayerID pid = _infra.ResolvePlayerID(args);
-            IAvatar avatar = GetOrCreateAvatar(pid);
+
+            NetworkArgs nargs = null;
+            if (args is object[] argList)
+            {
+                if (argList.Length >= 2)
+                {
+                    if (argList[1] is NetworkArgs result)
+                    {
+                        nargs = result;
+                    }
+                }
+            }
+
+            IAvatar avatar = GetOrCreateAvatar(pid, nargs);
             avatar.SetAvatarController(remotePlayer);
 
             remotePlayer.PlayerID = pid;

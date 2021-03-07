@@ -14,7 +14,7 @@ namespace Conekton.ARMultiplayer.Avatar.Application
         public override void InstallBindings()
         {
             Container
-                .Bind<IAvatarBodySystem<AvatarBodyTypeArgs>>()
+                .Bind<IAvatarBodySystem>()
                 .FromSubContainerResolve()
                 .ByNewGameObjectMethod(InstallBindingsToSubContainer)
                 .AsCached();
@@ -23,12 +23,12 @@ namespace Conekton.ARMultiplayer.Avatar.Application
         private void InstallBindingsToSubContainer(DiContainer subContainer)
         {
             subContainer
-                .Bind<IAvatarBodySystem<AvatarBodyTypeArgs>>()
+                .Bind<IAvatarBodySystem>()
                 .To<AvatarBodySystem>()
                 .AsCached();
             
             subContainer
-                .Bind<IAvatarBodyRepository<AvatarBodyTypeArgs>>()
+                .Bind<IAvatarBodyRepository>()
                 .To<AvatarBodyRepository>()
                 .AsCached();
 
