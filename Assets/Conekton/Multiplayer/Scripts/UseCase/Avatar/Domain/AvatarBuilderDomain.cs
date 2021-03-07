@@ -9,7 +9,7 @@ namespace Conekton.ARMultiplayer.AvatarBuilder.Domain
 
     public interface IRemoteAvatarBuilder
     {
-        (IAvatar, IAvatarBody) Build(byte bodyType);
+        (IAvatar, IAvatarBody) Build(AvatarID avatarID, byte bodyType);
     }
 }
 
