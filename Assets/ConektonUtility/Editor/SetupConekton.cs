@@ -31,8 +31,11 @@ namespace Conekton.EditorUtility
                 Debug.LogWarning("Aborted adding a symbol process. If you want to switch platform between Nreal and Oculus, you have to switch build target first.\nYou can switch platform between Nreal and Oculus with the menu that is in \"Conekton/SwitchPlatform\".");
                 return;
             }
+            
+            int option = UEditorUtility.DisplayDialogComplex("Platform checking", "Which are you setting up for?", "Nreal", "Cancel", "Oculus");
 
-            CheckDefinition();
+            CheckDefinition(option);
+            CreateSDKSymbolicLinkIfNeeded(option);
         }
 
         private static async Task<bool> CheckPackageExist(string targetPackage)
@@ -97,10 +100,8 @@ namespace Conekton.EditorUtility
             Debug.Log("============================");
         }
 
-        private static void CheckDefinition()
+        private static void CheckDefinition(int option)
         {
-            int option = UEditorUtility.DisplayDialogComplex("Platform checking", "Which are you setting up for?", "Nreal", "Cancel", "Oculus");
-
             switch (option)
             {
                 // Nreal
@@ -115,6 +116,21 @@ namespace Conekton.EditorUtility
 
                 case 2:
                     AddSymbolDefinition(OCULUS_SYMBOL);
+                    break;
+            }
+        }
+
+        private static void CreateSDKSymbolicLinkIfNeeded(int option)
+        {
+            switch (option)
+            {
+                // Nreal
+                case 0:
+                    SymbolicLinkCreator.Create(SymbolicLinkCreator.PlatformType.Nreal);
+                    break;
+
+                case 2:
+                    SymbolicLinkCreator.Create(SymbolicLinkCreator.PlatformType.Oculus);
                     break;
             }
         }
