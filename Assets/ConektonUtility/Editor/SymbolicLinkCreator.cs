@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
 using UEditorUtility = UnityEditor.EditorUtility;
@@ -24,12 +23,44 @@ namespace Conekton.EditorUtility
                 return;
             }
 
+            switch (type)
+            {
+                case PlatformType.Nreal:
+                    RemoveSDKFolder(PlatformType.Oculus);
+                    break;
+                
+                case PlatformType.Oculus:
+                    RemoveSDKFolder(PlatformType.Nreal);
+                    break;
+            }
+
             string arguments = $"/c mklink /D \"{folderName}\" \"{linkFolderName}\"";
 
             Process proc = new Process();
             proc.StartInfo.FileName = System.Environment.GetEnvironmentVariable("ComSpec");
             proc.StartInfo.Arguments = arguments;
             proc.StartInfo.Verb = "RunAs";
+            proc.Start();
+            proc.WaitForExit();
+            proc.Close();
+
+            AssetDatabase.Refresh();
+        }
+
+        private static void RemoveSDKFolder(PlatformType type)
+        {
+            (string folderName, string linkFolderName) = GetFolderNames(type);
+
+            if (!Directory.Exists(folderName))
+            {
+                return;
+            }
+            
+            string arguments = $"/c rmdir \"{folderName}\"";
+
+            Process proc = new Process();
+            proc.StartInfo.FileName = System.Environment.GetEnvironmentVariable("ComSpec");
+            proc.StartInfo.Arguments = arguments;
             proc.Start();
             proc.WaitForExit();
             proc.Close();
