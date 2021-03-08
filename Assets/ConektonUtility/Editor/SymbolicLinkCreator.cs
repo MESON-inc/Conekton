@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using UnityEditor;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using UEditorUtility = UnityEditor.EditorUtility;
 
 namespace Conekton.EditorUtility
@@ -20,6 +21,13 @@ namespace Conekton.EditorUtility
 
             if (Directory.Exists(folderName))
             {
+                return;
+            }
+
+            if (!Directory.Exists(linkFolderName))
+            {
+                UEditorUtility.DisplayDialog("Target SDK folder is not found", "Please it locate under this project folder (not under the Assets folder).", "OK", "");
+                Debug.LogWarning("This editor script will make a symbolic link of the target SDK folder under the Assets folder. Please put the target SDK folder under this project folder directly.");
                 return;
             }
 
