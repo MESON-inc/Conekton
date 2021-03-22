@@ -11,6 +11,7 @@ namespace Conekton.ARMultiplayer.Avatar.Presentation
 {
     public class Avatar : MonoBehaviour, IAvatar
     {
+        [SerializeField] private Transform _rootTrans = null;
         [SerializeField] private Transform _headTrans = null;
         [SerializeField] private Transform _leftHandTrans = null;
         [SerializeField] private Transform _rightHandTrans = null;
@@ -45,6 +46,10 @@ namespace Conekton.ARMultiplayer.Avatar.Presentation
 
         private void UpdatePose()
         {
+            Pose rootPose = _avatarController.GetRootPose();
+            _rootTrans.localPosition = rootPose.position;
+            _rootTrans.localRotation = rootPose.rotation;
+            
             Pose headPose = _avatarController.GetHeadPose();
             _headTrans.transform.localPosition = headPose.position;
             _headTrans.transform.localRotation = headPose.rotation;
@@ -78,13 +83,14 @@ namespace Conekton.ARMultiplayer.Avatar.Presentation
             Destroy(gameObject);
         }
 
+        Pose IAvatar.GetRootPose()
+        {
+            return new Pose(_rootTrans.position, _rootTrans.rotation);
+        }
+
         Pose IAvatar.GetPose(AvatarPoseType type)
         {
-            return new Pose
-            {
-                position = GetTransform(type).position,
-                rotation = GetTransform(type).rotation,
-            };
+            return new Pose(GetTransform(type).position, GetTransform(type).rotation);
         }
 
         Pose IAvatar.GetLocalPose(AvatarPoseType type)

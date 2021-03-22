@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Conekton.ARMultiplayer.AvatarBody.Infrastructure
 {
-    public class AvatarBodyRepository : IAvatarBodyRepository<AvatarBodyTypeArgs>
+    public class AvatarBodyRepository : IAvatarBodyRepository
     {
         private class BodyStore
         {
@@ -41,6 +41,8 @@ namespace Conekton.ARMultiplayer.AvatarBody.Infrastructure
                 {
                     _database.Add(body, true);
                 }
+                
+                body.Active(true);
             }
 
             public void Unuse(IAvatarBody body)
@@ -49,11 +51,18 @@ namespace Conekton.ARMultiplayer.AvatarBody.Infrastructure
                 {
                     _database[body] = false;
                 }
+                
+                body.Active(false);
             }
         }
 
-        private Dictionary<AvatarBodyType, BodyStore> _database = new Dictionary<AvatarBodyType, BodyStore>();
+        private Dictionary<byte, BodyStore> _database = new Dictionary<byte, BodyStore>();
 
+        /// <summary>
+        /// Find an avatar body with AvatarBodyID
+        /// </summary>
+        /// <param name="id">An avatar body ID for finding.</param>
+        /// <returns>Instance of an IAvatarBody</returns>
         public IAvatarBody Find(AvatarBodyID id)
         {
             return _database.Values
@@ -62,12 +71,22 @@ namespace Conekton.ARMultiplayer.AvatarBody.Infrastructure
                 .FirstOrDefault();
         }
 
-        public IAvatarBody Get(AvatarBodyTypeArgs args)
+        /// <summary>
+        /// Get an unused avatar body.
+        /// </summary>
+        /// <param name="bodyType">Avatar body type</param>
+        /// <returns>IAvatarBody instance.</returns>
+        public IAvatarBody Get(byte bodyType)
         {
-            return _database.ContainsKey(args.BodyType) ? _database[args.BodyType].Get() : null;
+            return _database.ContainsKey(bodyType) ? _database[bodyType].Get() : null;
         }
 
-        public void Save(AvatarBodyType bodyType, IAvatarBody avatarBody)
+        /// <summary>
+        /// Save an avatar body with body type.
+        /// </summary>
+        /// <param name="bodyType">Body type.</param>
+        /// <param name="avatarBody">Instance of an avatar body.</param>
+        public void Save(byte bodyType, IAvatarBody avatarBody)
         {
             if (!_database.ContainsKey(bodyType))
             {
@@ -77,6 +96,10 @@ namespace Conekton.ARMultiplayer.AvatarBody.Infrastructure
             _database[bodyType].Use(avatarBody);
         }
 
+        /// <summary>
+        /// Release an avatar body.
+        /// </summary>
+        /// <param name="body"></param>
         public void Release(IAvatarBody body)
         {
             if (!_database.ContainsKey(body.BodyType))

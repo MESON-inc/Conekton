@@ -18,11 +18,11 @@ namespace Conekton.ARMultiplayer.AvatarBody.Presentation
         
         public event AvatarBodyFreeEvent OnAvatarBodyFree;
         
-        public AvatarBodyType BodyType => _bodyType;
+        public byte BodyType => _bodyType;
         public AvatarBodyID BodyID => _bodyID;
         public Transform Transform => transform;
 
-        private AvatarBodyType _bodyType = AvatarBodyType.A;
+        private byte _bodyType = (byte)'A';
         private AvatarBodyID _bodyID = default;
         private IAvatar _avatar = null;
         private bool _hasAvatar = false;
@@ -39,6 +39,9 @@ namespace Conekton.ARMultiplayer.AvatarBody.Presentation
                 return;
             }
 
+            Pose rootPose = _avatar.GetRootPose();
+            transform.SetPositionAndRotation(rootPose.position, rootPose.rotation);
+
             Pose headPose = _avatar.GetPose(AvatarPoseType.Head);
             _headTrans.SetPositionAndRotation(headPose.position, headPose.rotation);
             
@@ -50,7 +53,7 @@ namespace Conekton.ARMultiplayer.AvatarBody.Presentation
         }
 
         [Inject]
-        public void Construct(AvatarBodyTypeArgs args)
+        public void Construct(CreateAvatarBodyArgs args)
         {
             _bodyType = args.BodyType;
             _bodyID = args.BodyID;

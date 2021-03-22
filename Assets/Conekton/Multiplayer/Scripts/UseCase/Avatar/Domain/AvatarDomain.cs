@@ -83,6 +83,7 @@ namespace Conekton.ARMultiplayer.Avatar.Domain
         void SetWearable(IAvatarWearable wearable);
 
         Transform GetTransform(AvatarPoseType type);
+        Pose GetRootPose();
         Pose GetPose(AvatarPoseType type);
         Pose GetLocalPose(AvatarPoseType type);
         void Destory();
@@ -111,6 +112,7 @@ namespace Conekton.ARMultiplayer.Avatar.Domain
     /// </summary>
     public interface IAvatarController
     {
+        Pose GetRootPose();
         Pose GetHeadPose();
         Pose GetHandPose(AvatarPoseType type);
     }

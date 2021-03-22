@@ -31,21 +31,17 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         private void Inject(IMultiplayerNetworkSystem networkSystem)
         {
             _networkSystem = networkSystem;
-            
-            if (photonView.IsMine)
-            {
-                _networkSystem.CreateRemotePlayerLocalPlayer(this, photonView);
-            }
-            else
-            {
-                _networkSystem.CreatedRemotePlayer(this, photonView);
-            }
         }
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.IsWriting)
             {
+                // For root.
+                Pose rootPose = GetRootPose();
+                stream.SendNext(rootPose.position);
+                stream.SendNext(rootPose.rotation);
+                
                 // For the head.
                 Pose headPose = GetHeadPose();
                 stream.SendNext(headPose.position);
@@ -63,6 +59,11 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             }
             else
             {
+                // For root.
+                Vector3 rootPos = (Vector3)stream.ReceiveNext();
+                Quaternion rootRot = (Quaternion)stream.ReceiveNext();
+                SetRootPose(new Pose(rootPos, rootRot));
+                
                 // For the head.
                 Vector3 headPos = (Vector3)stream.ReceiveNext();
                 Quaternion headRot = (Quaternion)stream.ReceiveNext();
@@ -81,10 +82,34 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         public void OnPhotonInstantiate(PhotonMessageInfo info)
         {
             object[] instantiationData = info.photonView.InstantiationData;
-            _networkSystem.ReceivedRemotePlayerCustomData(this, instantiationData?[0]);
+
+            NetworkArgs args = null;
+            if (instantiationData?.Length > 0)
+            {
+                args = instantiationData[0] as NetworkArgs;
+            }
+            
+            object[] remotePlayerArgs = new object[]
+            {
+                photonView,
+                args,
+            };
+           
+            if (photonView.IsMine)
+            {
+                _networkSystem.CreateRemotePlayerLocalPlayer(this, remotePlayerArgs);
+            }
+            else
+            {
+                _networkSystem.CreatedRemotePlayer(this, remotePlayerArgs);
+            }
+            
+            _networkSystem.ReceivedRemotePlayerCustomData(this, args);
         }
 
         #region ### for IAvatarController interface ###
+        Pose IAvatarController.GetRootPose() => GetRootPose();
+        
         Pose IAvatarController.GetHeadPose() => GetHeadPose();
 
         Pose IAvatarController.GetHandPose(AvatarPoseType type) => GetHandPose(type);
@@ -110,6 +135,18 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
         {
             name = $"RemotePlayer-[{playeriD.ID}]";
             _playerID = playeriD;
+        }
+
+        private Pose GetRootPose()
+        {
+            if (_hasTargetAvatarController)
+            {
+                return _targetAvatarController.GetRootPose();
+            }
+            else
+            {
+                return new Pose(transform.position, transform.rotation);
+            }
         }
 
         private Pose GetHeadPose()
@@ -141,6 +178,16 @@ namespace Conekton.ARMultiplayer.NetworkMultiplayer.Infrastructure
             }
 
             return default;
+        }
+
+        private void SetRootPose(Pose pose)
+        {
+            if (_hasTargetAvatarController)
+            {
+                return;
+            }
+            
+            transform.SetPositionAndRotation(pose.position, pose.rotation);
         }
 
         private void SetHeadPose(Pose pose)
