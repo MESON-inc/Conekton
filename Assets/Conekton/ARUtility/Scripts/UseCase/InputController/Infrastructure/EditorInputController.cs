@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 using Zenject;
 
@@ -34,14 +32,19 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
         [SerializeField] private float _speed = 0.01f;
         [SerializeField] private float _rotSpeed = 1f;
+        [SerializeField] private float _mouseRotSpeed = 10f;
 
         private Vector3 _position = Vector3.zero;
         private Quaternion _rotation = Quaternion.identity;
         private readonly Vector3 VECTOR3_FORWARD = Vector3.forward;
+        private bool _isMoveMode = false;
+        private Vector3 _prevPos = Vector3.zero;
 
-        bool IInputController.IsTrigger(ControllerType type) => UnityEngine.Input.GetKey(_triggerDownKey);
-        bool IInputController.IsTriggerDown(ControllerType type) => UnityEngine.Input.GetKeyDown(_triggerDownKey);
-        bool IInputController.IsTriggerUp(ControllerType type) => UnityEngine.Input.GetKeyDown(_triggerUpKey);
+        private float RotateSpeed => _mouseRotSpeed * Time.deltaTime;
+
+        bool IInputController.IsTrigger(ControllerType type) => UnityEngine.Input.GetKey(_triggerDownKey) || UnityEngine.Input.GetMouseButton(0);
+        bool IInputController.IsTriggerDown(ControllerType type) => UnityEngine.Input.GetKeyDown(_triggerDownKey) || UnityEngine.Input.GetMouseButtonDown(0);
+        bool IInputController.IsTriggerUp(ControllerType type) => UnityEngine.Input.GetKeyDown(_triggerUpKey) || UnityEngine.Input.GetMouseButtonUp(0);
         bool IInputController.IsTouch(ControllerType type) => UnityEngine.Input.GetKey(_touchDownKey);
         bool IInputController.IsTouchDown(ControllerType type) => UnityEngine.Input.GetKeyDown(_touchDownKey);
         bool IInputController.IsTouchUp(ControllerType type) => UnityEngine.Input.GetKeyDown(_touchUpKey);
@@ -142,7 +145,48 @@ namespace Conekton.ARUtility.Input.Infrastructure
             {
                 _rotation *= Quaternion.Euler(new Vector3(0, -_rotSpeed, 0));
             }
+
+            if (UnityEngine.Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                StartRotate();
+            }
+            
+            if (UnityEngine.Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                EndRotate();
+            }
+
+            if (_isMoveMode)
+            {
+                TryRotete();
+            }
+        }
+        
+        private void StartRotate()
+        {
+            _isMoveMode = true;
+            _prevPos = UnityEngine.Input.mousePosition;
+        }
+
+        private void EndRotate()
+        {
+            _isMoveMode = false;
+        }
+
+        private void TryRotete()
+        {
+            Vector3 delta = UnityEngine.Input.mousePosition - _prevPos;
+
+            Quaternion rotY = Quaternion.AngleAxis(delta.x * RotateSpeed, Vector3.up);
+
+            Vector3 forward = _rotation * VECTOR3_FORWARD;
+            Vector3 rightAxis = Vector3.Cross(forward, Vector3.up);
+
+            Quaternion rotX = Quaternion.AngleAxis(delta.y * RotateSpeed, rightAxis.normalized);
+
+            _rotation *= rotY * rotX;
+            
+            _prevPos = UnityEngine.Input.mousePosition;
         }
     }
 }
-
