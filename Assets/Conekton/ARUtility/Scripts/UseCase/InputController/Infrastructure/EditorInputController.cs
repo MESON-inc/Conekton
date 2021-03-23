@@ -35,7 +35,8 @@ namespace Conekton.ARUtility.Input.Infrastructure
         [SerializeField] private float _mouseRotSpeed = 10f;
 
         private Vector3 _position = Vector3.zero;
-        private Quaternion _rotation = Quaternion.identity;
+        private Quaternion _rotationX = Quaternion.identity;
+        private Quaternion _rotationY = Quaternion.identity;
         private readonly Vector3 VECTOR3_FORWARD = Vector3.forward;
         private bool _isMoveMode = false;
         private Vector3 _prevPos = Vector3.zero;
@@ -49,11 +50,11 @@ namespace Conekton.ARUtility.Input.Infrastructure
         bool IInputController.IsTouchDown(ControllerType type) => UnityEngine.Input.GetKeyDown(_touchDownKey);
         bool IInputController.IsTouchUp(ControllerType type) => UnityEngine.Input.GetKeyDown(_touchUpKey);
 
-        Vector3 IInputController.GetForward(ControllerType type) => _rotation * VECTOR3_FORWARD;
+        Vector3 IInputController.GetForward(ControllerType type) => _rotationY * _rotationX * VECTOR3_FORWARD;
 
         Vector3 IInputController.GetPosition(ControllerType type) => _position;
 
-        Quaternion IInputController.GetRotation(ControllerType type) => _rotation;
+        Quaternion IInputController.GetRotation(ControllerType type) => _rotationY * _rotationX;
 
         Vector2 IInputController.GetTouch(ControllerType type) => Vector2.zero;
 
@@ -138,12 +139,12 @@ namespace Conekton.ARUtility.Input.Infrastructure
 
             if (UnityEngine.Input.GetKey(_rightTurnKey))
             {
-                _rotation *= Quaternion.Euler(new Vector3(0, _rotSpeed, 0));
+                _rotationY *= Quaternion.Euler(new Vector3(0, _rotSpeed, 0));
             }
 
             if (UnityEngine.Input.GetKey(_leftTurnKey))
             {
-                _rotation *= Quaternion.Euler(new Vector3(0, -_rotSpeed, 0));
+                _rotationY *= Quaternion.Euler(new Vector3(0, -_rotSpeed, 0));
             }
 
             if (UnityEngine.Input.GetKeyDown(KeyCode.LeftShift))
@@ -176,15 +177,9 @@ namespace Conekton.ARUtility.Input.Infrastructure
         private void TryRotete()
         {
             Vector3 delta = UnityEngine.Input.mousePosition - _prevPos;
-
-            Quaternion rotY = Quaternion.AngleAxis(delta.x * RotateSpeed, Vector3.up);
-
-            Vector3 forward = _rotation * VECTOR3_FORWARD;
-            Vector3 rightAxis = Vector3.Cross(forward, Vector3.up);
-
-            Quaternion rotX = Quaternion.AngleAxis(delta.y * RotateSpeed, rightAxis.normalized);
-
-            _rotation *= rotY * rotX;
+            
+            _rotationY *= Quaternion.AngleAxis(delta.x * RotateSpeed, Vector3.up);
+            _rotationX *= Quaternion.AngleAxis(delta.y * RotateSpeed, -Vector3.right);
             
             _prevPos = UnityEngine.Input.mousePosition;
         }
