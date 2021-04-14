@@ -52,6 +52,16 @@ namespace Conekton.EditorUtility
             _isResolvingDependencies = false;
         }
 
+        private string GetPlatformName(ConektonUtilityConstant.PlatformType type)
+        {
+            return (type == ConektonUtilityConstant.PlatformType.Nreal) ? "Nreal" : "Oculus";
+        }
+
+        private string GetOppositePlatformName(ConektonUtilityConstant.PlatformType type)
+        {
+            return (type == ConektonUtilityConstant.PlatformType.Nreal) ? "Oculus" : "Nreal";
+        }
+
         private void OnGUI()
         {
             if (_logo != null)
@@ -133,33 +143,13 @@ namespace Conekton.EditorUtility
 
             if (IsNrealPlatform)
             {
-                CustomLabel($"You choose Nreal platform", Color.white, Color.clear, 14);
-
-                EditorGUILayout.Space(10);
-
-                GUILayout.Label("Do you want to change platform?");
-
-                if (GUILayout.Button("Change platform to Oculus"))
-                {
-                    DefinitionResolver.AddDefinition(ConektonUtilityConstant.PlatformType.Oculus);
-                }
-
+                DrawPlatformInfoGUI(ConektonUtilityConstant.PlatformType.Nreal);
                 return;
             }
 
             if (IsQuestPlatform)
             {
-                CustomLabel($"You choose Oculus platform", Color.white, Color.clear, 14);
-
-                EditorGUILayout.Space(10);
-
-                GUILayout.Label("Do you want to change platform?");
-
-                if (GUILayout.Button("Change platform to Nreal"))
-                {
-                    DefinitionResolver.AddDefinition(ConektonUtilityConstant.PlatformType.Nreal);
-                }
-
+                DrawPlatformInfoGUI(ConektonUtilityConstant.PlatformType.Oculus);
                 return;
             }
 
@@ -178,6 +168,25 @@ namespace Conekton.EditorUtility
 
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
+        }
+
+        private void DrawPlatformInfoGUI(ConektonUtilityConstant.PlatformType type)
+        {
+            string platformName = GetPlatformName(type);
+
+            CustomLabel($"You choose {platformName} platform", Color.white, Color.clear, 14);
+
+            EditorGUILayout.Space(10);
+
+            string oppositePlatformName = GetOppositePlatformName(type);
+
+            if (GUILayout.Button($"Change platform to {oppositePlatformName}"))
+            {
+                ConektonUtilityConstant.PlatformType switchPlatform = (type == ConektonUtilityConstant.PlatformType.Nreal)
+                    ? ConektonUtilityConstant.PlatformType.Oculus
+                    : ConektonUtilityConstant.PlatformType.Nreal;
+                DefinitionResolver.AddDefinition(switchPlatform);
+            }
         }
 
         private void DrawSDKLinkGUI()
@@ -218,8 +227,8 @@ namespace Conekton.EditorUtility
                 return;
             }
 
-            string platformName = (type == ConektonUtilityConstant.PlatformType.Nreal) ? "Nreal" : "Oculus";
-            string oppositePlatformName = (type == ConektonUtilityConstant.PlatformType.Nreal) ? "Oculus" : "Nreal";
+            string platformName = GetPlatformName(type);
+            string oppositePlatformName = GetOppositePlatformName(type);
 
             ConektonUtilityConstant.PlatformType oppositeType = (type == ConektonUtilityConstant.PlatformType.Nreal)
                 ? ConektonUtilityConstant.PlatformType.Oculus

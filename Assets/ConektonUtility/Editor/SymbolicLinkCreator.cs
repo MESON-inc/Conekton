@@ -67,6 +67,8 @@ namespace Conekton.EditorUtility
             {
                 return;
             }
+            
+            File.Delete($"{folderName}.meta");
 
             Process proc = new Process();
 #if UNITY_EDITOR_WIN
@@ -83,18 +85,19 @@ namespace Conekton.EditorUtility
             proc.StandardInput.WriteLine("exit");
             proc.StandardInput.Flush();
 #endif
-            
             proc.WaitForExit();
             proc.Close();
+
+            AssetDatabase.Refresh();
         }
-        
+
         public static bool ExistSDKFolder(ConektonUtilityConstant.PlatformType type)
         {
             (string folderName, string linkFolderName) = GetFolderNames(type);
 
             return Directory.Exists(linkFolderName);
         }
-        
+
         public static bool ExistSDK(ConektonUtilityConstant.PlatformType type)
         {
             (string folderName, string linkFolderName) = GetFolderNames(type);
