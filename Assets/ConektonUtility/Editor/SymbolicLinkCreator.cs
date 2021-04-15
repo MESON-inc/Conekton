@@ -9,13 +9,7 @@ namespace Conekton.EditorUtility
 {
     public static class SymbolicLinkCreator
     {
-        public enum PlatformType
-        {
-            Nreal,
-            Oculus,
-        }
-
-        public static void Create(PlatformType type)
+        public static void Create(ConektonUtilityConstant.PlatformType type)
         {
             (string folderName, string linkFolderName) = GetFolderNames(type);
 
@@ -33,12 +27,12 @@ namespace Conekton.EditorUtility
 
             switch (type)
             {
-                case PlatformType.Nreal:
-                    RemoveSDKFolder(PlatformType.Oculus);
+                case ConektonUtilityConstant.PlatformType.Nreal:
+                    RemoveSDKFolder(ConektonUtilityConstant.PlatformType.Oculus);
                     break;
 
-                case PlatformType.Oculus:
-                    RemoveSDKFolder(PlatformType.Nreal);
+                case ConektonUtilityConstant.PlatformType.Oculus:
+                    RemoveSDKFolder(ConektonUtilityConstant.PlatformType.Nreal);
                     break;
             }
 
@@ -65,7 +59,7 @@ namespace Conekton.EditorUtility
             AssetDatabase.Refresh();
         }
 
-        private static void RemoveSDKFolder(PlatformType type)
+        public static void RemoveSDKFolder(ConektonUtilityConstant.PlatformType type)
         {
             (string folderName, string linkFolderName) = GetFolderNames(type);
 
@@ -73,6 +67,8 @@ namespace Conekton.EditorUtility
             {
                 return;
             }
+            
+            File.Delete($"{folderName}.meta");
 
             Process proc = new Process();
 #if UNITY_EDITOR_WIN
@@ -91,19 +87,35 @@ namespace Conekton.EditorUtility
 #endif
             proc.WaitForExit();
             proc.Close();
+
+            AssetDatabase.Refresh();
         }
 
-        private static (string, string) GetFolderNames(PlatformType type)
+        public static bool ExistSDKFolder(ConektonUtilityConstant.PlatformType type)
+        {
+            (string folderName, string linkFolderName) = GetFolderNames(type);
+
+            return Directory.Exists(linkFolderName);
+        }
+
+        public static bool ExistSDK(ConektonUtilityConstant.PlatformType type)
+        {
+            (string folderName, string linkFolderName) = GetFolderNames(type);
+
+            return Directory.Exists(folderName);
+        }
+
+        private static (string, string) GetFolderNames(ConektonUtilityConstant.PlatformType type)
         {
             string SDKName = "";
 
             switch (type)
             {
-                case PlatformType.Nreal:
+                case ConektonUtilityConstant.PlatformType.Nreal:
                     SDKName = "NRSDK";
                     break;
 
-                case PlatformType.Oculus:
+                case ConektonUtilityConstant.PlatformType.Oculus:
                     SDKName = "Oculus";
                     break;
             }
