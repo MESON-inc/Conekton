@@ -23,8 +23,10 @@ namespace Conekton.ARUtility.Input.Infrastructure
         [SerializeField] private KeyCode _downKey = KeyCode.E;
 
         [Header("For rotation control")]
-        [SerializeField] private KeyCode _leftTurnKey = KeyCode.R;
-        [SerializeField] private KeyCode _rightTurnKey = KeyCode.T;
+        [SerializeField] private KeyCode _leftTurnKey = KeyCode.H;
+        [SerializeField] private KeyCode _rightTurnKey = KeyCode.J;
+        [SerializeField] private KeyCode _upTurnKey = KeyCode.K;
+        [SerializeField] private KeyCode _downTurnKey = KeyCode.L;
 
         [Header("For touch control")]
         [SerializeField] private KeyCode _touchDownKey = KeyCode.Y;
@@ -145,6 +147,16 @@ namespace Conekton.ARUtility.Input.Infrastructure
             if (UnityEngine.Input.GetKey(_leftTurnKey))
             {
                 _rotationY *= Quaternion.Euler(new Vector3(0, -_rotSpeed, 0));
+            }
+
+            if (UnityEngine.Input.GetKey(_upTurnKey))
+            {
+                _rotationX *= Quaternion.Euler(new Vector3(-_rotSpeed, 0, 0));
+            }
+
+            if (UnityEngine.Input.GetKey(_downTurnKey))
+            {
+                _rotationX *= Quaternion.Euler(new Vector3(_rotSpeed, 0, 0));
             }
 
             if (UnityEngine.Input.GetKeyDown(KeyCode.LeftShift))
